@@ -1,0 +1,39 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PS2_Manager.MainWindow"
+        Title="PS2_Manager"
+        Background="#201c29"
+        SystemDecorations="None"
+        Width="880"
+        Height="520"
+        Loaded="Control_OnLoaded">
+    <Grid RowDefinitions="20, *">
+                <Grid Grid.Row="0">
+                        <Border Background="#35313d"
+                                PointerPressed="WindowDrag">
+                                <Grid ColumnDefinitions="*, 20">
+                                        <TextBlock Name="WindowTitle" FontSize="12" Padding="8,0,0,0" VerticalAlignment="Center"/>
+                                        <Border Grid.Column="1" Background="#625f69" PointerPressed="WindowClose">
+                                                <TextBlock FontSize="12" Text="×" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                </Grid>
+                        </Border>
+                </Grid>
+            <Grid Grid.Row="1">
+                    <Border Background="Red" CornerRadius="0" Margin="8">
+                            <Grid ColumnDefinitions="300, *">
+                                    <Border Background="Aqua">
+                                            <ListBox Name="GamesList"></ListBox>
+                                    </Border>
+                                    
+                                    <Border Grid.Column="1" Background="Aqua">
+                                            <Button Click="OpenFileButton_Clicked" Content="Install Game"></Button>
+                                    </Border>
+                            </Grid>
+                    </Border>
+            </Grid>
+        </Grid>
+</Window>

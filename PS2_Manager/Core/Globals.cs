@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+
+namespace PS2_Manager.Core;
+
+public static class Globals
+{
+    
+    public static List<Game> Games { get; set; }
+    
+    public static void LoadSettings()
+    {
+        Games = new List<Game>();
+        ConfigUtils.InitConfig("settings.ini");
+    }
+
+
+    public static class FileDialogTypes
+    {
+        public static FilePickerFileType PS2Game { get; } = new("PS2 Game")
+        {
+            Patterns = new[] { "*.iso" }
+        };
+    }
+}
+
+public enum settings
+{
+    library_path
+}
+
+public class UpdateVar<T>
+{
+    private T _value;
+
+    public Action ValueChanged;
+
+    public T Value
+    {
+        get => _value;
+
+        set
+        {
+            _value = value;
+            OnValueChanged();
+        }
+    }
+
+    protected virtual void OnValueChanged() => ValueChanged?.Invoke();
+}
