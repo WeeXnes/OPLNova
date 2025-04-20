@@ -43,7 +43,7 @@
 
                                 <StackPanel Grid.Row="1" Width="300" Spacing="10" HorizontalAlignment="Left">
                                         <TextBlock Text="Game Name"/>
-                                        <TextBox Name="GameNameBox" MaxLength="20" TextChanged="GameNameBox_OnTextChanged"/>
+                                        <TextBox Name="GameNameBox" MaxLength="32" TextChanged="GameNameBox_OnTextChanged"/>
 
                                         <TextBlock Text="Serial Number"/>
                                         <TextBox Name="SerialBox" IsEnabled="False"/>

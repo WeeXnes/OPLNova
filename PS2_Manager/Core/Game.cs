@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
@@ -98,6 +99,10 @@ public class Game
         string targetDirectory = settings.library_path.GetValue<string>();
         if(!Directory.Exists(Path.Combine(targetDirectory, "ART")))
             Directory.CreateDirectory(Path.Combine(targetDirectory, "ART"));
-        this.Cover.Save(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_COV.png"));
+        //this.Cover.Save(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_COV.png"));
+        this.Cover.CreateScaledBitmap(
+            new PixelSize(353, 500),
+            BitmapInterpolationMode.HighQuality
+        ).Save(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_COV.png"));
     }
 }
