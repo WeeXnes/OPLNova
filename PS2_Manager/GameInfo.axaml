@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PS2_Manager.GameInfo">
+    <Grid RowDefinitions="350, *, *, *, *">
+        <Border Grid.Row="0" Width="205" Height="292" Background="Black" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Name="CoverImage" Source="Images/missing.png" Stretch="UniformToFill"/>
+        </Border>
+        <TextBlock Grid.Row="1" Text="" HorizontalAlignment="Center"
+                   Name="GameNameTextBlock"/>
+        <TextBlock Grid.Row="2" Text="" HorizontalAlignment="Center"
+                   Name="GameIdTextBlock"/>
+        <TextBlock Grid.Row="3" Text="" HorizontalAlignment="Center"
+                   Name="IsoSizeTextBlock"/>
+        <TextBlock Grid.Row="4" Text="" HorizontalAlignment="Center"
+                   Name="GameDateTextBlock"/>
+    </Grid>
+</UserControl>

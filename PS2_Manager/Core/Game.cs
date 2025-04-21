@@ -19,11 +19,26 @@ public class Game
     public EventHandler? InstallationFinished { get; set; }
     public UpdateVar<double> InstallProgress { get; private set; }
 
-    public Game(string isoPath)
+    public Game(string isoPath, bool installed = false)
     {
         this.GamePath = isoPath;
         this.GameID = ISO.GetSerial(isoPath);
-        this.Cover = this.GetCover();
+        if (!installed)
+        {
+            this.Cover = this.GetCover();
+        }
+        else
+        {
+            this.Name = ParseFormattedFilename(Path.GetFileName(isoPath));
+            this.Cover = new Bitmap(Path.Combine(Path.Combine(settings.library_path.GetValue<string>(), "ART"), this.GameID + "_COV.png"));
+        }
+    }
+    
+
+    private string ParseFormattedFilename(string filename)
+    {
+        string[] parts = filename.Split('.');
+        return parts[^2];
     }
 
     public async void Install()
@@ -86,6 +101,7 @@ public class Game
         
         this.InstallCover();
         this.InstallationFinished?.Invoke(this, EventArgs.Empty);
+        MainWindow.RefreshGamesListTrigger?.Invoke(this, EventArgs.Empty);
 
         Console.WriteLine($"Copied ISO to: {destPath}");
     }

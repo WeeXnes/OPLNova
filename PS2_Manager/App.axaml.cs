@@ -1,4 +1,6 @@
+using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using PS2_Manager.Core;
@@ -17,7 +19,28 @@ public partial class App : Application
         Globals.LoadSettings();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow();
+            if (String.IsNullOrEmpty(settings.library_path.GetValue<string>()))
+            {
+                var setupWindow = new Setup();
+
+                setupWindow.Closed += (_, _) =>
+                {
+                    // Replace MainWindow after setup finishes
+                    if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                    {
+                        var mainWindow = new MainWindow();
+                        desktop.MainWindow = mainWindow;
+                        mainWindow.Show();
+                    }
+                };
+
+                desktop.MainWindow = setupWindow;
+            }
+            else
+            {
+                desktop.MainWindow = new MainWindow();
+            }
+
         }
 
         base.OnFrameworkInitializationCompleted();

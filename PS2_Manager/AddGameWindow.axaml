@@ -8,6 +8,7 @@
         CanResize="False"
         x:Class="PS2_Manager.AddGameWindow"
         Title="Install Game"
+        WindowStartupLocation="CenterScreen"
         Loaded="Control_OnLoaded"
         SizeChanged="Control_OnSizeChanged"
         Background="#201c29"
