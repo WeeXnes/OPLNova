@@ -64,6 +64,7 @@ public partial class MainWindow : Window
     private async void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
         WindowTitle.Text = "PS2 Games Manager";
+        GameEdit.Child = new Welcome();
         FetchGamesFromLibrary();
     }
     
@@ -71,6 +72,7 @@ public partial class MainWindow : Window
     {
         List<Game> Games = new List<Game>();
         Console.WriteLine("Loading library...");
+        Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
         string[] files = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
         foreach (var file in files)
         {
@@ -86,8 +88,15 @@ public partial class MainWindow : Window
     {
         if (GamesList.SelectedItem is Game selectedGame)
         {
-            Console.WriteLine($"Clicked on game: {selectedGame.Name}, ID: {selectedGame.GameID}");
             this.ShowcaseGame(selectedGame);
+        }
+    }
+    private void DeleteButton(object? sender, RoutedEventArgs e)
+    {
+        if (GamesList.SelectedItem is Game selectedGame)
+        {
+            selectedGame.Uninstall();
+            RefreshGamesListTrigger?.Invoke(sender, e);
         }
     }
 
@@ -95,4 +104,5 @@ public partial class MainWindow : Window
     {
         FetchGamesFromLibrary();
     }
+
 }

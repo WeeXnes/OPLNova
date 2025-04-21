@@ -56,3 +56,9 @@ public class UpdateVar<T>
 
     protected virtual void OnValueChanged() => ValueChanged?.Invoke();
 }
+
+public class GameInfoApi
+{
+    public string id { get; set; }
+    public string title { get; set; }
+}

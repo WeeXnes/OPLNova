@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -29,7 +30,10 @@ public class Game
         this.GameID = ISO.GetSerial(isoPath);
         if (!installed)
         {
-            this.ArtworkFront = this.GetCover();
+            this.Name = this.GetGameTitle();
+            this.ArtworkFront = this.DownloadCover(Artwork.Type.Front);
+            this.ArtworkBack = this.DownloadCover(Artwork.Type.Back);
+            this.ArtworkDVD = this.DownloadCover(Artwork.Type.Disc);
         }
         else
         {
@@ -37,6 +41,33 @@ public class Game
             this.ArtworkFront = this.LoadCover(Artwork.Type.Front);
             this.ArtworkBack = this.LoadCover(Artwork.Type.Back);
             this.ArtworkDVD = this.LoadCover(Artwork.Type.Disc);
+        }
+    }
+
+    public string GetGameTitle()
+    {
+        string url = $"http://localhost:3000/search/{this.GameID}";
+
+        try
+        {
+            using HttpClient client = new();
+            string json = client.GetStringAsync(url).GetAwaiter().GetResult();
+            Console.WriteLine(json);
+
+            GameInfoApi? game = JsonSerializer.Deserialize<GameInfoApi>(json);
+            string title = game?.title ?? "Title not found";
+
+            if (title.Length > 32)
+            {
+                title = title.Substring(0, 32);
+            }
+
+            return title;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return "";
         }
     }
 
@@ -77,11 +108,23 @@ public class Game
         await this.CopyIsoWithProgressAsync();
     }
 
-    private Bitmap GetCover()
+    private Bitmap DownloadCover(Artwork.Type type)
     {
         
         Bitmap cover = null;
-        string url = $"https://github.com/xlenore/ps2-covers/blob/main/covers/default/{this.GameID.Replace(".", "").Replace("_", "-")}.jpg?raw=true";
+        string url = "";
+        switch (type)
+        {
+            case Artwork.Type.Front:
+                url = $"http://localhost:3000/art/{this.GameID}/{this.GameID}_COV.png";
+                break;
+            case Artwork.Type.Back:
+                url = $"http://localhost:3000/art/{this.GameID}/{this.GameID}_COV2.png";
+                break;
+            case Artwork.Type.Disc:
+                url = $"http://localhost:3000/art/{this.GameID}/{this.GameID}_ICO.png";
+                break;
+        }
 
         try
         {
@@ -99,6 +142,11 @@ public class Game
         }
 
         return cover;
+    }
+
+    public void Uninstall()
+    {
+        File.Delete(this.GamePath);
     }
     
     public async Task CopyIsoWithProgressAsync()
@@ -129,6 +177,9 @@ public class Game
         }
         
         //this.InstallCover();
+        this.SaveCover(Artwork.Type.Front);
+        this.SaveCover(Artwork.Type.Back);
+        this.SaveCover(Artwork.Type.Disc);
         this.InstallationFinished?.Invoke(this, EventArgs.Empty);
         MainWindow.RefreshGamesListTrigger?.Invoke(this, EventArgs.Empty);
 

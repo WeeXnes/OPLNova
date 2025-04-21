@@ -28,6 +28,7 @@ public partial class AddGameWindow : Window
     {
         IsoPathBox.Text = this.newGame.GamePath;
         SerialBox.Text = this.newGame.GameID;
+        GameNameBox.Text = this.newGame.Name;
         CoverImage.Source = this.newGame.ArtworkFront;
     }
 
