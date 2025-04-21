@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Media.Imaging;
 
 namespace PS2_Manager.Core;
@@ -24,6 +28,12 @@ public static class Util
         var result = dialog.ShowAsync(parent).GetAwaiter().GetResult();
         return result?.FirstOrDefault();
     }
+
+    public static void CheckDir(string path)
+    {
+        if(!Directory.Exists(path))
+            Directory.CreateDirectory(path);
+    }
     public static string FormatFileSize(long bytes)
     {
         string[] sizes = { "B", "KB", "MB", "GB", "TB" };
@@ -39,4 +49,29 @@ public static class Util
         // Format to 1 decimal place
         return string.Format("{0:0.0} {1}", len, sizes[order]);
     }
+}
+
+
+public static class Checksum
+{
+    public static string GetMD5Hash(string filePath)
+    {
+        using (var md5 = MD5.Create())
+        using (var stream = File.OpenRead(filePath))
+        {
+            var hash = md5.ComputeHash(stream);
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+    }
+
+    public static string GetSHA1Hash(string filePath)
+    {
+        using (var sha1 = SHA1.Create())
+        using (var stream = File.OpenRead(filePath))
+        {
+            var hash = sha1.ComputeHash(stream);
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+    }
+
 }

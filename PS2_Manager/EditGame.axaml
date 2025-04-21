@@ -8,5 +8,6 @@
     <StackPanel Orientation="Vertical" Margin="10">
         <TextBlock Text="Display Name:" HorizontalAlignment="Center" Padding="0,10"/>
         <TextBox Name="DisplayNameBox" TextChanged="DisplayNameBox_OnTextChanged"/>
+        <Button Click="Button_OnClick"></Button>
     </StackPanel>
 </UserControl>

@@ -11,6 +11,7 @@ namespace PS2_Manager;
 
 public partial class Setup : Window
 {
+    private bool SetupFinished { get; set; } = false;
     public Setup()
     {
         InitializeComponent();
@@ -30,6 +31,7 @@ public partial class Setup : Window
         InfoText2.Text = "You can now exit to the Main Application";
         OpenLibraryButton.Content = "Exit";
         OpenLibraryButton.Click -= OpenLibraryButton_OnClick;
+        this.SetupFinished = true;
         OpenLibraryButton.Click += (sender, args) =>
         {
             this.Close();
@@ -58,5 +60,10 @@ public partial class Setup : Window
             }
         }
         FinishSetup();
+    }
+
+    private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
+    {
+        if(!this.SetupFinished) e.Cancel = true;
     }
 }

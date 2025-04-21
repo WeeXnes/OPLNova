@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using PS2_Manager.Core;
 
@@ -19,5 +20,10 @@ public partial class EditGame : UserControl
     {
         this.game.Name = DisplayNameBox.Text;
         MainWindow.RefreshGamesListTrigger.Invoke(null, EventArgs.Empty);
+    }
+
+    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    {
+        this.game.GetChecksum();
     }
 }

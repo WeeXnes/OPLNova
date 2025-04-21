@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -7,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace PS2_Manager.Core;
 
@@ -33,7 +35,31 @@ public class Game
             this.Cover = new Bitmap(Path.Combine(Path.Combine(settings.library_path.GetValue<string>(), "ART"), this.GameID + "_COV.png"));
         }
     }
-    
+
+    public void GetChecksum()
+    {
+        string filePath = this.GamePath;
+
+        BackgroundWorker md5Worker = new BackgroundWorker();
+        BackgroundWorker sha1Worker = new BackgroundWorker();
+        
+        md5Worker.DoWork += (s, e) =>
+        {
+            string md5 = Checksum.GetMD5Hash(filePath);
+            Console.WriteLine("MD5: " + md5);
+        };
+
+        sha1Worker.DoWork += (s, e) =>
+        {
+            string sha1 = Checksum.GetSHA1Hash(filePath);
+            Console.WriteLine("SHA1: " + sha1);
+        };
+
+        md5Worker.RunWorkerAsync();
+        sha1Worker.RunWorkerAsync();
+
+        Console.WriteLine("Hashing started...");
+    }
 
     private string ParseFormattedFilename(string filename)
     {
@@ -74,8 +100,7 @@ public class Game
     public async Task CopyIsoWithProgressAsync()
     {
         string targetDirectory = settings.library_path.GetValue<string>();
-        if(!Directory.Exists(Path.Combine(targetDirectory, "DVD")))
-            Directory.CreateDirectory(Path.Combine(targetDirectory, "DVD"));
+        Util.CheckDir(Path.Combine(targetDirectory, "DVD"));
         
         string newFileName = $"{this.GameID}.{this.Name}.iso";
         string destPath = Path.Combine(Path.Combine(targetDirectory, "DVD"), newFileName);
@@ -113,9 +138,7 @@ public class Game
     public void InstallCover()
     {
         string targetDirectory = settings.library_path.GetValue<string>();
-        if(!Directory.Exists(Path.Combine(targetDirectory, "ART")))
-            Directory.CreateDirectory(Path.Combine(targetDirectory, "ART"));
-        //this.Cover.Save(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_COV.png"));
+        Util.CheckDir(Path.Combine(targetDirectory, "ART"));
         this.Cover.CreateScaledBitmap(
             new PixelSize(353, 500),
             BitmapInterpolationMode.HighQuality
