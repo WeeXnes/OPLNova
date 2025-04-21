@@ -17,7 +17,9 @@ public class Game
     public string Name { get; set; }
     public string GameID { get; set; }
     public string GamePath { get; set; }
-    public Bitmap Cover { get; set; }
+    public Bitmap? ArtworkFront { get; set; }
+    public Bitmap? ArtworkBack { get; set; }
+    public Bitmap? ArtworkDVD { get; set; }
     public EventHandler? InstallationFinished { get; set; }
     public UpdateVar<double> InstallProgress { get; private set; }
 
@@ -27,12 +29,14 @@ public class Game
         this.GameID = ISO.GetSerial(isoPath);
         if (!installed)
         {
-            this.Cover = this.GetCover();
+            this.ArtworkFront = this.GetCover();
         }
         else
         {
             this.Name = ParseFormattedFilename(Path.GetFileName(isoPath));
-            this.Cover = new Bitmap(Path.Combine(Path.Combine(settings.library_path.GetValue<string>(), "ART"), this.GameID + "_COV.png"));
+            this.ArtworkFront = this.LoadCover(Artwork.Type.Front);
+            this.ArtworkBack = this.LoadCover(Artwork.Type.Back);
+            this.ArtworkDVD = this.LoadCover(Artwork.Type.Disc);
         }
     }
 
@@ -124,24 +128,89 @@ public class Game
             }
         }
         
-        this.InstallCover();
+        //this.InstallCover();
         this.InstallationFinished?.Invoke(this, EventArgs.Empty);
         MainWindow.RefreshGamesListTrigger?.Invoke(this, EventArgs.Empty);
 
         Console.WriteLine($"Copied ISO to: {destPath}");
     }
-    
 
 
 
 
-    public void InstallCover()
+
+    public Bitmap? LoadCover(Artwork.Type artworkType)
     {
         string targetDirectory = settings.library_path.GetValue<string>();
         Util.CheckDir(Path.Combine(targetDirectory, "ART"));
-        this.Cover.CreateScaledBitmap(
-            new PixelSize(353, 500),
-            BitmapInterpolationMode.HighQuality
-        ).Save(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_COV.png"));
+        try
+        {
+            switch (artworkType)
+            {
+                case Artwork.Type.Front:
+                    return new Bitmap(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_COV.png"));
+                    break;
+                case Artwork.Type.Back:
+                    return new Bitmap(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_COV2.png"));
+                    break;
+                case Artwork.Type.Disc:
+                    return new Bitmap(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_ICO.png"));
+                    break;
+                default:
+                    return null;
+                    break;
+            }
+        }
+        catch
+        {
+            return null;
+        }
+    }
+    public void SaveCover(Artwork.Type artworkType)
+    {
+        string targetDirectory = settings.library_path.GetValue<string>();
+        Util.CheckDir(Path.Combine(targetDirectory, "ART"));
+        switch (artworkType)
+        {
+            case Artwork.Type.Front:
+                this.ArtworkFront?.CreateScaledBitmap(
+                    new PixelSize(353, 500),
+                    BitmapInterpolationMode.HighQuality
+                ).Save(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_COV.png"));
+                break;
+            case Artwork.Type.Back:
+                this.ArtworkBack?.CreateScaledBitmap(
+                    new PixelSize(353, 500),
+                    BitmapInterpolationMode.HighQuality
+                ).Save(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_COV2.png"));
+                break;
+            case Artwork.Type.Disc:
+                this.ArtworkDVD?.CreateScaledBitmap(
+                    new PixelSize(353, 353),
+                    BitmapInterpolationMode.HighQuality
+                ).Save(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_ICO.png"));
+                break;
+        }
+    }
+}
+
+
+public static class Artwork
+{
+    public enum Type
+    {
+        Front,
+        Back,
+        Disc
+    }
+
+    public static Type NextType(Type _type)
+    {
+        return (Type)(((int)_type + 1) % Enum.GetValues(typeof(Type)).Length);
+    }
+
+    public static  Type PrevType(Type _type)
+    {
+        return (Type)(((int)_type - 1 + Enum.GetValues(typeof(Type)).Length) % Enum.GetValues(typeof(Type)).Length);
     }
 }

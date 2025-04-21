@@ -25,6 +25,10 @@ public static class Globals
         {
             Patterns = new[] { "*.iso" }
         };
+        public static FilePickerFileType PS2Cover { get; } = new("PS2 Cover")
+        {
+            Patterns = new[] { "*.png", "*.jpg" }
+        };
     }
 }
 

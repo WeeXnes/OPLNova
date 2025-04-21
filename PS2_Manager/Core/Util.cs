@@ -49,6 +49,11 @@ public static class Util
         // Format to 1 decimal place
         return string.Format("{0:0.0} {1}", len, sizes[order]);
     }
+    
+    public static bool IsBitmapEmpty(Bitmap? bitmap)
+    {
+        return bitmap == null;
+    }
 }
 
 
@@ -73,5 +78,6 @@ public static class Checksum
             return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
         }
     }
+    
 
 }
