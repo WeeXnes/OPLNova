@@ -5,9 +5,24 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PS2_Manager.EditGame">
     
-    <StackPanel Orientation="Vertical" Margin="10">
-        <TextBlock Text="Display Name:" HorizontalAlignment="Center" Padding="0,10"/>
-        <TextBox Name="DisplayNameBox" TextChanged="DisplayNameBox_OnTextChanged"/>
-        <Button Click="Button_OnClick"></Button>
-    </StackPanel>
+    <Grid RowDefinitions="*, 40">
+        <ScrollViewer Grid.Row="0">
+            <StackPanel Orientation="Vertical" Margin="10">
+                <TextBlock Text="Display Name:" HorizontalAlignment="Center" Padding="0,10"/>
+                <TextBox Name="DisplayNameBox" TextChanged="DisplayNameBox_OnTextChanged"/>
+                <Separator/>
+                <Button Content="Calculate Checksums" Click="ChecksumButtonOnClick" HorizontalAlignment="Stretch"></Button>
+                <Border Background="#35313d" CornerRadius="5" Padding="10" Margin="0,5" IsVisible="False" Name="ChecksumArea">
+                    <StackPanel>
+                        <TextBlock FontSize="10" Name="MD5TextBlock"/>
+                        <TextBlock FontSize="10" Name="SHATextBlock"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*">
+            <Button Content="Undo" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Content="Save" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
 </UserControl>

@@ -71,30 +71,7 @@ public class Game
         }
     }
 
-    public void GetChecksum()
-    {
-        string filePath = this.GamePath;
-
-        BackgroundWorker md5Worker = new BackgroundWorker();
-        BackgroundWorker sha1Worker = new BackgroundWorker();
-        
-        md5Worker.DoWork += (s, e) =>
-        {
-            string md5 = Checksum.GetMD5Hash(filePath);
-            Console.WriteLine("MD5: " + md5);
-        };
-
-        sha1Worker.DoWork += (s, e) =>
-        {
-            string sha1 = Checksum.GetSHA1Hash(filePath);
-            Console.WriteLine("SHA1: " + sha1);
-        };
-
-        md5Worker.RunWorkerAsync();
-        sha1Worker.RunWorkerAsync();
-
-        Console.WriteLine("Hashing started...");
-    }
+    
 
     private string ParseFormattedFilename(string filename)
     {

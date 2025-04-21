@@ -77,7 +77,7 @@
         </Grid>
 
         <Grid Grid.Column="2" RowDefinitions="20, *" IsVisible="False" Name="GameShowcaseGrid">
-            <Border Grid.Row="1" Background="#35313d" CornerRadius="10" Name="InfoWindow">
+            <Border Grid.Row="1" Background="#35313d" CornerRadius="10" Name="InfoWindow" >
                 
             </Border>
         </Grid>
