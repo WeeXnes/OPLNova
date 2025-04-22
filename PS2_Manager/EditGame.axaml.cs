@@ -23,7 +23,7 @@ public partial class EditGame : UserControl
         {
             Dispatcher.UIThread.Invoke(() =>
             {
-                Console.WriteLine("MD5Hash.ValueChanged");
+                Console.Info("MD5 Hash calculated");
                 MD5TextBlock.Text = "MD5: " + MD5Hash.Value;
             });
         };
@@ -31,17 +31,12 @@ public partial class EditGame : UserControl
         {
             Dispatcher.UIThread.Invoke(() =>
             {
-                Console.WriteLine("SHA1Hash.ValueChanged");
+                Console.Info("SHA1 Hash calculated");
                 SHATextBlock.Text = "SHA1: " + SHA1Hash.Value;
             });
         };
     }
-
-    private void DisplayNameBox_OnTextChanged(object? sender, TextChangedEventArgs e)
-    {
-        
-    }
-
+    
     private void ChecksumButtonOnClick(object? sender, RoutedEventArgs e)
     {
         this.GetChecksum();
@@ -69,9 +64,9 @@ public partial class EditGame : UserControl
         };
 
         md5Worker.RunWorkerAsync();
+        Console.Info("MD5 Hashing started...");
         sha1Worker.RunWorkerAsync();
-
-        Console.WriteLine("Hashing started...");
+        Console.Info("SHA1 Hashing started...");
     }
 
     private void Save_OnClick(object? sender, RoutedEventArgs e)

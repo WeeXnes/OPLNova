@@ -14,7 +14,7 @@ public partial class Welcome : UserControl
     }
     private void OnRepositoryLinkClicked(object sender, RoutedEventArgs e)
     {
-        // Open the link in the default web browser
+        Console.Info("Repository Link Clicked");
         Process.Start(new ProcessStartInfo
         {
             FileName = "https://git.weexnes.dev/WeeXnes/ps2_manager",

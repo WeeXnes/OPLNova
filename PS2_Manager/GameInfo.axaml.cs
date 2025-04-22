@@ -37,6 +37,8 @@ public partial class GameInfo : UserControl
 
     private void UpdateArtworks()
     {
+        
+        Console.Info("Showing: " + ArtworkType.Value.ToString());
         Bitmap? tempBitmap = null;
         switch (ArtworkType.Value)
         {
@@ -64,6 +66,7 @@ public partial class GameInfo : UserControl
             CoverContainer.Background = Brushes.Transparent;
             CoverTextHint.IsVisible = false;
         }
+        
 
 
         CoverTextHint.Text = ArtworkType.Value.ToString();
@@ -99,10 +102,14 @@ public partial class GameInfo : UserControl
                     this.game.ArtworkDVD = new Bitmap(files[0].Path.LocalPath);
                     break;
             }
-            
+            Console.Error("Updating " + ArtworkType.Value + " Artwork for " + this.game.GameID);
             this.game.SaveCover(ArtworkType.Value);
             UpdateArtworks();
             MainWindow.RefreshGamesListTrigger?.Invoke(null, EventArgs.Empty);
+        }
+        else
+        {
+            Console.Error("OpenFilePicker was called but Canceled or no Files selected");
         }
     }
 

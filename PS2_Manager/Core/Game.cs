@@ -229,6 +229,11 @@ public class Game
                 break;
         }
     }
+
+    public override string ToString()
+    {
+        return this.Name + " -> " + this.GameID;
+    }
 }
 
 

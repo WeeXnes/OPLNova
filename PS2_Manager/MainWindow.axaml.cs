@@ -26,6 +26,7 @@ public partial class MainWindow : Window
         GameShowcaseGrid.IsVisible = true;
         InfoWindow.Child = new GameInfo(game);
         GameEdit.Child = new EditGame(game);
+        Console.Info(game + " set as Showcase");
     }
     
     private void WindowDrag(object? sender, PointerPressedEventArgs e)
@@ -38,6 +39,7 @@ public partial class MainWindow : Window
 
     private void WindowClose(object? sender, PointerPressedEventArgs e)
     {
+        Console.Success("Window closing");
         this.Close();
     }
 
@@ -57,8 +59,12 @@ public partial class MainWindow : Window
 
         if (files.Count >= 1)
         {
-            //Console.WriteLine(ISO.GetSerial());
+            Console.Info("AddGameWindow was called for " + files[0].Path.LocalPath);
             new AddGameWindow(files[0].Path.LocalPath).Show();
+        }
+        else
+        {
+            Console.Error("OpenFilePicker was called but Canceled or no Files selected");
         }
     }
 
@@ -71,16 +77,16 @@ public partial class MainWindow : Window
     
     public void FetchGamesFromLibrary(object? sender = null, EventArgs? e = null)
     {
+        Console.Info("Fetching games from library...");
         List<Game> Games = new List<Game>();
-        Console.WriteLine("Loading library...");
         Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
         string[] files = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
         foreach (var file in files)
         {
-            Console.WriteLine(file);
             Game newGame =
                 new Game(file, true);
             Games.Add(newGame);
+            Console.Success("Successfully fetched " + newGame);
         }
         Games = Games.OrderBy(game => game.Name).ToList();
         GamesList.ItemsSource = Games;
@@ -90,6 +96,7 @@ public partial class MainWindow : Window
     {
         if (GamesList.SelectedItem is Game selectedGame)
         {
+            Console.Info("Selected " + selectedGame + " from ListView");
             this.ShowcaseGame(selectedGame);
         }
     }
@@ -97,6 +104,7 @@ public partial class MainWindow : Window
     {
         if (GamesList.SelectedItem is Game selectedGame)
         {
+            Console.Info("Uninstalling " + selectedGame);
             selectedGame.Uninstall();
             RefreshGamesListTrigger?.Invoke(sender, e);
         }

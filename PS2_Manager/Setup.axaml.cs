@@ -27,6 +27,7 @@ public partial class Setup : Window
 
     private void FinishSetup()
     {
+        Console.Success("Setup Complete");
         InfoText1.Text = "Setup Finished";
         InfoText2.Text = "You can now exit to the Main Application";
         OpenLibraryButton.Content = "Exit";
@@ -40,6 +41,7 @@ public partial class Setup : Window
 
     private async void OpenLibraryButton_OnClick(object? sender, RoutedEventArgs e)
     {
+        Console.Info("Open Library Button Clicked");
         settings.library_path.SetValue("");
         while (String.IsNullOrEmpty(settings.library_path.GetValue<string>()))
         {
