@@ -1,0 +1,48 @@
+# PS2 Game Manager for OPL
+
+## Overview
+
+PS2 Game Manager for OPL is a modern, open-source alternative to OPL Manager designed to provide a more streamlined and user-friendly experience for managing your PS2 games with the Open PS2 Loader (OPL). This tool allows you to easily organize and manage your PS2 game collection, offering features such as cover art management, and more.
+
+### Key Features:
+- **Modern and Intuitive Interface**: A redesigned UI focused on ease of use, making managing PS2 games a smooth and enjoyable experience.
+- **Open-Source**: PS2 Game Manager for OPL is completely open-source and free to use. Contributions are welcome, and the community plays a key role in its development.
+
+## Screenshots
+
+Here are a few screenshots showcasing the user interface and functionality of the program:
+
+### General Overview of the Program
+
+![General Overview](Images/screenshot_1.png)
+
+This screenshot showcases the main interface of PS2 Game Manager for OPL. It highlights the easy-to-navigate layout, with the ability to manage and organize your games in a modern, visually appealing way.
+
+### Game Preview: Cover Art Display
+
+<div style="display: flex; justify-content: space-between;">
+
+  <img src="Images/preview_1.png" alt="Game Preview 1" width="30%" />
+  <img src="Images/preview_2.png" alt="Game Preview 2" width="30%" />
+  <img src="Images/preview_3.png" alt="Game Preview 3" width="30%" />
+
+</div>
+
+This final screenshot provides another look at the selected game's cover art. It demonstrates the program’s ability to display multiple cover art variations for each game.
+
+## Modern Design and UX
+
+PS2 Game Manager for OPL was built with **modern design principles** in mind. We focused on creating an interface that feels familiar and intuitive, reducing the learning curve for new users while also providing advanced features for experienced users. The design prioritizes ease of use, clean aesthetics, and efficient workflow, allowing you to quickly find and manage your PS2 games.
+
+### Some improvements include:
+- **Simple and Clear Navigation**: The streamlined layout allows for quick access to all essential features.
+- **Responsive Design**: The program adapts well to different screen sizes and resolutions, providing an optimal experience regardless of your device.
+- **Optimized Performance**: With faster loading times and smooth transitions, the program ensures a seamless experience even with large game libraries.
+
+## Open Source
+
+This project is **open-source**, and contributions are highly encouraged! If you're passionate about improving the PS2 gaming experience or if you have suggestions or improvements, feel free to contribute to the project.
+
+
+We welcome **issues**, **pull requests**, and **feature suggestions** from the community. Help us make this tool even better for PS2 gamers!
+
