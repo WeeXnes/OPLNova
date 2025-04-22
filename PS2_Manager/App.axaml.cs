@@ -41,7 +41,7 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         SetExceptionHandler();
-        Console.Info("App started at " + DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss"));
+        Console.SetLogFile("output.log");
         Globals.LoadSettings();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

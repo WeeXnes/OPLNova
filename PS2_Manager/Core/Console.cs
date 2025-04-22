@@ -6,14 +6,26 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-
-
 namespace PS2_Manager.Core
 {
-    
-    
     public static class Console
     {
+        private static StreamWriter logWriter = null;
+        private static readonly object logLock = new();
+
+        public static void SetLogFile(string path)
+        {
+            if (logWriter != null)
+            {
+                logWriter.Dispose();
+            }
+
+            logWriter = new StreamWriter(path, append: true)
+            {
+                AutoFlush = true
+            };
+        }
+
         public static class Data
         {
             public static class Colors
@@ -34,6 +46,7 @@ namespace PS2_Manager.Core
                 public static string writeline_char = "•";
             }
         }
+
         private static void ConfiguredWriteline(
             string text, 
             ConsoleColor color,
@@ -43,103 +56,128 @@ namespace PS2_Manager.Core
             {
                 VanillaConsole.OutputEncoding = Encoding.UTF8;
             }
-            catch (Exception ex)
-            {
-                
-            }
+            catch {}
+
+            // Save current colors
             ConsoleColor prevColor = VanillaConsole.BackgroundColor;
             ConsoleColor prevForeColor = VanillaConsole.ForegroundColor;
+
+            // Timestamp
+            DateTime currentTime = DateTime.Now;
+            string timestamp = currentTime.ToString("[HH:mm:ss] ");
+            if (Data.Formatting.timestamp_prefix)
+                text = timestamp + text;
+
+            // Apply console colors
             if (Data.Colors.colored_output)
             {
                 VanillaConsole.BackgroundColor = color;
                 VanillaConsole.ForegroundColor = foregroundColor;
             }
-            DateTime currentTime = DateTime.Now;
-            if (Data.Formatting.timestamp_prefix)
-                text = currentTime.ToString("[HH:mm:ss]") + text;
+
             VanillaConsole.Write(text + " ");
+
             if (Data.Colors.colored_output)
             {
-
                 VanillaConsole.BackgroundColor = prevColor;
                 VanillaConsole.ForegroundColor = prevForeColor;
             }
+
             VanillaConsole.WriteLine("");
+
+            // Log to file (if enabled)
+            if (logWriter != null)
+            {
+                lock (logLock)
+                {
+                    try
+                    {
+                        logWriter.WriteLine(timestamp + text);
+                    }
+                    catch (Exception ex)
+                    {
+                        VanillaConsole.WriteLine("Log file write failed: " + ex.Message);
+                    }
+                }
+            }
         }
 
         public static void WriteLine(string text,
             [CallerLineNumber] int lineNumber = 0,
             [CallerMemberName] string caller = null)
         {
-            ConfiguredWriteline(" " + Data.Formatting.writeline_char + " (" + lineNumber + "|" + caller + ") " + text,VanillaConsole.BackgroundColor, ConsoleColor.White);
+            ConfiguredWriteline(" " + Data.Formatting.writeline_char + " (" + lineNumber + "|" + caller + ") " + text,
+                VanillaConsole.BackgroundColor, ConsoleColor.White);
         }
+
         public static void WriteLine(float text,
             [CallerLineNumber] int lineNumber = 0,
             [CallerMemberName] string caller = null)
         {
-            ConfiguredWriteline(" " + Data.Formatting.writeline_char + " (" + lineNumber + "|" + caller + ") " + text,Data.Colors.float_color, ConsoleColor.White);
+            ConfiguredWriteline(" " + Data.Formatting.writeline_char + " (" + lineNumber + "|" + caller + ") " + text,
+                Data.Colors.float_color, ConsoleColor.White);
         }
+
         public static void WriteLine(double text,
             [CallerLineNumber] int lineNumber = 0,
             [CallerMemberName] string caller = null)
         {
-            ConfiguredWriteline(" " + Data.Formatting.writeline_char + " (" + lineNumber + "|" + caller + ") " + text,Data.Colors.double_color, ConsoleColor.White);
+            ConfiguredWriteline(" " + Data.Formatting.writeline_char + " (" + lineNumber + "|" + caller + ") " + text,
+                Data.Colors.double_color, ConsoleColor.White);
         }
+
         public static void WriteLine(int text,
             [CallerLineNumber] int lineNumber = 0,
             [CallerMemberName] string caller = null)
         {
-            ConfiguredWriteline(" " + Data.Formatting.writeline_char + " (" + lineNumber + "|" + caller + ") " + text,Data.Colors.int_color, ConsoleColor.White);
+            ConfiguredWriteline(" " + Data.Formatting.writeline_char + " (" + lineNumber + "|" + caller + ") " + text,
+                Data.Colors.int_color, ConsoleColor.White);
         }
+
         public static void Success(string text,
             [CallerLineNumber] int lineNumber = 0,
             [CallerMemberName] string caller = null)
         {
-            ConfiguredWriteline(" " + Data.Formatting.success_char + " (" + lineNumber + "|" + caller + ") " + text, ConsoleColor.Green,
-                ConsoleColor.Black);
+            ConfiguredWriteline(" " + Data.Formatting.success_char + " (" + lineNumber + "|" + caller + ") " + text,
+                ConsoleColor.Green, ConsoleColor.Black);
         }
 
         public static void Info(string text,
             [CallerLineNumber] int lineNumber = 0,
             [CallerMemberName] string caller = null)
         {
-            ConfiguredWriteline(" " + Data.Formatting.info_char + " (" + lineNumber + "|" + caller + ") " + text, ConsoleColor.Blue,
-                ConsoleColor.Black);
+            ConfiguredWriteline(" " + Data.Formatting.info_char + " (" + lineNumber + "|" + caller + ") " + text,
+                ConsoleColor.Blue, ConsoleColor.Black);
         }
 
         public static void Error(string text,
             [CallerLineNumber] int lineNumber = 0,
             [CallerMemberName] string caller = null)
         {
-            ConfiguredWriteline(" " + Data.Formatting.error_char + " (" + lineNumber + "|" + caller + ") " + text, ConsoleColor.DarkRed,
-                ConsoleColor.Black);
+            ConfiguredWriteline(" " + Data.Formatting.error_char + " (" + lineNumber + "|" + caller + ") " + text,
+                ConsoleColor.DarkRed, ConsoleColor.Black);
         }
 
         public static void Warning(string text,
             [CallerLineNumber] int lineNumber = 0,
             [CallerMemberName] string caller = null)
         {
-            ConfiguredWriteline(" " + Data.Formatting.warning_char + " (" + lineNumber + "|" + caller + ") " + text, ConsoleColor.DarkYellow,
-                ConsoleColor.Black);
+            ConfiguredWriteline(" " + Data.Formatting.warning_char + " (" + lineNumber + "|" + caller + ") " + text,
+                ConsoleColor.DarkYellow, ConsoleColor.Black);
         }
-        
+
         public static void WriteLine<T>(List<T> List, bool verbose = true)
         {
-            ConfiguredWriteline("List contains " + typeof(T) + "(" + List.Count + ")", ConsoleColor.DarkMagenta,
-                ConsoleColor.Black);
+            ConfiguredWriteline("List contains " + typeof(T) + "(" + List.Count + ")",
+                ConsoleColor.DarkMagenta, ConsoleColor.Black);
+
             if (!verbose)
                 return;
 
             for (int i = 0; i < List.Count; i++)
             {
-                if (i % 2 == 0)
-                {
-                    ConfiguredWriteline("(" + i + "): " + List[i], ConsoleColor.DarkGray);
-                }
-                else
-                {
-                    ConfiguredWriteline("(" + i + "): " + List[i], ConsoleColor.Black);
-                }
+                var color = (i % 2 == 0) ? ConsoleColor.DarkGray : ConsoleColor.Black;
+                ConfiguredWriteline("(" + i + "): " + List[i], color);
             }
         }
     }

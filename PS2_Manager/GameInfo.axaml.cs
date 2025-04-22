@@ -102,7 +102,7 @@ public partial class GameInfo : UserControl
                     this.game.ArtworkDVD = new Bitmap(files[0].Path.LocalPath);
                     break;
             }
-            Console.Error("Updating " + ArtworkType.Value + " Artwork for " + this.game.GameID);
+            Console.Info("Updating " + ArtworkType.Value + " Artwork for " + this.game.GameID);
             this.game.SaveCover(ArtworkType.Value);
             UpdateArtworks();
             MainWindow.RefreshGamesListTrigger?.Invoke(null, EventArgs.Empty);

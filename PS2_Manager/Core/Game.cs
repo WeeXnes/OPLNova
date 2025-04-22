@@ -46,11 +46,20 @@ public class Game
 
     public void ChangeName(string newName)
     {
-        this.Name = newName;
-        string targetDirectory = settings.library_path.GetValue<string>();
-        string newFileName = $"{this.GameID}.{this.Name}.iso";
-        string destPath = Path.Combine(Path.Combine(targetDirectory, "DVD"), newFileName);
-        File.Move(this.GamePath, destPath);
+        Console.Info("Changing name of " + this.Name + " to " + newName);
+        try
+        {
+            this.Name = newName;
+            string targetDirectory = settings.library_path.GetValue<string>();
+            string newFileName = $"{this.GameID}.{this.Name}.iso";
+            string destPath = Path.Combine(Path.Combine(targetDirectory, "DVD"), newFileName);
+            File.Move(this.GamePath, destPath);
+            Console.Success(this.Name + " renamed successfully");
+        }
+        catch (Exception e)
+        {
+            Console.Error(e.Message);
+        }
     }
 
     public string GetGameTitle()
@@ -75,7 +84,7 @@ public class Game
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            Console.Error($"{ex.Message}");
             return "";
         }
     }
@@ -85,7 +94,9 @@ public class Game
     private string ParseFormattedFilename(string filename)
     {
         string[] parts = filename.Split('.');
-        return parts[^2];
+        string parsedName = parts[^2];
+        Console.Info(parsedName + " parsed from " + filename);
+        return parsedName;
     }
 
     public async void Install()
@@ -96,7 +107,7 @@ public class Game
 
     private Bitmap DownloadCover(Artwork.Type type)
     {
-        
+        Console.Info("Downloading " + type + " Artwork for " + this.GameID);
         Bitmap cover = null;
         string url = "";
         switch (type)
@@ -124,8 +135,10 @@ public class Game
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[Error] Could not load cover for {this.GameID}: {ex.Message}");
+            Console.Error($"Could not load cover for {this.GameID}: {ex.Message}");
         }
+        
+        Console.Success(type + " Artwork for " + this.GameID + " downloaded successfully");
 
         return cover;
     }
@@ -137,6 +150,7 @@ public class Game
     
     public async Task CopyIsoWithProgressAsync()
     {
+        Console.Info("Copying ISO file for " + this + "...");
         string targetDirectory = settings.library_path.GetValue<string>();
         Util.CheckDir(Path.Combine(targetDirectory, "DVD"));
         
@@ -161,15 +175,13 @@ public class Game
                 this.InstallProgress.Value = (double)bytesCopied / totalBytes * 100;
             }
         }
+        Console.Success("ISO File copied successfully for " + this);
         
-        //this.InstallCover();
         this.SaveCover(Artwork.Type.Front);
         this.SaveCover(Artwork.Type.Back);
         this.SaveCover(Artwork.Type.Disc);
         this.InstallationFinished?.Invoke(this, EventArgs.Empty);
         MainWindow.RefreshGamesListTrigger?.Invoke(this, EventArgs.Empty);
-
-        Console.WriteLine($"Copied ISO to: {destPath}");
     }
 
 
@@ -178,6 +190,7 @@ public class Game
 
     public Bitmap? LoadCover(Artwork.Type artworkType)
     {
+        Console.Info("Loading " + artworkType + " Artwork for " + this.GameID);
         string targetDirectory = settings.library_path.GetValue<string>();
         Util.CheckDir(Path.Combine(targetDirectory, "ART"));
         try
@@ -228,6 +241,7 @@ public class Game
                 ).Save(Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + "_ICO.png"));
                 break;
         }
+        Console.Success("Saved " + artworkType + " Artwork for " + this.GameID);
     }
 
     public override string ToString()

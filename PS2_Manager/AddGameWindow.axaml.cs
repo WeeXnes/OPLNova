@@ -26,6 +26,7 @@ public partial class AddGameWindow : Window
 
     private void RefreshPreview()
     {
+        Console.Info("Refreshing AddGameWindow Preview");
         IsoPathBox.Text = this.newGame.GamePath;
         SerialBox.Text = this.newGame.GameID;
         GameNameBox.Text = this.newGame.Name;
@@ -36,33 +37,7 @@ public partial class AddGameWindow : Window
     {
         RefreshPreview();
     }
-
-    private void Control_OnSizeChanged(object? sender, SizeChangedEventArgs e)
-    {
-        var newSize = e.NewSize;
-        Console.WriteLine($"[SizeChanged] New size: {newSize.Width} x {newSize.Height}");
-    }
     
-    public void LoadPs2Cover(string gameId, Image imageControl)
-    {
-        //gameId = "SCPS-15110";
-        string url = $"https://github.com/xlenore/ps2-covers/blob/main/covers/default/{gameId}.jpg?raw=true";
-
-        try
-        {
-            using HttpClient client = new();
-            byte[] data = client.GetByteArrayAsync(url).GetAwaiter().GetResult();
-
-            using MemoryStream stream = new(data);
-            var bitmap = new Bitmap(stream);
-
-            imageControl.Source = bitmap;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[Error] Could not load cover for {gameId}: {ex.Message}");
-        }
-    }
 
 
     private void WindowDrag(object? sender, PointerPressedEventArgs e)
@@ -90,7 +65,7 @@ public partial class AddGameWindow : Window
         };
         newGame.InstallationFinished += (o, args) =>
         {
-            Console.WriteLine("Installation finished");
+            Console.WriteLine("Installation for " + newGame + " finished");
             this.Close();
         };
     }
@@ -116,8 +91,13 @@ public partial class AddGameWindow : Window
 
         if (files.Count >= 1)
         {
+            Console.Info("Updating " + Artwork.Type.Front + " Artwork for " + this.newGame.GameID);
             this.newGame.ArtworkFront = new Bitmap(files[0].Path.LocalPath);
             RefreshPreview();
+        }
+        else
+        {
+            Console.Error("OpenFilePicker was called but Canceled or no Files selected");
         }
     }
 }

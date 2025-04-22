@@ -104,7 +104,7 @@ public partial class MainWindow : Window
     {
         if (GamesList.SelectedItem is Game selectedGame)
         {
-            Console.Info("Uninstalling " + selectedGame);
+            Console.Warning("Uninstalling " + selectedGame);
             selectedGame.Uninstall();
             RefreshGamesListTrigger?.Invoke(sender, e);
         }

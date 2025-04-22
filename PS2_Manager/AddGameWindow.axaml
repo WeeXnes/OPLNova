@@ -10,7 +10,6 @@
         Title="Install Game"
         WindowStartupLocation="CenterScreen"
         Loaded="Control_OnLoaded"
-        SizeChanged="Control_OnSizeChanged"
         Background="#201c29"
         SystemDecorations="None">
         <Grid RowDefinitions="20, *">
