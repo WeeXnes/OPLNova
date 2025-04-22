@@ -64,7 +64,7 @@ public class Game
 
     public string GetGameTitle()
     {
-        string url = $"http://localhost:3000/search/{this.GameID}";
+        string url = $"https://weexnes.dev:7722/search/{this.GameID}";
 
         try
         {
@@ -113,13 +113,13 @@ public class Game
         switch (type)
         {
             case Artwork.Type.Front:
-                url = $"http://localhost:3000/art/{this.GameID}/{this.GameID}_COV.png";
+                url = $"https://weexnes.dev:7722/art/{this.GameID}/{this.GameID}_COV.png";
                 break;
             case Artwork.Type.Back:
-                url = $"http://localhost:3000/art/{this.GameID}/{this.GameID}_COV2.png";
+                url = $"https://weexnes.dev:7722/art/{this.GameID}/{this.GameID}_COV2.png";
                 break;
             case Artwork.Type.Disc:
-                url = $"http://localhost:3000/art/{this.GameID}/{this.GameID}_ICO.png";
+                url = $"https://weexnes.dev:7722/art/{this.GameID}/{this.GameID}_ICO.png";
                 break;
         }
 
