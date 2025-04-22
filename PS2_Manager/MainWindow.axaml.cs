@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -81,6 +82,7 @@ public partial class MainWindow : Window
                 new Game(file, true);
             Games.Add(newGame);
         }
+        Games = Games.OrderBy(game => game.Name).ToList();
         GamesList.ItemsSource = Games;
     }
 

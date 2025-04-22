@@ -39,8 +39,7 @@ public partial class EditGame : UserControl
 
     private void DisplayNameBox_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
-        this.game.Name = DisplayNameBox.Text;
-        MainWindow.RefreshGamesListTrigger.Invoke(null, EventArgs.Empty);
+        
     }
 
     private void ChecksumButtonOnClick(object? sender, RoutedEventArgs e)
@@ -73,5 +72,16 @@ public partial class EditGame : UserControl
         sha1Worker.RunWorkerAsync();
 
         Console.WriteLine("Hashing started...");
+    }
+
+    private void Save_OnClick(object? sender, RoutedEventArgs e)
+    {
+        this.game.ChangeName(DisplayNameBox.Text);
+        MainWindow.RefreshGamesListTrigger?.Invoke(null, EventArgs.Empty);
+    }
+
+    private void Edit_OnClick(object? sender, RoutedEventArgs e)
+    {
+        DisplayNameBox.Text = game.Name;
     }
 }

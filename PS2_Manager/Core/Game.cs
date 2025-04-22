@@ -44,6 +44,15 @@ public class Game
         }
     }
 
+    public void ChangeName(string newName)
+    {
+        this.Name = newName;
+        string targetDirectory = settings.library_path.GetValue<string>();
+        string newFileName = $"{this.GameID}.{this.Name}.iso";
+        string destPath = Path.Combine(Path.Combine(targetDirectory, "DVD"), newFileName);
+        File.Move(this.GamePath, destPath);
+    }
+
     public string GetGameTitle()
     {
         string url = $"http://localhost:3000/search/{this.GameID}";

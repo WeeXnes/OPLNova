@@ -21,8 +21,10 @@
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="1" ColumnDefinitions="*,*">
-            <Button Content="Undo" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button Content="Save" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Content="Undo" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Click="Edit_OnClick"/>
+            <Button Content="Save" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Click="Save_OnClick"/>
         </Grid>
     </Grid>
 </UserControl>
