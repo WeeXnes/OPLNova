@@ -49,12 +49,13 @@ jobs:
           echo "::set-output name=tag_name::$current_date"          
 
 
-      - name: Upload Action
-        uses: akkuman/gitea-release-action@v1
-        env:
-          NODE_OPTIONS: '--experimental-fetch'
+      - name: Upload to Forgejo
+        uses: actions/forgejo-release@v2.6.0
         with:
-          tag_name: ${{ steps.generate_tag.outputs.tag_name }}
-          name: ${{ steps.generate_tag.outputs.tag_name }}
-          files: |-
-            output/**  
+          direction: upload
+          url: https://git.weexnes.dev  
+          repo: WeeXnes/ps2_manager
+          token: ${{ secrets.RELEASE_TOKEN }}
+          tag: ${{ steps.generate_tag.outputs.tag_name }}
+          release-dir: release
+          release-notes: "Automated release from CI"
