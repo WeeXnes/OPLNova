@@ -40,7 +40,7 @@ jobs:
 
 
 
-                - name: Generate tag name based on current date and time
+      - name: Generate tag name based on current date and time
         id: generate_tag
         run: |
           # Get current date and time, format as 'YYYY-MM-DD-HHMMSS'
