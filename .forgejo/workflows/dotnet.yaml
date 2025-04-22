@@ -8,9 +8,12 @@ jobs:
 
 
     steps:
-      - name: Check JDK Version
+      - name: Check Dotnet Version
         run: |
           dotnet --version
+
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Build the project (Linux x64)
         run: |
