@@ -12,4 +12,49 @@ jobs:
         run: |
           dotnet --version
 
+      - name: Build the project (Linux x64)
+        run: |
+          dotnet publish ./PS2_Manager/PS2_Manager.csproj \
+            -c Release \
+            -r linux-x64 \
+            --self-contained true \
+            -o ./output_linux          
+      - name: Build the project (Windows x64)
+        run: |
+          dotnet publish ./PS2_Manager/PS2_Manager.csproj \
+            -c Release \
+            -r win-x64 \
+            --self-contained true \
+            -o ./output_win
+
+
+      - name: Pack Releases into Zips
+        run: |
+          mkdir -p ./output
           
+          zip -r ./output/PS2Manager_Linux_x64.zip ./output_linux
+          
+          zip -r ./output/PS2Manager_Windows_x64.zip ./output_win
+        
+          rm -rf ./output_linux ./output_win   
+
+
+
+                - name: Generate tag name based on current date and time
+        id: generate_tag
+        run: |
+          # Get current date and time, format as 'YYYY-MM-DD-HHMMSS'
+          current_date=$(date +"%Y-%m-%d-%H%M%S")
+          echo "Generated tag name: $current_date"
+          echo "::set-output name=tag_name::$current_date"          
+
+
+      - name: Upload Action
+        uses: akkuman/gitea-release-action@v1
+        env:
+          NODE_OPTIONS: '--experimental-fetch'
+        with:
+          tag_name: ${{ steps.generate_tag.outputs.tag_name }}
+          name: ${{ steps.generate_tag.outputs.tag_name }}
+          files: |-
+            output/**  
