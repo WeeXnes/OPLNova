@@ -21,6 +21,7 @@ jobs:
             -c Release \
             -r linux-x64 \
             --self-contained true \
+            --publish-trimmed \
             -o ./output_linux          
       - name: Build the project (Windows x64)
         run: |
@@ -28,6 +29,7 @@ jobs:
             -c Release \
             -r win-x64 \
             --self-contained true \
+            --publish-trimmed \
             -o ./output_win
 
 
