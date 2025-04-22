@@ -33,13 +33,10 @@ jobs:
 
       - name: Pack Releases into Zips
         run: |
-          mkdir -p ./output
-          
-          zip -r ./output/PS2Manager_Linux_x64.zip ./output_linux
-          
-          zip -r ./output/PS2Manager_Windows_x64.zip ./output_win
-        
-          rm -rf ./output_linux ./output_win   
+          mkdir -p ./release
+          zip -r ./release/PS2Manager_Linux_x64.zip ./output_linux
+          zip -r ./release/PS2Manager_Windows_x64.zip ./output_win
+          rm -rf ./output_linux ./output_win
 
 
 
@@ -49,14 +46,20 @@ jobs:
           # Get current date and time, format as 'YYYY-MM-DD-HHMMSS'
           current_date=$(date +"%Y-%m-%d-%H%M%S")
           echo "Generated tag name: $current_date"
-          echo "::set-output name=tag_name::$current_date"          
+          echo "::set-output name=tag_name::$current_date"     
+
+
+      - name: Create Git tag
+        run: |
+          git tag ${{ steps.generate_tag.outputs.tag_name }}
+          git push origin ${{ steps.generate_tag.outputs.tag_name }}     
 
 
       - name: Upload to Forgejo
         uses: actions/forgejo-release@v2.6.0
         with:
           direction: upload
-          url: https://git.weexnes.dev  
+          url: https://git.weexnes.dev/
           repo: WeeXnes/ps2_manager
           token: ${{ secrets.RELEASE_TOKEN }}
           tag: ${{ steps.generate_tag.outputs.tag_name }}
