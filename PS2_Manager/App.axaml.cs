@@ -42,9 +42,6 @@ public partial class App : Application
     {
         SetExceptionHandler();
         Console.SetLogFile("output.log");
-        GameConfig gameConfig = new GameConfig();
-        gameConfig.ParseConfig("/run/media/weexnes/79F5-D666/CFG/SLES_503.30.cfg");
-        Console.WriteLine(gameConfig.ToString());
         Globals.LoadSettings();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
