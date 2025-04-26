@@ -51,7 +51,6 @@ public partial class MainWindow : Window
         {
             Console.Info("Selected " + selectedGame + " from ListView");
             SetEditArea();
-            GameShowcaseGrid.IsVisible = true;
             SetShowcaseArea();
         }
     }
@@ -120,7 +119,6 @@ public partial class MainWindow : Window
 
     private async void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
-        WindowTitle.Text = "PS2 Games Manager";
         FetchGamesFromLibrary();
     }
     
@@ -320,4 +318,8 @@ public partial class MainWindow : Window
         this.ArtworkType.Value = Artwork.PrevType(this.ArtworkType.Value);
     }
 
+    private void WindowBase_OnResized(object? sender, WindowResizedEventArgs e)
+    {
+        VanillaConsole.WriteLine(e.ClientSize);
+    }
 }
