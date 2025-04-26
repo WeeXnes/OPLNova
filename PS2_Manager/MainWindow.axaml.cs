@@ -340,9 +340,4 @@ public partial class MainWindow : Window
     {
         this.ArtworkType.Value = Artwork.PrevType(this.ArtworkType.Value);
     }
-
-    private void WindowBase_OnResized(object? sender, WindowResizedEventArgs e)
-    {
-        VanillaConsole.WriteLine(e.ClientSize);
-    }
 }

@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:PS2_Manager.Core"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PS2_Manager.MainWindow"
-        Title="PS2_Manager"
+        Title="PS2 Games Manager"
         Background="#201c29"
         Width="990"
         Height="520"
@@ -13,7 +13,6 @@
         MinWidth="600"
         WindowStartupLocation="CenterScreen"
         Loaded="Control_OnLoaded"
-        Resized="WindowBase_OnResized"
         Foreground="White">
     <Grid ColumnDefinitions="*, 10, *, 10, 320" Background="Transparent">
         <Grid Grid.Column="0">
