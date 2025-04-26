@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Avalonia.Controls;
@@ -52,7 +53,14 @@ public partial class MainWindow : Window
             Console.Info("Selected " + selectedGame + " from ListView");
             SetEditArea();
             SetShowcaseArea();
+            SwitchView(false);
         }
+    }
+
+    private void SwitchView(bool welcome)
+    {
+        GameEdit.IsVisible = !welcome;
+        WelcomePanel.IsVisible = welcome;
     }
 
     private void SetShowcaseArea()
@@ -75,6 +83,7 @@ public partial class MainWindow : Window
     {
         if (GamesList.SelectedItem is Game selectedGame)
         {
+            ChecksumArea.IsVisible = false;
             NameTextBox_Edit.Text = selectedGame.Name;
         }
     }
@@ -124,6 +133,7 @@ public partial class MainWindow : Window
     
     public void FetchGamesFromLibrary(object? sender = null, EventArgs? e = null)
     {
+        SwitchView(true);
         Console.Info("Fetching games from library...");
         List<Game> Games = new List<Game>();
         Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
@@ -164,6 +174,16 @@ public partial class MainWindow : Window
     
     //Game Edit Area/////////////////////////////////////////////////////////////
     
+    private void OnRepositoryLinkClicked(object sender, RoutedEventArgs e)
+    {
+        Console.Info("Repository Link Clicked");
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = "https://git.weexnes.dev/WeeXnes/ps2_manager",
+            UseShellExecute = true
+        });
+    }
+    
     private void Save_OnClick(object? sender, RoutedEventArgs e)
     {
         if (GamesList.SelectedItem is Game selectedGame)
@@ -193,8 +213,8 @@ public partial class MainWindow : Window
         {        
             string filePath = selectedGame.GamePath;
         
-            MD5TextBlock.Text = "MD5: Loading...";
-            SHATextBlock.Text = "SHA1: Loading...";
+            this.MD5Hash.Value = "Loading...";
+            this.SHA1Hash.Value = "Loading...";
             ChecksumArea.IsVisible = true;
         
             BackgroundWorker md5Worker = new BackgroundWorker();
