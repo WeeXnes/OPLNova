@@ -57,10 +57,13 @@ public partial class MainWindow : Window
         }
     }
 
-    private void SwitchView(bool welcome)
+    private void SwitchView(bool placeholder)
     {
-        GameEdit.IsVisible = !welcome;
-        WelcomePanel.IsVisible = welcome;
+        GameEdit.IsVisible = !placeholder;
+        WelcomePanel.IsVisible = placeholder;
+        
+        GameInfo.IsVisible = !placeholder;
+        GameInfoPlaceholder.IsVisible = placeholder;
     }
 
     private void SetShowcaseArea()

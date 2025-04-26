@@ -115,28 +115,33 @@
         </Border>
 
         <Border Grid.Column="4" Background="#35313d" CornerRadius="10" Name="InfoWindow" Margin="10">
-            <Grid RowDefinitions="*, 350, 20, 20, 20, 20, *">
-                <Grid Grid.Row="1" ColumnDefinitions="*, 205, *">
+            <Grid>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Name="GameInfoPlaceholder">
+                    <TextBlock Text="Select a Game"/>
+                </StackPanel>
+                <Grid RowDefinitions="*, 350, 20, 20, 20, 20, *" Name="GameInfo" IsVisible="False">
+                    <Grid Grid.Row="1" ColumnDefinitions="*, 205, *">
             
-                    <Button Foreground="White" Grid.Column="0" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PrevButton"/>
-                    <Button Foreground="White" Grid.Column="2" Content="→" HorizontalAlignment="Center" VerticalAlignment="Center" Click="NextButton"/>
+                        <Button Foreground="White" Grid.Column="0" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PrevButton"/>
+                        <Button Foreground="White" Grid.Column="2" Content="→" HorizontalAlignment="Center" VerticalAlignment="Center" Click="NextButton"/>
             
-                    <Border Grid.Column="1" Width="205" Height="292" Background="Transparent" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center"
-                            PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
-                        <Grid>
-                            <Image Name="CoverImage" Source="Images/missing.png" Stretch="UniformToFill"/>
-                            <TextBlock Name="CoverTextHint" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False"/>
-                        </Grid>
-                    </Border>
+                        <Border Grid.Column="1" Width="205" Height="292" Background="Transparent" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
+                            <Grid>
+                                <Image Name="CoverImage" Source="Images/missing.png" Stretch="UniformToFill"/>
+                                <TextBlock Name="CoverTextHint" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <TextBlock Foreground="White" Grid.Row="2" Text="" HorizontalAlignment="Center"
+                               Name="GameNameTextBlock"/>
+                    <TextBlock Foreground="White" Grid.Row="3" Text="" HorizontalAlignment="Center"
+                               Name="GameIdTextBlock"/>
+                    <TextBlock Foreground="White" Grid.Row="4" Text="" HorizontalAlignment="Center"
+                               Name="IsoSizeTextBlock"/>
+                    <TextBlock Foreground="White" Grid.Row="5" Text="" HorizontalAlignment="Center"
+                               Name="GameDateTextBlock"/>
                 </Grid>
-                <TextBlock Foreground="White" Grid.Row="2" Text="" HorizontalAlignment="Center"
-                           Name="GameNameTextBlock"/>
-                <TextBlock Foreground="White" Grid.Row="3" Text="" HorizontalAlignment="Center"
-                           Name="GameIdTextBlock"/>
-                <TextBlock Foreground="White" Grid.Row="4" Text="" HorizontalAlignment="Center"
-                           Name="IsoSizeTextBlock"/>
-                <TextBlock Foreground="White" Grid.Row="5" Text="" HorizontalAlignment="Center"
-                           Name="GameDateTextBlock"/>
             </Grid>
         </Border>
     </Grid>
