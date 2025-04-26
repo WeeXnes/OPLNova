@@ -4,27 +4,5 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="PS2_Manager.GameInfo">
-    <Grid RowDefinitions="350, *, *, *, *">
-        <Grid Grid.Row="0" ColumnDefinitions="*, 205, *">
-            
-            <Button Grid.Column="0" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PrevButton"/>
-            <Button Grid.Column="2" Content="→" HorizontalAlignment="Center" VerticalAlignment="Center" Click="NextButton"/>
-            
-            <Border Grid.Column="1" Width="205" Height="292" Background="Transparent" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
-                <Grid>
-                    <Image Name="CoverImage" Source="Images/missing.png" Stretch="UniformToFill"/>
-                    <TextBlock Name="CoverTextHint" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False"/>
-                </Grid>
-            </Border>
-        </Grid>
-        <TextBlock Grid.Row="1" Text="" HorizontalAlignment="Center"
-                   Name="GameNameTextBlock"/>
-        <TextBlock Grid.Row="2" Text="" HorizontalAlignment="Center"
-                   Name="GameIdTextBlock"/>
-        <TextBlock Grid.Row="3" Text="" HorizontalAlignment="Center"
-                   Name="IsoSizeTextBlock"/>
-        <TextBlock Grid.Row="4" Text="" HorizontalAlignment="Center"
-                   Name="GameDateTextBlock"/>
-    </Grid>
+
 </UserControl>

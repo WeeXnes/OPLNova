@@ -12,13 +12,5 @@ public partial class Welcome : UserControl
     {
         InitializeComponent();
     }
-    private void OnRepositoryLinkClicked(object sender, RoutedEventArgs e)
-    {
-        Console.Info("Repository Link Clicked");
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = "https://git.weexnes.dev/WeeXnes/ps2_manager",
-            UseShellExecute = true
-        });
-    }
+
 }
