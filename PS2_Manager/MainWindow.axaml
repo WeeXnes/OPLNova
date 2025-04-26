@@ -11,7 +11,8 @@
         Width="990"
         Height="520"
         WindowStartupLocation="CenterScreen"
-        Loaded="Control_OnLoaded">
+        Loaded="Control_OnLoaded"
+        Foreground="White">
     <Grid ColumnDefinitions="680, 10, 300" Background="Transparent">
         <Grid Grid.Column="0" RowDefinitions="20, *">
             <Grid Grid.Row="0">
@@ -41,7 +42,7 @@
                                                     <MenuItem Header="Show Details"/>
                                                 </ContextMenu>
                                             </Border.ContextMenu>
-                                            <TextBlock Text="{Binding Name}"/>
+                                            <TextBlock Foreground="White" Text="{Binding Name}"/>
                                         </Border>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -68,7 +69,28 @@
                         </Border>  
                         <Border Grid.Column="2">
                             <Border Margin="2,0,0,0" Name="GameEdit">
-                                
+                                <Grid RowDefinitions="*, 40">
+                                    <ScrollViewer Grid.Row="0">
+                                        <StackPanel Orientation="Vertical" Margin="10">
+                                            <TextBlock Foreground="White" Text="Display Name:" HorizontalAlignment="Center" Padding="0,10"/>
+                                            <TextBox Foreground="White" Name="NameTextBox_Edit"/>
+                                            <Separator/>
+                                            <Button Foreground="White" Content="Calculate Checksums" Click="ChecksumButtonOnClick" HorizontalAlignment="Stretch"></Button>
+                                            <Border Background="#35313d" CornerRadius="5" Padding="10" Margin="0,5" IsVisible="False" Name="ChecksumArea">
+                                                <StackPanel>
+                                                    <TextBlock Foreground="White" FontSize="10" Name="MD5TextBlock"/>
+                                                    <TextBlock Foreground="White" FontSize="10" Name="SHATextBlock"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                    <Grid Grid.Row="1" ColumnDefinitions="*,*">
+                                        <Button Foreground="White" Content="Undo" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Click="Undo_OnClick"/>
+                                        <Button Foreground="White" Content="Save" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Click="Save_OnClick"/>
+                                    </Grid>
+                                </Grid>
                             </Border>
                         </Border>
                     </Grid>
@@ -76,9 +98,31 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Column="2" RowDefinitions="20, *" IsVisible="False" Name="GameShowcaseGrid">
+        <Grid Grid.Column="2" RowDefinitions="20, *" Name="GameShowcaseGrid">
             <Border Grid.Row="1" Background="#35313d" CornerRadius="10" Name="InfoWindow" >
-                
+                <Grid RowDefinitions="350, *, *, *, *">
+                    <Grid Grid.Row="0" ColumnDefinitions="*, 205, *">
+            
+                        <Button Foreground="White" Grid.Column="0" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PrevButton"/>
+                        <Button Foreground="White" Grid.Column="2" Content="→" HorizontalAlignment="Center" VerticalAlignment="Center" Click="NextButton"/>
+            
+                        <Border Grid.Column="1" Width="205" Height="292" Background="Transparent" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
+                            <Grid>
+                                <Image Name="CoverImage" Source="Images/missing.png" Stretch="UniformToFill"/>
+                                <TextBlock Name="CoverTextHint" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <TextBlock Foreground="White" Grid.Row="1" Text="" HorizontalAlignment="Center"
+                               Name="GameNameTextBlock"/>
+                    <TextBlock Foreground="White" Grid.Row="2" Text="" HorizontalAlignment="Center"
+                               Name="GameIdTextBlock"/>
+                    <TextBlock Foreground="White" Grid.Row="3" Text="" HorizontalAlignment="Center"
+                               Name="IsoSizeTextBlock"/>
+                    <TextBlock Foreground="White" Grid.Row="4" Text="" HorizontalAlignment="Center"
+                               Name="GameDateTextBlock"/>
+                </Grid>
             </Border>
         </Grid>
     </Grid>
