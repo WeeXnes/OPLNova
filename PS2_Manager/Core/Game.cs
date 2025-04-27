@@ -190,11 +190,7 @@ public class Game
         this.InstallationFinished?.Invoke(this, EventArgs.Empty);
         MainWindow.RefreshGamesListTrigger?.Invoke(this, EventArgs.Empty);
     }
-
-
-
-
-
+    
     public Bitmap? LoadCover(Artwork.Type artworkType)
     {
         Console.Info("Loading " + artworkType + " Artwork for " + this.GameID);
