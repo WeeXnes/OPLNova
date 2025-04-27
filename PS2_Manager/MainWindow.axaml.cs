@@ -136,6 +136,12 @@ public partial class MainWindow : Window
 
     private async void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
+        Util.CheckDir(settings.library_path.GetValue<string>());
+        Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
+        Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "CD"));
+        Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "CFG"));
+        Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "ART"));
+        Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "VMC"));
         FetchGamesFromLibrary();
     }
     
@@ -144,9 +150,16 @@ public partial class MainWindow : Window
         SwitchView(true);
         Console.Info("Fetching games from library...");
         List<Game> Games = new List<Game>();
-        Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
-        string[] files = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
-        foreach (var file in files)
+        string[] filesDVDDir = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
+        foreach (var file in filesDVDDir)
+        {
+            Game newGame =
+                new Game(file, true);
+            Games.Add(newGame);
+            Console.Success("Successfully fetched " + newGame);
+        }
+        string[] filesCDDir = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "CD"));
+        foreach (var file in filesCDDir)
         {
             Game newGame =
                 new Game(file, true);

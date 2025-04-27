@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace PS2_Manager.Core;
 

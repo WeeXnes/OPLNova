@@ -167,11 +167,14 @@ public class Game
     public async Task CopyIsoWithProgressAsync()
     {
         Console.Info("Copying ISO file for " + this + "...");
-        string targetDirectory = settings.library_path.GetValue<string>();
-        Util.CheckDir(Path.Combine(targetDirectory, "DVD"));
+        string targetDirectory = "";
+        if (this.Icon.type == DiscType.DVD)
+            targetDirectory = Path.Combine(settings.library_path.GetValue<string>(), "DVD");
+        if (this.Icon.type == DiscType.CD)
+            targetDirectory = Path.Combine(settings.library_path.GetValue<string>(), "CD");
         
         string newFileName = $"{this.GameID}.{this.Name}.iso";
-        string destPath = Path.Combine(Path.Combine(targetDirectory, "DVD"), newFileName);
+        string destPath = Path.Combine(targetDirectory, newFileName);
 
         const int bufferSize = 1024 * 1024;
         byte[] buffer = new byte[bufferSize];
