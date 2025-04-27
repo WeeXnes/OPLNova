@@ -22,6 +22,7 @@ public class Game
     public Bitmap? ArtworkFront { get; set; }
     public Bitmap? ArtworkBack { get; set; }
     public Bitmap? ArtworkDVD { get; set; }
+    public Config? Config { get; set; }
     public EventHandler? InstallationFinished { get; set; }
     public UpdateVar<double> InstallProgress { get; private set; }
 
@@ -29,6 +30,7 @@ public class Game
     {
         this.GamePath = isoPath;
         this.GameID = ISO.GetSerial(isoPath);
+        this.Config = new Config(this.GetConfigPath());
         if (!installed)
         {
             this.Name = this.GetGameTitle();
@@ -44,6 +46,8 @@ public class Game
             this.ArtworkDVD = this.LoadCover(Artwork.Type.Disc);
         }
     }
+
+
 
     public void ChangeName(string newName)
     {
@@ -249,115 +253,32 @@ public class Game
     {
         return this.Name + " -> " + this.GameID;
     }
-}
 
 
-public class GameConfig
-{
-    public string MemoryCard1 { get; set; }
-    public string MemoryCard2 { get; set; }
-    public bool Mode1 { get; set; }
-    public bool Mode2 { get; set; }
-    public bool Mode3 { get; set; }
-    public bool Mode4 { get; set; }
-    public bool Mode5 { get; set; }
-    public bool Mode6 { get; set; }
-
-    public override string ToString()
+    private string GetConfigPath()
     {
-        return $"VMCs: {MemoryCard1} - {MemoryCard2}\n" +
-               $"Mode 1: {Mode1}\n" +
-               $"Mode 2: {Mode2}\n" +
-               $"Mode 3: {Mode3}\n" +
-               $"Mode 4: {Mode4}\n" +
-               $"Mode 5: {Mode5}\n" +
-               $"Mode 6: {Mode6}\n";
+        return Path.Combine(Path.Combine(settings.library_path.GetValue<string>(), "CFG"), this.GameID + ".cfg");
     }
-
-    private void FromCompatibility(int value)
+    private string GetArtworkPath(Artwork.Type artworkType)
     {
-        Mode1 = (value & (1 << 0)) != 0;
-        Mode2 = (value & (1 << 1)) != 0;
-        Mode3 = (value & (1 << 2)) != 0;
-        Mode4 = (value & (1 << 3)) != 0;
-        Mode5 = (value & (1 << 4)) != 0;
-        Mode6 = (value & (1 << 5)) != 0;
-    }
-
-    private int ToCompatibility()
-    {
-        int value = 0;
-        if (Mode1) value |= (1 << 0);
-        if (Mode2) value |= (1 << 1);
-        if (Mode3) value |= (1 << 2);
-        if (Mode4) value |= (1 << 3);
-        if (Mode5) value |= (1 << 4);
-        if (Mode6) value |= (1 << 5);
-        return value;
-    }
-
-    public void ParseConfig(string path)
-    {
-        if (!File.Exists(path))
-            throw new FileNotFoundException("Config file not found.", path);
-
-        var lines = File.ReadAllLines(path);
-
-        foreach (var rawLine in lines)
+        string targetDirectory = settings.library_path.GetValue<string>();
+        string modifier = "";
+        switch (artworkType)
         {
-            var line = rawLine.Trim();
-
-            // Skip empty or comment lines
-            if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#") || line.StartsWith("//"))
-                continue;
-
-            var parts = line.Split('=', 2);
-            if (parts.Length != 2)
-                continue;
-
-            var key = parts[0].Trim();
-            var value = parts[1].Trim();
-
-            switch (key)
-            {
-                case "$Compatibility":
-                    if (int.TryParse(value, out int compat))
-                        this.FromCompatibility(compat);
-                    break;
-
-                case "$VMC_0":
-                    this.MemoryCard1 = value;
-                    break;
-
-                case "$VMC_1":
-                    this.MemoryCard2 = value;
-                    break;
-
-                case "$ConfigSource":
-                    // Optional: You can store/use this if needed
-                    break;
-            }
+            case Artwork.Type.Front:
+                modifier = "_COV.png";
+                break;
+            case Artwork.Type.Back:
+                modifier = "_COV2.png";
+                break;
+            case Artwork.Type.Disc:
+                modifier = "_ICO.png";
+                break;
         }
+        return Path.Combine(Path.Combine(targetDirectory, "ART"), this.GameID + modifier);
     }
 }
 
 
-public static class Artwork
-{
-    public enum Type
-    {
-        Front,
-        Back,
-        Disc
-    }
 
-    public static Type NextType(Type _type)
-    {
-        return (Type)(((int)_type + 1) % Enum.GetValues(typeof(Type)).Length);
-    }
 
-    public static  Type PrevType(Type _type)
-    {
-        return (Type)(((int)_type - 1 + Enum.GetValues(typeof(Type)).Length) % Enum.GetValues(typeof(Type)).Length);
-    }
-}

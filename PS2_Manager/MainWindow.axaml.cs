@@ -22,6 +22,7 @@ public partial class MainWindow : Window
     public UpdateVar<Artwork.Type> ArtworkType { get; set; } = new UpdateVar<Artwork.Type>();
     public UpdateVar<string> MD5Hash { get; set; } = new UpdateVar<string>();
     public UpdateVar<string> SHA1Hash { get; set; } = new UpdateVar<string>();
+    
     public MainWindow()
     {
         InitializeComponent();
@@ -88,20 +89,15 @@ public partial class MainWindow : Window
         {
             ChecksumArea.IsVisible = false;
             NameTextBox_Edit.Text = selectedGame.Name;
+            VMC_1.SelectedItem = selectedGame.Config?.MemoryCard1;
+            VMC_2.SelectedItem = selectedGame.Config?.MemoryCard2;
+            toggle_mode1.IsChecked = selectedGame.Config?.Mode1;
+            toggle_mode2.IsChecked = selectedGame.Config?.Mode2;
+            toggle_mode3.IsChecked = selectedGame.Config?.Mode3;
+            toggle_mode4.IsChecked = selectedGame.Config?.Mode4;
+            toggle_mode5.IsChecked = selectedGame.Config?.Mode5;
+            toggle_mode6.IsChecked = selectedGame.Config?.Mode6;
         }
-    }
-    private void WindowDrag(object? sender, PointerPressedEventArgs e)
-    {
-        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
-        {
-            BeginMoveDrag(e);
-        }
-    }
-
-    private void WindowClose(object? sender, PointerPressedEventArgs e)
-    {
-        Console.Success("Window closing");
-        this.Close();
     }
 
     private async void OpenFileButton_Clicked(object sender, RoutedEventArgs args)
@@ -150,6 +146,21 @@ public partial class MainWindow : Window
         }
         Games = Games.OrderBy(game => game.Name).ToList();
         GamesList.ItemsSource = Games;
+        FetchVMCs();
+    }
+
+    private void FetchVMCs()
+    {
+        List<string> VMCs = new List<string>();
+        Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "VMC"));
+        string[] files = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "VMC"));
+        foreach (var file in files)
+        {
+            string fileName = Path.GetFileNameWithoutExtension(file);
+            VMCs.Add(fileName);
+        }
+        VMC_1.ItemsSource = VMCs;
+        VMC_2.ItemsSource = VMCs;
     }
 
 
@@ -339,5 +350,70 @@ public partial class MainWindow : Window
     private void PrevButton(object? sender, RoutedEventArgs e)
     {
         this.ArtworkType.Value = Artwork.PrevType(this.ArtworkType.Value);
+    }
+
+    private void WindowBase_OnResized(object? sender, WindowResizedEventArgs e)
+    {
+        VanillaConsole.WriteLine(e.ClientSize);
+    }
+
+    private void VMC_1_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        
+        if (GamesList.SelectedItem is Game selectedGame)
+        {
+            if (VMC_1.SelectedItem is string selectedVMC)
+            {
+                Console.Warning("Setting " + selectedVMC + " as VMC1 for " + selectedGame.GameID);
+                selectedGame.Config.MemoryCard1 = selectedVMC;
+                selectedGame.Config.SaveConfig();
+            }
+        }
+    }
+    private void VMC_2_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        
+        if (GamesList.SelectedItem is Game selectedGame)
+        {
+            if (VMC_2.SelectedItem is string selectedVMC)
+            {
+                Console.Warning("Setting " + selectedVMC + " as VMC2 for " + selectedGame.GameID);
+                selectedGame.Config.MemoryCard2 = selectedVMC;
+                selectedGame.Config.SaveConfig();
+            }
+        }
+    }
+
+    private void Toggle_mode_OnIsCheckedChanged(object sender, RoutedEventArgs e)
+    {
+        if (GamesList.SelectedItem is Game selectedGame)
+        {
+            if (sender is ToggleSwitch toggle)
+            {
+                switch (toggle.Name)
+                {
+                    case "toggle_mode1":
+                        selectedGame.Config.Mode1 = toggle_mode1.IsChecked.Value;
+                        break;
+                    case "toggle_mode2":
+                        selectedGame.Config.Mode2 = toggle_mode2.IsChecked.Value;
+                        break;
+                    case "toggle_mode3":
+                        selectedGame.Config.Mode3 = toggle_mode3.IsChecked.Value;
+                        break;
+                    case "toggle_mode4":
+                        selectedGame.Config.Mode4 = toggle_mode4.IsChecked.Value;
+                        break;
+                    case "toggle_mode5":
+                        selectedGame.Config.Mode5 = toggle_mode5.IsChecked.Value;
+                        break;
+                    case "toggle_mode6":
+                        selectedGame.Config.Mode6 = toggle_mode6.IsChecked.Value;
+                        break;
+                }
+            }
+            selectedGame.Config.SaveConfig();
+        }
+        
     }
 }
