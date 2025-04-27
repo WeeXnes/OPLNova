@@ -31,7 +31,15 @@ public class Game
     {
         this.GamePath = isoPath;
         this.GameID = ISO.GetSerial(isoPath);
-        this.Icon = new DiscIcon(DiscType.DVD);
+        FileInfo fileInfo = new FileInfo(isoPath);
+        if (fileInfo.Length < 1_000_000_000)
+        {
+            this.Icon = new DiscIcon(DiscType.CD);
+        }
+        else
+        {
+            this.Icon = new DiscIcon(DiscType.DVD);
+        }
         this.Config = new Config(this.GetConfigPath());
         if (!installed)
         {
