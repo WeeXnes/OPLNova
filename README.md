@@ -1,6 +1,5 @@
 # PS2 Game Manager for OPL
 
-ARTWORK API IS NOT PUBLIC YET.
 
 ## Overview
 
