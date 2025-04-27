@@ -5,8 +5,8 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PS2_Manager.ConvertGameWindow"
         Title="Convert BIN to ISO"        
-        Height="349"
-        Width="598"
+        Height="260"
+        Width="398"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
         Background="#201c29"
@@ -15,17 +15,19 @@
         <Grid RowDefinitions="80, *, 80">
                 <TextBlock Name="Label_1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Border Grid.Row="1" CornerRadius="10" Background="#35313d" Margin="10, 0">
-                        <Grid ColumnDefinitions="*,*,*">
+                        <Grid ColumnDefinitions="100,*,100">
                                 <Border Grid.Column="0" Background="#201c29" Margin="10" CornerRadius="7">
-                                        
+                                        <Image Margin="10" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/bin.png"/>
                                 </Border>
                                 
+                                <TextBlock Grid.Column="1" FontSize="25" Text="→" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 
                                 <Border Grid.Column="2" Background="#201c29" Margin="10" CornerRadius="7">
-                                        
+                                        <Image Margin="10" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/cd.png"/>
                                 </Border>
                         </Grid>
                 </Border>
                 <Button Click="ConvertButton_OnClick" Name="ConvertButton" Grid.Row="2" Content="Convert" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
+                
         </Grid>
 </Window>

@@ -31,5 +31,7 @@
       <AvaloniaResource Include="Assets\cd.png" />
       <None Remove="Images\dvd.png" />
       <AvaloniaResource Include="Assets\dvd.png" />
+      <None Remove="Assets\bin.png" />
+      <AvaloniaResource Include="Assets\bin.png" />
     </ItemGroup>
 </Project>
