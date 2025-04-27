@@ -353,11 +353,6 @@ public partial class MainWindow : Window
         this.ArtworkType.Value = Artwork.PrevType(this.ArtworkType.Value);
     }
 
-    private void WindowBase_OnResized(object? sender, WindowResizedEventArgs e)
-    {
-        VanillaConsole.WriteLine(e.ClientSize);
-    }
-
     private void VMC_1_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         
@@ -395,21 +390,27 @@ public partial class MainWindow : Window
                 {
                     case "toggle_mode1":
                         selectedGame.Config.Mode1 = toggle_mode1.IsChecked.Value;
+                        Console.Warning("Toggled Mode 1 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode1);
                         break;
                     case "toggle_mode2":
                         selectedGame.Config.Mode2 = toggle_mode2.IsChecked.Value;
+                        Console.Warning("Toggled Mode 2 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode2);
                         break;
                     case "toggle_mode3":
                         selectedGame.Config.Mode3 = toggle_mode3.IsChecked.Value;
+                        Console.Warning("Toggled Mode 3 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode3);
                         break;
                     case "toggle_mode4":
                         selectedGame.Config.Mode4 = toggle_mode4.IsChecked.Value;
+                        Console.Warning("Toggled Mode 4 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode4);
                         break;
                     case "toggle_mode5":
                         selectedGame.Config.Mode5 = toggle_mode5.IsChecked.Value;
+                        Console.Warning("Toggled Mode 5 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode5);
                         break;
                     case "toggle_mode6":
                         selectedGame.Config.Mode6 = toggle_mode6.IsChecked.Value;
+                        Console.Warning("Toggled Mode 6 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode6);
                         break;
                 }
             }

@@ -24,8 +24,12 @@
 
     <ItemGroup>
       <None Remove="Images\missing.png" />
-      <AvaloniaResource Include="Images\missing.png" />
+      <AvaloniaResource Include="Assets\missing.png" />
       <None Remove="Images\vmc.png" />
-      <AvaloniaResource Include="Images\vmc.png" />
+      <AvaloniaResource Include="Assets\vmc.png" />
+      <None Remove="Images\cd.png" />
+      <AvaloniaResource Include="Assets\cd.png" />
+      <None Remove="Images\dvd.png" />
+      <AvaloniaResource Include="Assets\dvd.png" />
     </ItemGroup>
 </Project>

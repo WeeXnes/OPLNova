@@ -23,6 +23,7 @@ public class Game
     public Bitmap? ArtworkBack { get; set; }
     public Bitmap? ArtworkDVD { get; set; }
     public Config? Config { get; set; }
+    public DiscIcon Icon { get; set; }
     public EventHandler? InstallationFinished { get; set; }
     public UpdateVar<double> InstallProgress { get; private set; }
 
@@ -30,6 +31,7 @@ public class Game
     {
         this.GamePath = isoPath;
         this.GameID = ISO.GetSerial(isoPath);
+        this.Icon = new DiscIcon(DiscType.DVD);
         this.Config = new Config(this.GetConfigPath());
         if (!installed)
         {

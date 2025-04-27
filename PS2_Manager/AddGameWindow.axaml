@@ -28,7 +28,7 @@
                         <!-- PS2 Cover -->
                         <Border Width="205" Height="292" Background="Black" CornerRadius="5" HorizontalAlignment="Left"
                                 PointerPressed="CoverImage_OnPointerPressed">
-                                <Image Name="CoverImage" Source="Images/missing.png" Stretch="UniformToFill"/>
+                                <Image Name="CoverImage" Source="Assets/missing.png" Stretch="UniformToFill"/>
                         </Border>
 
                         <!-- Spacer -->
