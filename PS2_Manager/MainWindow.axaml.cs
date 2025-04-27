@@ -117,7 +117,16 @@ public partial class MainWindow : Window
         if (files.Count >= 1)
         {
             Console.Info("AddGameWindow was called for " + files[0].Path.LocalPath);
-            new AddGameWindow(files[0].Path.LocalPath).Show();
+            string ext = Path.GetExtension(files[0].Path.LocalPath);
+            if (ext == ".bin")
+            {
+                new ConvertGameWindow(files[0].Path.LocalPath).Show();
+            }
+            else if (ext == ".iso")
+            {
+                new AddGameWindow(files[0].Path.LocalPath).Show();
+            }
+            
         }
         else
         {

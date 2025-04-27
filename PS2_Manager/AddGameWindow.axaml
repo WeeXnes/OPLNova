@@ -10,20 +10,7 @@
         Title="Install Game"
         WindowStartupLocation="CenterScreen"
         Loaded="Control_OnLoaded"
-        Background="#201c29"
-        SystemDecorations="None">
-        <Grid RowDefinitions="20, *">
-                <Grid Grid.Row="0">
-                        <Border Background="#35313d"
-                                PointerPressed="WindowDrag">
-                                <Grid ColumnDefinitions="*, 20">
-                                        <TextBlock Name="WindowTitle" FontSize="12" Text="Install Game" Padding="8,0,0,0" VerticalAlignment="Center"/>
-                                        <Border Grid.Column="1" Background="#4b4753" PointerPressed="WindowClose">
-                                                <TextBlock FontSize="12" Text="×" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                </Grid>
-                        </Border>
-                </Grid>
+        Background="#201c29">
                 <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,*" Margin="20">
                         <!-- PS2 Cover -->
                         <Border Width="205" Height="292" Background="Black" CornerRadius="5" HorizontalAlignment="Left"
@@ -60,6 +47,4 @@
                                 </StackPanel>
                         </Grid>
                 </Grid>
-        </Grid>
-        
 </Window>

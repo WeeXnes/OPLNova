@@ -23,7 +23,7 @@ public static class Globals
     {
         public static FilePickerFileType PS2Game { get; } = new("PS2 Game")
         {
-            Patterns = new[] { "*.iso" }
+            Patterns = new[] { "*.iso", "*.bin" }
         };
         public static FilePickerFileType PS2Cover { get; } = new("PS2 Cover")
         {
