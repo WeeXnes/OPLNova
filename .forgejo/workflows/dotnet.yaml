@@ -38,6 +38,27 @@ jobs:
             -o ./output_win
 
 
+      - name: Download appimagetool
+        run: |
+          curl -L -o appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+
+      - name: Build AppImage
+        run: |
+          mkdir -p PS2_Manager.AppDir/usr/bin
+          cp -r ./output_linux/* PS2_Manager.AppDir/usr/bin/
+
+          cp PS2_Manager/Assets/AppRun PS2_Manager.AppDir/
+          cp PS2_Manager/Assets/ps2manager.desktop PS2_Manager.AppDir/
+          cp PS2_Manager/Assets/ps2manager.png PS2_Manager.AppDir/
+
+          chmod +x PS2_Manager.AppDir/AppRun
+
+          ./appimagetool-x86_64.AppImage PS2_Manager.AppDir
+
+          mkdir -p release
+          mv PS2_Manager-x86_64.AppImage release/
+
       - name: Pack Releases into Zips
         run: |
           mkdir -p ./release
