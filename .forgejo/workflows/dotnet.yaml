@@ -86,9 +86,10 @@ jobs:
 
       - name: Create Git tag
         run: |
-          git tag ${{ steps.generate_tag.outputs.tag_name }}
-          git push origin ${{ steps.generate_tag.outputs.tag_name }}     
-
+          git config user.name "WeeXnes"
+          git config user.email "somtrigi@gmail.com"
+          git tag v${{ steps.get_version.outputs.version }}
+          git push origin v${{ steps.get_version.outputs.version }}
 
       - name: Upload to Forgejo
         uses: actions/forgejo-release@v2.6.0
@@ -97,6 +98,6 @@ jobs:
           url: https://git.weexnes.dev/
           repo: WeeXnes/ps2_manager
           token: ${{ secrets.RELEASE_TOKEN }}
-          tag: ${{ steps.generate_tag.outputs.tag_name }}
+          tag: v${{ steps.get_version.outputs.version }}
           release-dir: release
-          release-notes: "Automated release from CI"
+          release-notes: "Automated release for version ${{ steps.get_version.outputs.version }}"
