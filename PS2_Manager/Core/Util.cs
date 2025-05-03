@@ -31,8 +31,16 @@ public static class Util
 
     public static void CheckDir(string path)
     {
-        if(!Directory.Exists(path))
+        Console.Info("Checking directory: " + path);
+        if (!Directory.Exists(path))
+        {
+            Console.Error("Directory " + path + " wasn't found, creating now.");
             Directory.CreateDirectory(path);
+        }
+        else
+        {
+            Console.Success("Directory was found: " + path);
+        }
     }
     public static string FormatFileSize(long bytes)
     {
