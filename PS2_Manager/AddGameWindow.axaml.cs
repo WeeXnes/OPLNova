@@ -61,6 +61,7 @@ public partial class AddGameWindow : Window
     {
         InstallButton.IsEnabled = false;
         GameNameBox.IsEnabled = false;
+        InstallationMethodBox.IsEnabled = false;
         InstallButton.Content = "Installing...";
         newGame.Install();
         newGame.InstallProgress.ValueChanged += () =>

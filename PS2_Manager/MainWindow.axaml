@@ -25,6 +25,7 @@
                                 <Border Background="Transparent" Padding="10">
                                     <Border.ContextMenu>
                                         <ContextMenu>
+                                            <MenuItem Header="Add New Game" Click="OpenFileButton_Clicked"/>
                                             <MenuItem Header="Remove Game" Click="DeleteButton"/>
                                             <MenuItem Header="Show Details"/>
                                         </ContextMenu>
