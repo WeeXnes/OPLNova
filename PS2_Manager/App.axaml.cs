@@ -51,7 +51,6 @@ public partial class App : Application
 
                 setupWindow.Closed += (_, _) =>
                 {
-                    // Replace MainWindow after setup finishes
                     if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {
                         var mainWindow = new MainWindow();

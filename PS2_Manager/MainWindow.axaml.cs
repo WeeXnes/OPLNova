@@ -180,7 +180,6 @@ public partial class MainWindow : Window
     private void FetchVMCs()
     {
         List<string> VMCs = new List<string>();
-        Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "VMC"));
         string[] files = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "VMC"));
         VMCs.Add("");
         foreach (var file in files)
