@@ -43,29 +43,30 @@ public partial class Setup : Window
     {
         Console.Info("Open Library Button Clicked");
         settings.library_path.SetValue("");
-        while (String.IsNullOrEmpty(settings.library_path.GetValue<string>()))
+        var topLevel = TopLevel.GetTopLevel(this);
+        var path = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            var topLevel = TopLevel.GetTopLevel(this);
-            var path = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            Title = "Open Game Library",
+            AllowMultiple = false
+        });
+        try
+        {
+            if (!String.IsNullOrEmpty(path[0].Path.LocalPath))
             {
-                Title = "Open Game Library",
-                AllowMultiple = false
-            });
-            try
-            {
-                if (!String.IsNullOrEmpty(path[0].Path.LocalPath))
-                    settings.library_path.SetValue(path[0].Path.LocalPath);
+                settings.library_path.SetValue(path[0].Path.LocalPath);
+                FinishSetup();
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+                    
         }
-        FinishSetup();
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        
     }
 
     private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
     {
-        if(!this.SetupFinished) e.Cancel = true;
+        if(!this.SetupFinished) Environment.Exit(0);
     }
 }
