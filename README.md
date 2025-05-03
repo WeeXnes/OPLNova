@@ -8,6 +8,7 @@ PS2 Game Manager for OPL is a modern, open-source alternative to OPL Manager des
 ### Key Features:
 - **Modern and Intuitive Interface**: A redesigned UI focused on ease of use, making managing PS2 games a smooth and enjoyable experience.
 - **Open-Source**: PS2 Game Manager for OPL is completely open-source and free to use. Contributions are welcome, and the community plays a key role in its development.
+- **CD/DVD Support**: PS2-Manager supports DVDs in ISO format and CDs in BIN/CUE format with its included BIN to ISO converter
 - **Virtual Memory Cards Support**: Configure and manage virtual memory cards to store your game saves. (VMC's need to be created via OPL right now tho)
 - **Mode Toggles**
 
@@ -55,8 +56,4 @@ This project is **open-source**, and contributions are highly encouraged! If you
 
 We welcome **issues**, **pull requests**, and **feature suggestions** from the community. Help us make this tool even better for PS2 gamers!
 
-
-## TODO
-
-- **CD Support**: Implement support for managing PS2 CD images through the tool.
 
