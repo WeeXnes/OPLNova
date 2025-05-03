@@ -159,18 +159,32 @@ public partial class MainWindow : Window
         string[] filesDVDDir = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
         foreach (var file in filesDVDDir)
         {
-            Game newGame =
-                new Game(file, true);
-            Games.Add(newGame);
-            Console.Success("Successfully fetched " + newGame);
+            if (Path.GetExtension(file).ToLower() == ".iso")
+            {
+                Game newGame =
+                    new Game(file, true);
+                Games.Add(newGame);
+                Console.Success("Successfully fetched " + newGame);
+            }
+            else
+            {
+                Console.WriteLine("Skipped non-ISO file: " + file);
+            }
         }
         string[] filesCDDir = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "CD"));
         foreach (var file in filesCDDir)
         {
-            Game newGame =
-                new Game(file, true);
-            Games.Add(newGame);
-            Console.Success("Successfully fetched " + newGame);
+            if (Path.GetExtension(file).ToLower() == ".iso")
+            {
+                Game newGame =
+                    new Game(file, true);
+                Games.Add(newGame);
+                Console.Success("Successfully fetched " + newGame);
+            }
+            else
+            {
+                Console.WriteLine("Skipped non-ISO file: " + file);
+            }
         }
         Games = Games.OrderBy(game => game.Name).ToList();
         GamesList.ItemsSource = Games;
