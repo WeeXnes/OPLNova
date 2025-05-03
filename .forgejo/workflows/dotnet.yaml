@@ -57,7 +57,7 @@ jobs:
           ./appimagetool-x86_64.AppImage PS2_Manager.AppDir
 
           mkdir -p release
-          mv PS2_Manager-x86_64.AppImage release/
+          mv PS2_Manager-x86_64.AppImage release/PS2Manager_Linux_x64.AppImage
 
       - name: Pack Releases into Zips
         run: |
