@@ -18,6 +18,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Extract FileVersion from .csproj
+        id: get_version
+        run: |
+          version=$(grep -oPm1 "(?<=<FileVersion>)[^<]+" PS2_Manager/PS2_Manager.csproj)
+          echo "PS2Manager version: $version"
+          echo "version=$version" >> $GITHUB_OUTPUT
+
       - name: Build the project (Linux x64)
         run: |
           dotnet publish ./PS2_Manager/PS2_Manager.csproj \

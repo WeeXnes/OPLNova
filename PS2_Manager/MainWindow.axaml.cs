@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -11,6 +12,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using DiscUtils;
 using PS2_Manager.Core;
 
 namespace PS2_Manager;
@@ -136,6 +138,10 @@ public partial class MainWindow : Window
 
     private async void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
+        string fileVersion = FileVersionInfo
+            .GetVersionInfo(Assembly.GetExecutingAssembly().Location)
+            .FileVersion ?? "Unknown";
+        WelcomeTextTop.Text = "Welcome to the PS2 Games Manager v" + fileVersion;
         Util.CheckDir(settings.library_path.GetValue<string>());
         Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
         Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "CD"));

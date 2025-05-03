@@ -68,7 +68,8 @@
                                 HorizontalAlignment="Stretch" 
                                 VerticalAlignment="Center" 
                                 Spacing="10">
-                        <TextBlock Text="Welcome to the PS2 Games Manager"
+                        <TextBlock Text=""
+                                   Name="WelcomeTextTop"
                                    HorizontalAlignment="Center"
                                    TextAlignment="Center"
                                    FontSize="18"
