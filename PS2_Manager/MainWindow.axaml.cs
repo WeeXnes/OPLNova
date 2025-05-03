@@ -138,10 +138,20 @@ public partial class MainWindow : Window
 
     private async void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
-        string fileVersion = FileVersionInfo
-            .GetVersionInfo(Assembly.GetExecutingAssembly().Location)
-            .FileVersion ?? "Unknown";
-        WelcomeTextTop.Text = "Welcome to the PS2 Games Manager v" + fileVersion;
+        string welcomeText = "";
+        try
+        {
+            welcomeText = FileVersionInfo
+                .GetVersionInfo(Assembly.GetExecutingAssembly().Location)
+                .FileVersion ?? "Unknown";
+            welcomeText = "Welcome to the PS2 Games Manager v" + welcomeText;
+        }
+        catch (Exception ex)
+        {
+            welcomeText = "Welcome to the PS2 Games Manager";
+        }
+
+        WelcomeTextTop.Text = welcomeText;
         Util.CheckDir(settings.library_path.GetValue<string>());
         Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
         Util.CheckDir(Path.Combine(settings.library_path.GetValue<string>(), "CD"));
