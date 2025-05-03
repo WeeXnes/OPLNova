@@ -21,7 +21,7 @@ public static class ConfigUtils
             return;
         config.SetValue(getStrType(_type), getStrName(_type), _value.ToString());
     }
-    public static T GetValue<T>(this Enum _type)
+    public static T? GetValue<T>(this Enum _type)
     {
         if (!checkIfInitialized())
             return default(T);

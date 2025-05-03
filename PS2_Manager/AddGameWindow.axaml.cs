@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -22,6 +23,9 @@ public partial class AddGameWindow : Window
     {
         this.newGame = new Game(filePath);
         InitializeComponent();
+        InstallationMethodBox.Items.Add("Move");
+        InstallationMethodBox.Items.Add("Copy");
+        InstallationMethodBox.SelectedItem = settings.preferred_installation_method.GetValue<string>() ?? "Move";
     }
 
     private void RefreshPreview()
@@ -99,5 +103,10 @@ public partial class AddGameWindow : Window
         {
             Console.Error("OpenFilePicker was called but Canceled or no Files selected");
         }
+    }
+
+    private void InstallationMethodBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        settings.preferred_installation_method.SetValue(InstallationMethodBox.SelectionBoxItem?.ToString());
     }
 }

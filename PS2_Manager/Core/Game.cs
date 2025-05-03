@@ -119,6 +119,9 @@ public class Game
     {
         this.InstallProgress = new UpdateVar<double>();
         await this.CopyIsoWithProgressAsync();
+        string installationMethod = settings.preferred_installation_method.GetValue<string>() ?? "Move";
+        if(installationMethod == "Move")
+            this.Uninstall();
     }
 
     private Bitmap DownloadCover(Artwork.Type type)

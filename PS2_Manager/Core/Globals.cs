@@ -35,7 +35,8 @@ public static class Globals
 
 public enum settings
 {
-    library_path
+    library_path,
+    preferred_installation_method
 }
 
 public class UpdateVar<T>
