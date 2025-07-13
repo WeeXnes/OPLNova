@@ -1,6 +1,7 @@
 version: 40
 jobs:
 - name: dotnet ci
+  jobExecutor: build-compiler
   steps:
   - !CheckoutStep
     name: checkout code
