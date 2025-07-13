@@ -1,6 +1,6 @@
 version: 40
 jobs:
-- name: dotnet ci
+- name: Dotnet Build Release
   jobExecutor: build-compiler
   steps:
   - !CheckoutStep
@@ -11,7 +11,7 @@ jobs:
     condition: SUCCESSFUL
     optional: false
   - !CommandStep
-    name: Dotnet Publish (linux-x64)
+    name: Dotnet Publish (Linux x64)
     runInContainer: false
     interpreter: !DefaultInterpreter
       commands: |
@@ -26,12 +26,29 @@ jobs:
     condition: SUCCESSFUL
     optional: false
   - !CommandStep
+    name: Dotnet Publish (Windows x64)
+    runInContainer: false
+    interpreter: !DefaultInterpreter
+      commands: |
+        dotnet publish ./PS2_Manager/PS2_Manager.csproj \
+                    -c Release \
+                    -r win-x64 \
+                    --self-contained true \
+                    -p:PublishSingleFile=true \
+                    -p:PublishTrimmed=true \
+                    -o ./output_win
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: false
+  - !CommandStep
     name: Pack Releases into Zips
     runInContainer: false
     interpreter: !DefaultInterpreter
       commands: |
         mkdir -p ./release
         zip -r ./release/PS2Manager_Linux_x64.zip ./output_linux
+        zip -r ./release/PS2Manager_Windows_x64.zip ./output_win
+        rm -rf ./output_linux ./output_win
     useTTY: true
     condition: SUCCESSFUL
     optional: false
