@@ -10,6 +10,21 @@ jobs:
     withSubmodules: false
     condition: SUCCESSFUL
     optional: false
+  - !CommandStep
+    name: dotnet restore
+    runInContainer: false
+    interpreter: !DefaultInterpreter
+      commands: |
+        dotnet publish ./PS2_Manager/PS2_Manager.csproj \
+                    -c Release \
+                    -r linux-x64 \
+                    --self-contained true \
+                    -p:PublishSingleFile=true \
+                    -p:PublishTrimmed=true \
+                    -o ./output_linux
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: false
   triggers:
   - !BranchUpdateTrigger {}
   - !PullRequestUpdateTrigger {}
