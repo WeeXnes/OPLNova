@@ -25,6 +25,27 @@ jobs:
     useTTY: true
     condition: SUCCESSFUL
     optional: false
+  - !CommandStep
+    name: Pack Releases into Zips
+    runInContainer: false
+    interpreter: !DefaultInterpreter
+      commands: |
+        mkdir -p ./release
+        zip -r ./release/PS2Manager_Linux_x64.zip ./output_linux
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: false
+  - !SetBuildVersionStep
+    name: Set Version Number
+    buildVersion: '1.0'
+    condition: SUCCESSFUL
+    optional: false
+  - !PublishArtifactStep
+    name: Upload Artifacts
+    sourcePath: release
+    artifacts: '**'
+    condition: SUCCESSFUL
+    optional: false
   triggers:
   - !BranchUpdateTrigger {}
   - !PullRequestUpdateTrigger {}
