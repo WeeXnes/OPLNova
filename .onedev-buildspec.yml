@@ -11,7 +11,7 @@ jobs:
     condition: SUCCESSFUL
     optional: false
   - !CommandStep
-    name: dotnet restore
+    name: Dotnet Publish (linux-x64)
     runInContainer: false
     interpreter: !DefaultInterpreter
       commands: |
@@ -33,11 +33,6 @@ jobs:
         mkdir -p ./release
         zip -r ./release/PS2Manager_Linux_x64.zip ./output_linux
     useTTY: true
-    condition: SUCCESSFUL
-    optional: false
-  - !SetBuildVersionStep
-    name: Set Version Number
-    buildVersion: '1.0'
     condition: SUCCESSFUL
     optional: false
   - !PublishArtifactStep
