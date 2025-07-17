@@ -1,7 +1,6 @@
 version: 40
 jobs:
 - name: Dotnet Build Release
-  jobExecutor: build-compiler
   steps:
   - !CheckoutStep
     name: checkout code
