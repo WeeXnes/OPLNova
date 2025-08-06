@@ -12,7 +12,6 @@ PS2 Game Manager for OPL is a modern, open-source alternative to OPL Manager des
 - **Virtual Memory Cards Support**: Configure and manage virtual memory cards to store your game saves. (VMC's need to be created via OPL right now tho)
 - **Mode Toggles**
 
-
 ## Screenshots
 
 Here are a few screenshots showcasing the user interface and functionality of the program:
