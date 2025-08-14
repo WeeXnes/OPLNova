@@ -1,118 +1,5 @@
 version: 40
 jobs:
-- name: Dotnet Build Nightly
-  steps:
-  - !CheckoutStep
-    name: checkout code
-    cloneCredential: !DefaultCredential {}
-    withLfs: false
-    withSubmodules: false
-    condition: SUCCESSFUL
-    optional: false
-  - !CommandStep
-    name: get version
-    runInContainer: false
-    interpreter: !DefaultInterpreter
-      commands: |
-        echo "Extracting FileVersion from PS2_Manager.csproj..."
-        grep -oPm1 "(?<=<FileVersion>)[^<]+" PS2_Manager/PS2_Manager.csproj > version.txt
-        echo "FileVersion extracted: $(cat version.txt)"
-    useTTY: true
-    condition: SUCCESSFUL
-    optional: false
-  - !SetBuildVersionStep
-    name: set build version
-    buildVersion: '@file:version.txt@'
-    condition: SUCCESSFUL
-    optional: false
-  - !CreateTagStep
-    name: create tag
-    tagName: '@file:version.txt@'
-    tagMessage: Release Tag for @file:version.txt@
-    condition: SUCCESSFUL
-    optional: false
-  - !CommandStep
-    name: Dotnet Publish (Linux x64)
-    runInContainer: false
-    interpreter: !DefaultInterpreter
-      commands: |
-        dotnet publish ./PS2_Manager/PS2_Manager.csproj \
-                    -c Release \
-                    -r linux-x64 \
-                    --self-contained true \
-                    -p:PublishSingleFile=true \
-                    -p:PublishTrimmed=true \
-                    -o ./output_linux
-    useTTY: true
-    condition: SUCCESSFUL
-    optional: false
-  - !CommandStep
-    name: Dotnet Publish (Windows x64)
-    runInContainer: false
-    interpreter: !DefaultInterpreter
-      commands: |
-        dotnet publish ./PS2_Manager/PS2_Manager.csproj \
-                    -c Release \
-                    -r win-x64 \
-                    --self-contained true \
-                    -p:PublishSingleFile=true \
-                    -p:PublishTrimmed=true \
-                    -o ./output_win
-    useTTY: true
-    condition: SUCCESSFUL
-    optional: false
-  - !CommandStep
-    name: Download AppImageTool (Linux x64)
-    runInContainer: false
-    interpreter: !DefaultInterpreter
-      commands: |
-        curl -L -o appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-        chmod +x appimagetool-x86_64.AppImage
-    useTTY: true
-    condition: SUCCESSFUL
-    optional: false
-  - !CommandStep
-    name: Build AppImage (Linux x64)
-    runInContainer: false
-    interpreter: !DefaultInterpreter
-      commands: |
-        mkdir -p PS2_Manager.AppDir/usr/bin
-        cp -r ./output_linux/* PS2_Manager.AppDir/usr/bin/
-        cp PS2_Manager/Assets/AppRun PS2_Manager.AppDir/
-        cp PS2_Manager/Assets/ps2manager.desktop PS2_Manager.AppDir/
-        cp PS2_Manager/Assets/ps2manager.png PS2_Manager.AppDir/
-        chmod +x PS2_Manager.AppDir/AppRun
-        ./appimagetool-x86_64.AppImage PS2_Manager.AppDir
-        mkdir -p release
-        mv PS2_Manager-x86_64.AppImage release/PS2Manager_Linux_x64.AppImage
-    useTTY: true
-    condition: SUCCESSFUL
-    optional: false
-  - !CommandStep
-    name: Pack Releases into Zips
-    runInContainer: false
-    interpreter: !DefaultInterpreter
-      commands: |
-        mkdir -p ./release
-        zip -r ./release/PS2Manager_Linux_x64.zip ./output_linux
-        zip -r ./release/PS2Manager_Windows_x64.zip ./output_win
-        rm -rf ./output_linux ./output_win
-    useTTY: true
-    condition: SUCCESSFUL
-    optional: false
-  - !PublishArtifactStep
-    name: Upload Artifacts
-    sourcePath: release
-    artifacts: '**'
-    condition: SUCCESSFUL
-    optional: false
-  triggers:
-  - !BranchUpdateTrigger {}
-  - !PullRequestUpdateTrigger {}
-  retryCondition: never
-  maxRetries: 3
-  retryDelay: 30
-  timeout: 14400
 - name: Dotnet Build Release
   steps:
   - !CheckoutStep
@@ -133,6 +20,27 @@ jobs:
     useTTY: true
     condition: SUCCESSFUL
     optional: false
+  - !CommandStep
+    name: check if tag exists
+    runInContainer: false
+    interpreter: !DefaultInterpreter
+      commands: |
+        version=$(cat version.txt)
+        echo "Checking if tag '$version' exists..."
+
+        if git rev-parse "refs/tags/$version" >/dev/null 2>&1; then
+          echo "Tag '$version' already exists."
+          new_version="${version}-@commit_hash@"
+          echo "$new_version" > version.txt
+          echo "Using version: $new_version (no tag will be created)"
+          echo "Failing step to skip tag creation..."
+          exit 1
+        else
+          echo "Tag '$version' does not exist. Proceeding with tag creation."
+        fi
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: false
   - !SetBuildVersionStep
     name: set build version
     buildVersion: '@file:version.txt@'
@@ -157,7 +65,7 @@ jobs:
                     -p:PublishTrimmed=true \
                     -o ./output_linux
     useTTY: true
-    condition: SUCCESSFUL
+    condition: ALWAYS
     optional: false
   - !CommandStep
     name: Dotnet Publish (Windows x64)
@@ -172,7 +80,7 @@ jobs:
                     -p:PublishTrimmed=true \
                     -o ./output_win
     useTTY: true
-    condition: SUCCESSFUL
+    condition: ALWAYS
     optional: false
   - !CommandStep
     name: Download AppImageTool (Linux x64)
@@ -182,7 +90,7 @@ jobs:
         curl -L -o appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
         chmod +x appimagetool-x86_64.AppImage
     useTTY: true
-    condition: SUCCESSFUL
+    condition: ALWAYS
     optional: false
   - !CommandStep
     name: Build AppImage (Linux x64)
@@ -199,7 +107,7 @@ jobs:
         mkdir -p release
         mv PS2_Manager-x86_64.AppImage release/PS2Manager_Linux_x64.AppImage
     useTTY: true
-    condition: SUCCESSFUL
+    condition: ALWAYS
     optional: false
   - !CommandStep
     name: Pack Releases into Zips
@@ -211,13 +119,13 @@ jobs:
         zip -r ./release/PS2Manager_Windows_x64.zip ./output_win
         rm -rf ./output_linux ./output_win
     useTTY: true
-    condition: SUCCESSFUL
+    condition: ALWAYS
     optional: false
   - !PublishArtifactStep
     name: Upload Artifacts
     sourcePath: release
     artifacts: '**'
-    condition: SUCCESSFUL
+    condition: ALWAYS
     optional: false
   triggers:
   - !BranchUpdateTrigger {}
