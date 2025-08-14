@@ -68,11 +68,13 @@ jobs:
 
         sed -i "s/^pkgver=.*/pkgver=${version}/" "$repo_dir/PKGBUILD"
 
-        makepkg --printsrcinfo -p "$repo_dir/PKGBUILD" > "$repo_dir/.SRCINFO"
-
-        git -C "$repo_dir" add PKGBUILD .SRCINFO
-        git -C "$repo_dir" commit -m "Automatically updated version to ${version}"
-        git -C "$repo_dir" push
+        (
+          cd "$repo_dir" || exit 1
+          makepkg --printsrcinfo > .SRCINFO
+          git add PKGBUILD .SRCINFO
+          git commit -m "Automatically updated version to ${version}"
+          git push
+        )
     useTTY: true
     condition: SUCCESSFUL
     optional: false
