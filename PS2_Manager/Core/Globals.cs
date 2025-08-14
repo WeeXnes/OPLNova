@@ -12,8 +12,8 @@ namespace PS2_Manager.Core;
 
 public static class Globals
 {
-    public static string SettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".ps2_manager", "settings.ini");
-    public static string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".ps2_manager", "output.log");
+    public static string SettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ps2_manager", "settings.ini");
+    public static string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ps2_manager", "output.log");
     
     public static List<Game> Games { get; set; }
     
