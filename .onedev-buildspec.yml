@@ -46,7 +46,7 @@ jobs:
   - !SetBuildVersionStep
     name: set build version
     buildVersion: '@file:version.txt@'
-    condition: SUCCESSFUL
+    condition: ALWAYS
     optional: false
   - !CreateTagStep
     name: create tag
