@@ -1,6 +1,5 @@
 # PS2 Game Manager for OPL
 
-
 ## Overview
 
 PS2 Game Manager for OPL is a modern, open-source alternative to OPL Manager designed to provide a more streamlined and user-friendly experience for managing your PS2 games with the Open PS2 Loader (OPL). This tool allows you to easily organize and manage your PS2 game collection, offering features such as cover art management, and more.
