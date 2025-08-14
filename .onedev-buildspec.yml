@@ -21,7 +21,7 @@ jobs:
 
         version=@commit_hash@
 
-        sed -i "s/^pkgver=.*/pkgver=${version}/" "$repo_dir/PKGBUILD"
+        sed -i "s/^_commit=.*/_commit=${version}/" "$repo_dir/PKGBUILD"
 
         (
           cd "$repo_dir" || exit 1
