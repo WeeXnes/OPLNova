@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Platform.Storage;
 using Microsoft.VisualBasic.CompilerServices;
+using Path = System.IO.Path;
 
 namespace PS2_Manager.Core;
 
 public static class Globals
 {
+    public static string SettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".ps2_manager", "settings.ini");
+    public static string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".ps2_manager", "output.log");
     
     public static List<Game> Games { get; set; }
     
     public static void LoadSettings()
     {
         Games = new List<Game>();
-        ConfigUtils.InitConfig("settings.ini");
+        
+        ConfigUtils.InitConfig(SettingsPath);
     }
 
 

@@ -41,7 +41,7 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         SetExceptionHandler();
-        Console.SetLogFile("output.log");
+        Console.SetLogFile(Globals.LogPath);
         Globals.LoadSettings();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
