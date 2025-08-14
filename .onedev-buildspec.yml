@@ -1,6 +1,6 @@
 version: 40
 jobs:
-- name: Dotnet Build Release
+- name: Dotnet Build Nightly
   steps:
   - !CheckoutStep
     name: checkout code
@@ -26,17 +26,19 @@ jobs:
     interpreter: !DefaultInterpreter
       commands: |
         version=$(cat version.txt)
-        echo "Checking if tag '$version' exists..."
+        echo "Checking if tag '$version' exists on origin..."
 
-        if git rev-parse "refs/tags/$version" >/dev/null 2>&1; then
-          echo "Tag '$version' already exists."
-          new_version="${version}-@commit_hash@"
-          echo "$new_version" > version.txt
-          echo "Using version: $new_version (no tag will be created)"
-          echo "Failing step to skip tag creation..."
-          exit 1
+        if git ls-remote --tags origin | grep -q "refs/tags/${version}$"; then
+            echo "Tag '$version' already exists."
+
+            new_version="${version}-@commit_hash@"
+            echo "$new_version" > version.txt
+            echo "Updated version.txt to '$new_version' to avoid tag conflict."
+
+            exit 1
         else
-          echo "Tag '$version' does not exist. Proceeding with tag creation."
+            echo "Tag '$version' does not exist. Proceeding with original version."
+            exit 0
         fi
     useTTY: true
     condition: SUCCESSFUL
