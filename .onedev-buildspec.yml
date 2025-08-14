@@ -10,30 +10,6 @@ jobs:
     condition: SUCCESSFUL
     optional: false
   - !CommandStep
-    name: Update Cutting Edge AUR Package
-    runInContainer: false
-    interpreter: !DefaultInterpreter
-      commands: |
-        repo_url="ssh://aur@@aur.archlinux.org/ps2_manager-git.git"
-        repo_dir="ps2_manager-git"
-
-        git clone "$repo_url"
-
-        version=@commit_hash@
-
-        sed -i "s/^_commit=.*/_commit=${version}/" "$repo_dir/PKGBUILD"
-
-        (
-          cd "$repo_dir" || exit 1
-          makepkg --printsrcinfo > .SRCINFO
-          git add PKGBUILD .SRCINFO
-          git commit -m "Automatically updated version to ${version}"
-          git push
-        )
-    useTTY: true
-    condition: SUCCESSFUL
-    optional: true
-  - !CommandStep
     name: get version
     runInContainer: false
     interpreter: !DefaultInterpreter
@@ -44,6 +20,38 @@ jobs:
     useTTY: true
     condition: SUCCESSFUL
     optional: false
+  - !CommandStep
+    name: Update Cutting Edge AUR Package
+    runInContainer: false
+    interpreter: !DefaultInterpreter
+      commands: |
+        repo_url="ssh://aur@@aur.archlinux.org/ps2_manager-git.git"
+        repo_dir="ps2_manager-git"
+
+        git clone "$repo_url"
+
+        ver=$(<version.txt)
+
+        commit_hash=@commit_hash@
+
+        sed -i "s/^_commit=.*/_commit=${commit_hash}/" "$repo_dir/PKGBUILD"
+
+        literal_substr='\${_commit:0:7}'
+
+        new_pkgver="${ver}.r${literal_substr}"
+
+        sed -i "s/^pkgver=.*/pkgver=${new_pkgver}/" "$repo_dir/PKGBUILD"
+
+        (
+          cd "$repo_dir" || exit 1
+          makepkg --printsrcinfo > .SRCINFO
+          git add PKGBUILD .SRCINFO
+          git commit -m "Automatically updated version to ${new_pkgver}"
+          git push
+        )
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: true
   - !CommandStep
     name: check if tag exists
     runInContainer: false
