@@ -25,6 +25,12 @@ jobs:
     buildVersion: '@file:version.txt@'
     condition: SUCCESSFUL
     optional: false
+  - !CreateTagStep
+    name: create tag
+    tagName: '@file:version.txt@'
+    tagMessage: Release Tag for @file:version.txt@
+    condition: SUCCESSFUL
+    optional: false
   - !CommandStep
     name: Dotnet Publish (Linux x64)
     runInContainer: false
