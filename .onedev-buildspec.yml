@@ -1,6 +1,6 @@
 version: 40
 jobs:
-- name: Create Tag
+- name: Get Version (private)
   steps:
   - !CheckoutStep
     name: checkout code
@@ -35,7 +35,7 @@ jobs:
             echo "$new_version" > version.txt
             echo "Updated version.txt to '$new_version' to avoid tag conflict."
 
-            exit 0
+            exit 1
         else
             echo "Tag '$version' does not exist. Proceeding with original version."
             exit 0
@@ -61,7 +61,7 @@ jobs:
   maxRetries: 3
   retryDelay: 30
   timeout: 14400
-- name: Build Release
+- name: Build Release Tag
   steps:
   - !CheckoutStep
     name: checkout code
