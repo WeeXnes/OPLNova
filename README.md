@@ -47,6 +47,40 @@ PS2 Game Manager for OPL was built with **modern design principles** in mind. We
 
 This project does **NOT** support piracy in any form. Please ensure that all game images you use are legally obtained. We encourage users to only use game images that they have personally dumped from their own legally owned discs. The developers of this tool do not condone or support the use of illegally obtained game images.
 
+## Installation
+
+You can install **PS2 Game Manager for OPL** using one of the following methods:
+
+### Option 1: Download Prebuilt Binaries
+
+Prebuilt packages are available from the [CI builds](https://code.weexnes.dev/ps2_manager/~builds) (Linux x64 and Windows x64).
+
+To use the AppImage (Linux Only!):
+
+```bash
+chmod +x PS2Manager_Linux_x64.AppImage
+./PS2Manager_Linux_x64.AppImage
+```
+
+Or extract the `.zip` and run the `PS2_Manager` binary directly.
+
+These builds are self-contained and do not require the .NET runtime.
+
+---
+
+### Option 2: Install via AUR (Arch Linux)
+
+If you're using Arch Linux or a compatible distribution, you can install via the AUR:
+
+```bash
+yay -S ps2_manager
+```
+
+This will build and install the latest version of PS2 Game Manager for OPL from source.
+
+The resulting binary is self-contained and does not require the .NET runtime.
+
+
 
 ## Open Source
 
