@@ -54,6 +54,28 @@ jobs:
     tagMessage: Release Tag for @file:version.txt@
     condition: SUCCESSFUL
     optional: false
+  - !CommandStep
+    name: Update Stable AUR Package
+    runInContainer: false
+    interpreter: !DefaultInterpreter
+      commands: |
+        repo_url="ssh://aur@@aur.archlinux.org/ps2_manager.git"
+        repo_dir="ps2_manager"
+
+        git clone "$repo_url"
+
+        version=$(<version.txt)
+
+        sed -i "s/^pkgver=.*/pkgver=${version}/" "$repo_dir/PKGBUILD"
+
+        makepkg --printsrcinfo -p "$repo_dir/PKGBUILD" > "$repo_dir/.SRCINFO"
+
+        git -C "$repo_dir" add PKGBUILD .SRCINFO
+        git -C "$repo_dir" commit -m "Automatically updated version to ${version}"
+        git -C "$repo_dir" push
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: false
   triggers:
   - !BranchUpdateTrigger {}
   - !PullRequestUpdateTrigger {}
