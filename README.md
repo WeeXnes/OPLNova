@@ -71,8 +71,13 @@ These builds are self-contained and do not require the .NET runtime.
 
 If you're using Arch Linux or a compatible distribution, you can install via the AUR:
 
+Stable: 
 ```bash
 yay -S ps2_manager
+```
+Cutting Edge:
+```bash
+yay -S ps2_manager-git
 ```
 
 This will build and install the latest version of PS2 Game Manager for OPL from source.
