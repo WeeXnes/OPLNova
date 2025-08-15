@@ -46,7 +46,7 @@ jobs:
           cd "$repo_dir" || exit 1
           makepkg --printsrcinfo > .SRCINFO
           git add PKGBUILD .SRCINFO
-          git commit -m "Automatically updated version to ${new_pkgver}"
+          git commit -m "Automatically updated version to @commit_hash@"
           git push
         )
     useTTY: true
