@@ -1,5 +1,8 @@
 # PS2 Game Manager for OPL
 
+[![AUR Stable](https://img.shields.io/aur/version/ps2_manager)](https://img.shields.io/aur/version/ps2_manager)
+[![AUR Git](https://img.shields.io/aur/version/ps2_manager-git)](https://img.shields.io/aur/version/ps2_manager-git)
+
 ## Overview
 
 PS2 Game Manager for OPL is a modern, open-source alternative to OPL Manager designed to provide a more streamlined and user-friendly experience for managing your PS2 games with the Open PS2 Loader (OPL). This tool allows you to easily organize and manage your PS2 game collection, offering features such as cover art management, and more.
@@ -71,7 +74,7 @@ These builds are self-contained and do not require the .NET runtime.
 
 If you're using Arch Linux or a compatible distribution, you can install via the AUR:
 
-Stable: 
+Stable:
 ```bash
 yay -S ps2_manager
 ```
