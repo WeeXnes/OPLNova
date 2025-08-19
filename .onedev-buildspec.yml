@@ -111,7 +111,10 @@ jobs:
     condition: SUCCESSFUL
     optional: false
   triggers:
-  - !BranchUpdateTrigger {}
+  - !BranchUpdateTrigger
+    branches: master
+    paths: '** -README.md'
+    projects: ps2_manager
   - !PullRequestUpdateTrigger {}
   retryCondition: never
   maxRetries: 3
