@@ -245,7 +245,7 @@ public partial class MainWindow : Window
         Console.Info("Repository Link Clicked");
         Process.Start(new ProcessStartInfo
         {
-            FileName = "https://git.weexnes.dev/WeeXnes/ps2_manager",
+            FileName = "https://code.weexnes.dev/ps2_manager",
             UseShellExecute = true
         });
     }

@@ -17,12 +17,11 @@ namespace PS2_Manager;
 
 public partial class AddGameWindow : Window
 {
-    public string Gamepath { get; set; }
     public Game newGame { get; set; }
     public AddGameWindow(string filePath)
     {
-        this.newGame = new Game(filePath);
         InitializeComponent();
+        this.newGame = new Game(filePath);
         InstallationMethodBox.Items.Add("Move");
         InstallationMethodBox.Items.Add("Copy");
         InstallationMethodBox.SelectedItem = settings.preferred_installation_method.GetValue<string>() ?? "Move";

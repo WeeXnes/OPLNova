@@ -16,6 +16,8 @@ public static class Globals
     public static string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ps2_manager", "output.log");
     public static string UserPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ps2_manager");
     
+    public static string ApiEndpointBase = "ps2api.weexnes.dev";
+    
     public static List<Game> Games { get; set; }
     
     public static void LoadSettings()

@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen"
         Loaded="Control_OnLoaded"
         Background="#201c29">
-                <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,*" Margin="20">
+                <Grid Name="GameInstallationGrid" ColumnDefinitions="Auto,Auto,*" Margin="20">
                         <!-- PS2 Cover -->
                         <Border Width="205" Height="292" Background="Black" CornerRadius="5" HorizontalAlignment="Left"
                                 PointerPressed="CoverImage_OnPointerPressed">

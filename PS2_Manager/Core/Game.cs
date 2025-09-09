@@ -80,7 +80,8 @@ public class Game
 
     public string GetGameTitle()
     {
-        string url = $"https://weexnes.dev:7722/search/{this.GameID}";
+        Console.Info("Getting info for " + this.GameID);
+        string url = $"https://{Globals.ApiEndpointBase}/search/{this.GameID}";
 
         try
         {
@@ -132,13 +133,13 @@ public class Game
         switch (type)
         {
             case Artwork.Type.Front:
-                url = $"https://weexnes.dev:7722/art/{this.GameID}/{this.GameID}_COV.png";
+                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}/{this.GameID}_COV.png";
                 break;
             case Artwork.Type.Back:
-                url = $"https://weexnes.dev:7722/art/{this.GameID}/{this.GameID}_COV2.png";
+                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}/{this.GameID}_COV2.png";
                 break;
             case Artwork.Type.Disc:
-                url = $"https://weexnes.dev:7722/art/{this.GameID}/{this.GameID}_ICO.png";
+                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}/{this.GameID}_ICO.png";
                 break;
         }
 
