@@ -101,10 +101,12 @@ public class Game
         {
             using HttpClient client = new();
             string json = client.GetStringAsync(url).GetAwaiter().GetResult();
-            Console.WriteLine(json);
+            Console.Info(json);
 
             GameInfoApiResponse? game = JsonSerializer.Deserialize(json, GameInfoApiResponseContext.Default.GameInfoApiResponse);
             string title = game?.title ?? "Title not found";
+            
+            Console.Success("Name: " + title);
 
             if (title.Length > 32)
             {
