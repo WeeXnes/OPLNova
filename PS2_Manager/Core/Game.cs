@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -14,6 +15,18 @@ using Nocksoft.IO.ConfigFiles;
 
 
 namespace PS2_Manager.Core;
+
+[JsonSerializable(typeof(GameInfoApiResponse))]
+public partial class GameInfoApiResponse
+{
+    public string id { get; set; }
+    public string title { get; set; }
+}
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GameInfoApiResponse))]
+public partial class GameInfoApiResponseContext : JsonSerializerContext
+{
+}
 
 public class Game
 {
@@ -78,6 +91,7 @@ public class Game
         }
     }
 
+
     public string GetGameTitle()
     {
         Console.Info("Getting info for " + this.GameID);
@@ -89,7 +103,7 @@ public class Game
             string json = client.GetStringAsync(url).GetAwaiter().GetResult();
             Console.WriteLine(json);
 
-            GameInfoApi? game = JsonSerializer.Deserialize<GameInfoApi>(json);
+            GameInfoApiResponse? game = JsonSerializer.Deserialize(json, GameInfoApiResponseContext.Default.GameInfoApiResponse);
             string title = game?.title ?? "Title not found";
 
             if (title.Length > 32)
@@ -105,6 +119,7 @@ public class Game
             return "";
         }
     }
+
 
     
 
