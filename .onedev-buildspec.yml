@@ -1,18 +1,20 @@
-version: 40
+version: 43
 jobs:
 - name: Get Version (private)
   steps:
-  - !CheckoutStep
+  - type: CheckoutStep
     name: checkout code
-    cloneCredential: !DefaultCredential {}
+    cloneCredential:
+      type: DefaultCredential
     withLfs: false
     withSubmodules: false
     condition: SUCCESSFUL
     optional: false
-  - !CommandStep
+  - type: CommandStep
     name: get version
     runInContainer: false
-    interpreter: !DefaultInterpreter
+    interpreter:
+      type: DefaultInterpreter
       commands: |
         echo "Extracting FileVersion from PS2_Manager.csproj..."
         grep -oPm1 "(?<=<FileVersion>)[^<]+" PS2_Manager/PS2_Manager.csproj > version.txt
@@ -20,10 +22,11 @@ jobs:
     useTTY: true
     condition: SUCCESSFUL
     optional: false
-  - !CommandStep
+  - type: CommandStep
     name: Update Cutting Edge AUR Package
     runInContainer: false
-    interpreter: !DefaultInterpreter
+    interpreter:
+      type: DefaultInterpreter
       commands: |
         repo_url="ssh://aur@@aur.archlinux.org/ps2_manager-git.git"
         repo_dir="ps2_manager-git"
@@ -52,10 +55,11 @@ jobs:
     useTTY: true
     condition: SUCCESSFUL
     optional: true
-  - !CommandStep
+  - type: CommandStep
     name: check if tag exists
     runInContainer: false
-    interpreter: !DefaultInterpreter
+    interpreter:
+      type: DefaultInterpreter
       commands: |
         version=$(cat version.txt)
         echo "Checking if tag '$version' exists on origin..."
@@ -75,21 +79,22 @@ jobs:
     useTTY: true
     condition: SUCCESSFUL
     optional: false
-  - !SetBuildVersionStep
+  - type: SetBuildVersionStep
     name: set build version
     buildVersion: '@file:version.txt@'
     condition: ALWAYS
     optional: false
-  - !CreateTagStep
+  - type: CreateTagStep
     name: create tag
     tagName: '@file:version.txt@'
     tagMessage: Release Tag for @file:version.txt@
     condition: SUCCESSFUL
     optional: false
-  - !CommandStep
+  - type: CommandStep
     name: Update Stable AUR Package
     runInContainer: false
-    interpreter: !DefaultInterpreter
+    interpreter:
+      type: DefaultInterpreter
       commands: |
         repo_url="ssh://aur@@aur.archlinux.org/ps2_manager.git"
         repo_dir="ps2_manager"
@@ -110,34 +115,38 @@ jobs:
     useTTY: true
     condition: SUCCESSFUL
     optional: false
+  jobExecutor: Builder
   triggers:
-  - !BranchUpdateTrigger
+  - type: BranchUpdateTrigger
     branches: master
     paths: '** -README.md'
+    userMatch: anyone
     projects: ps2_manager
-  - !PullRequestUpdateTrigger {}
+  - type: PullRequestUpdateTrigger
   retryCondition: never
   maxRetries: 3
   retryDelay: 30
   timeout: 14400
 - name: Build Release Tag
   steps:
-  - !CheckoutStep
+  - type: CheckoutStep
     name: checkout code
-    cloneCredential: !DefaultCredential {}
+    cloneCredential:
+      type: DefaultCredential
     withLfs: false
     withSubmodules: false
     condition: SUCCESSFUL
     optional: false
-  - !SetBuildVersionStep
+  - type: SetBuildVersionStep
     name: set build version
     buildVersion: '@tag@'
     condition: ALWAYS
     optional: false
-  - !CommandStep
+  - type: CommandStep
     name: Dotnet Publish (Linux x64)
     runInContainer: false
-    interpreter: !DefaultInterpreter
+    interpreter:
+      type: DefaultInterpreter
       commands: |
         dotnet publish ./PS2_Manager/PS2_Manager.csproj \
                     -c Release \
@@ -149,10 +158,11 @@ jobs:
     useTTY: true
     condition: ALWAYS
     optional: false
-  - !CommandStep
+  - type: CommandStep
     name: Dotnet Publish (Windows x64)
     runInContainer: false
-    interpreter: !DefaultInterpreter
+    interpreter:
+      type: DefaultInterpreter
       commands: |
         dotnet publish ./PS2_Manager/PS2_Manager.csproj \
                     -c Release \
@@ -164,20 +174,22 @@ jobs:
     useTTY: true
     condition: ALWAYS
     optional: false
-  - !CommandStep
+  - type: CommandStep
     name: Download AppImageTool (Linux x64)
     runInContainer: false
-    interpreter: !DefaultInterpreter
+    interpreter:
+      type: DefaultInterpreter
       commands: |
         curl -L -o appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
         chmod +x appimagetool-x86_64.AppImage
     useTTY: true
     condition: ALWAYS
     optional: false
-  - !CommandStep
+  - type: CommandStep
     name: Build AppImage (Linux x64)
     runInContainer: false
-    interpreter: !DefaultInterpreter
+    interpreter:
+      type: DefaultInterpreter
       commands: |
         mkdir -p PS2_Manager.AppDir/usr/bin
         cp -r ./output_linux/* PS2_Manager.AppDir/usr/bin/
@@ -191,10 +203,11 @@ jobs:
     useTTY: true
     condition: ALWAYS
     optional: false
-  - !CommandStep
+  - type: CommandStep
     name: Pack Releases into Zips
     runInContainer: false
-    interpreter: !DefaultInterpreter
+    interpreter:
+      type: DefaultInterpreter
       commands: |
         mkdir -p ./release
         zip -r ./release/PS2Manager_Linux_x64.zip ./output_linux
@@ -203,14 +216,14 @@ jobs:
     useTTY: true
     condition: ALWAYS
     optional: false
-  - !PublishArtifactStep
+  - type: PublishArtifactStep
     name: Upload Artifacts
     sourcePath: release
     artifacts: '**'
     condition: ALWAYS
     optional: false
   triggers:
-  - !TagCreateTrigger
+  - type: TagCreateTrigger
     branches: master
     projects: ps2_manager
   retryCondition: never
