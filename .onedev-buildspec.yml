@@ -222,6 +222,7 @@ jobs:
     artifacts: '**'
     condition: ALWAYS
     optional: false
+  jobExecutor: Builder
   triggers:
   - type: TagCreateTrigger
     branches: master
