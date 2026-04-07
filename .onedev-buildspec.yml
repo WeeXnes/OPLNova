@@ -223,7 +223,7 @@ jobs:
   triggers:
   - type: TagCreateTrigger
     branches: master
-    projects: oplnova
+    projects: OPLNova
   retryCondition: never
   maxRetries: 3
   retryDelay: 30
