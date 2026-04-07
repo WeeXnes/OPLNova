@@ -118,10 +118,7 @@ jobs:
   jobExecutor: Builder
   triggers:
   - type: BranchUpdateTrigger
-    branches: master
-    paths: '** -README.md'
     userMatch: anyone
-    projects: oplnova
   - type: PullRequestUpdateTrigger
   retryCondition: never
   maxRetries: 3
