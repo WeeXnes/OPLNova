@@ -1,0 +1,233 @@
+version: 43
+jobs:
+- name: Get Version (private)
+  steps:
+  - type: CheckoutStep
+    name: checkout code
+    cloneCredential:
+      type: DefaultCredential
+    withLfs: false
+    withSubmodules: false
+    condition: SUCCESSFUL
+    optional: false
+  - type: CommandStep
+    name: get version
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        echo "Extracting FileVersion from OPLNova.csproj..."
+        grep -oPm1 "(?<=<FileVersion>)[^<]+" OPLNova/OPLNova.csproj > version.txt
+        echo "FileVersion extracted: $(cat version.txt)"
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: false
+  - type: CommandStep
+    name: Update Cutting Edge AUR Package
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        repo_url="ssh://aur@@aur.archlinux.org/oplnova-git.git"
+        repo_dir="oplnova-git"
+
+        git clone "$repo_url"
+
+        ver=$(<version.txt)
+
+        commit_hash=@commit_hash@
+
+        sed -i "s/^_commit=.*/_commit=${commit_hash}/" "$repo_dir/PKGBUILD"
+
+        literal_substr='\${_commit:0:7}'
+
+        new_pkgver="${ver}.r${literal_substr}"
+
+        sed -i "s/^pkgver=.*/pkgver=${new_pkgver}/" "$repo_dir/PKGBUILD"
+
+        (
+          cd "$repo_dir" || exit 1
+          makepkg --printsrcinfo > .SRCINFO
+          git add PKGBUILD .SRCINFO
+          git commit -m "Automatically updated version to @commit_hash@"
+          git push
+        )
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: true
+  - type: CommandStep
+    name: check if tag exists
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        version=$(cat version.txt)
+        echo "Checking if tag '$version' exists on origin..."
+
+        if git ls-remote --tags origin | grep -q "refs/tags/${version}$"; then
+            echo "Tag '$version' already exists."
+
+            new_version="${version}-@commit_hash@"
+            echo "$new_version" > version.txt
+            echo "Updated version.txt to '$new_version' to avoid tag conflict."
+
+            exit 1
+        else
+            echo "Tag '$version' does not exist. Proceeding with original version."
+            exit 0
+        fi
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: false
+  - type: SetBuildVersionStep
+    name: set build version
+    buildVersion: '@file:version.txt@'
+    condition: ALWAYS
+    optional: false
+  - type: CreateTagStep
+    name: create tag
+    tagName: '@file:version.txt@'
+    tagMessage: Release Tag for @file:version.txt@
+    condition: SUCCESSFUL
+    optional: false
+  - type: CommandStep
+    name: Update Stable AUR Package
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        repo_url="ssh://aur@@aur.archlinux.org/oplnova.git"
+        repo_dir="oplnova"
+
+        git clone "$repo_url"
+
+        version=$(<version.txt)
+
+        sed -i "s/^pkgver=.*/pkgver=${version}/" "$repo_dir/PKGBUILD"
+
+        (
+          cd "$repo_dir" || exit 1
+          makepkg --printsrcinfo > .SRCINFO
+          git add PKGBUILD .SRCINFO
+          git commit -m "Automatically updated version to ${version}"
+          git push
+        )
+    useTTY: true
+    condition: SUCCESSFUL
+    optional: false
+  jobExecutor: Builder
+  triggers:
+  - type: BranchUpdateTrigger
+    branches: master
+    paths: '** -README.md'
+    userMatch: anyone
+    projects: oplnova
+  - type: PullRequestUpdateTrigger
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 14400
+- name: Build Release Tag
+  steps:
+  - type: CheckoutStep
+    name: checkout code
+    cloneCredential:
+      type: DefaultCredential
+    withLfs: false
+    withSubmodules: false
+    condition: SUCCESSFUL
+    optional: false
+  - type: SetBuildVersionStep
+    name: set build version
+    buildVersion: '@tag@'
+    condition: ALWAYS
+    optional: false
+  - type: CommandStep
+    name: Dotnet Publish (Linux x64)
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        dotnet publish ./OPLNova/OPLNova.csproj \
+                    -c Release \
+                    -r linux-x64 \
+                    --self-contained true \
+                    -p:PublishSingleFile=true \
+                    -p:PublishTrimmed=true \
+                    -o ./output_linux
+    useTTY: true
+    condition: ALWAYS
+    optional: false
+  - type: CommandStep
+    name: Dotnet Publish (Windows x64)
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        dotnet publish ./OPLNova/OPLNova.csproj \
+                    -c Release \
+                    -r win-x64 \
+                    --self-contained true \
+                    -p:PublishSingleFile=true \
+                    -p:PublishTrimmed=true \
+                    -o ./output_win
+    useTTY: true
+    condition: ALWAYS
+    optional: false
+  - type: CommandStep
+    name: Download AppImageTool (Linux x64)
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        curl -L -o appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod +x appimagetool-x86_64.AppImage
+    useTTY: true
+    condition: ALWAYS
+    optional: false
+  - type: CommandStep
+    name: Build AppImage (Linux x64)
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        mkdir -p OPLNova.AppDir/usr/bin
+        cp -r ./output_linux/* OPLNova.AppDir/usr/bin/
+        cp OPLNova/Assets/AppRun OPLNova.AppDir/
+        cp OPLNova/Assets/oplnova.desktop OPLNova.AppDir/
+        cp OPLNova/Assets/oplnova.png OPLNova.AppDir/
+        chmod +x OPLNova.AppDir/AppRun
+        ./appimagetool-x86_64.AppImage OPLNova.AppDir
+        mkdir -p release
+        mv OPLNova-x86_64.AppImage release/OPLNova_Linux_x64.AppImage
+    useTTY: true
+    condition: ALWAYS
+    optional: false
+  - type: CommandStep
+    name: Pack Releases into Zips
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        mkdir -p ./release
+        zip -r ./release/OPLNova_Linux_x64.zip ./output_linux
+        zip -r ./release/OPLNova_Windows_x64.zip ./output_win
+        rm -rf ./output_linux ./output_win
+    useTTY: true
+    condition: ALWAYS
+    optional: false
+  - type: PublishArtifactStep
+    name: Upload Artifacts
+    sourcePath: release
+    artifacts: '**'
+    condition: ALWAYS
+    optional: false
+  jobExecutor: Builder
+  triggers:
+  - type: TagCreateTrigger
+    branches: master
+    projects: oplnova
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 14400
