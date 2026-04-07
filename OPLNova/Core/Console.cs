@@ -1,4 +1,4 @@
-global using Console = PS2_Manager.Core.Console;
+global using Console = OPLNova.Core.Console;
 global using VanillaConsole = System.Console;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace PS2_Manager.Core
+namespace OPLNova.Core
 {
     public static class Console
     {

@@ -6,10 +6,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using PS2_Manager.Core;
+using OPLNova.Core;
 using Tmds.DBus.Protocol;
 
-namespace PS2_Manager;
+namespace OPLNova;
 
 public partial class App : Application
 {
@@ -23,7 +23,7 @@ public partial class App : Application
     private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
     {
         Exception ex = (Exception)e.ExceptionObject;
-        Console.Error("Exception: " + ex.Message);
+        Core.Console.Error("Exception: " + ex.Message);
         DateTime currentDateTime = DateTime.Now;
         string formattedDateTime = currentDateTime.ToString("dddd, dd MMMM yyyy HH:mm:ss");
         using (StreamWriter writer = new StreamWriter("error_log.txt", append: true))

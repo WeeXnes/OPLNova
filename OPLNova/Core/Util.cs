@@ -8,7 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media.Imaging;
 
-namespace PS2_Manager.Core;
+namespace OPLNova.Core;
 
 public static class Util
 {

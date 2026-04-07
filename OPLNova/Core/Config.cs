@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace PS2_Manager.Core;
+namespace OPLNova.Core;
 
 
 public class Config

@@ -1,6 +1,6 @@
 using System;
 
-namespace PS2_Manager.Core;
+namespace OPLNova.Core;
 
 public static class Artwork
 {

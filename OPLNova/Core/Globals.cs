@@ -8,13 +8,13 @@ using Avalonia.Platform.Storage;
 using Microsoft.VisualBasic.CompilerServices;
 using Path = System.IO.Path;
 
-namespace PS2_Manager.Core;
+namespace OPLNova.Core;
 
 public static class Globals
 {
-    public static string SettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ps2_manager", "settings.ini");
-    public static string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ps2_manager", "output.log");
-    public static string UserPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ps2_manager");
+    public static string SettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".oplnova", "settings.ini");
+    public static string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".oplnova", "output.log");
+    public static string UserPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".oplnova");
     
     public static string ApiEndpointBase = "ps2api.weexnes.dev";
     

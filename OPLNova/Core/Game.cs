@@ -14,7 +14,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Nocksoft.IO.ConfigFiles;
 
 
-namespace PS2_Manager.Core;
+namespace OPLNova.Core;
 
 [JsonSerializable(typeof(GameInfoApiResponse))]
 public partial class GameInfoApiResponse

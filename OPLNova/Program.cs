@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace PS2_Manager;
+namespace OPLNova;
 
 class Program
 {

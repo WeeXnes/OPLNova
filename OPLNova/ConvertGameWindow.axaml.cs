@@ -5,10 +5,11 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
-using PS2_Manager.Core.IO.DiscImage;
-using PS2_Manager.Core.IO.DiscImage.Type;
+using OPLNova.Core;
+using OPLNova.Core.IO.DiscImage;
+using OPLNova.Core.IO.DiscImage.Type;
 
-namespace PS2_Manager;
+namespace OPLNova;
 
 public partial class ConvertGameWindow : Window
 {

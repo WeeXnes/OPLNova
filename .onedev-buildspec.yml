@@ -16,8 +16,8 @@ jobs:
     interpreter:
       type: DefaultInterpreter
       commands: |
-        echo "Extracting FileVersion from PS2_Manager.csproj..."
-        grep -oPm1 "(?<=<FileVersion>)[^<]+" PS2_Manager/PS2_Manager.csproj > version.txt
+        echo "Extracting FileVersion from OPLNova.csproj..."
+        grep -oPm1 "(?<=<FileVersion>)[^<]+" OPLNova/OPLNova.csproj > version.txt
         echo "FileVersion extracted: $(cat version.txt)"
     useTTY: true
     condition: SUCCESSFUL
@@ -28,8 +28,8 @@ jobs:
     interpreter:
       type: DefaultInterpreter
       commands: |
-        repo_url="ssh://aur@@aur.archlinux.org/ps2_manager-git.git"
-        repo_dir="ps2_manager-git"
+        repo_url="ssh://aur@@aur.archlinux.org/oplnova-git.git"
+        repo_dir="oplnova-git"
 
         git clone "$repo_url"
 
@@ -96,8 +96,8 @@ jobs:
     interpreter:
       type: DefaultInterpreter
       commands: |
-        repo_url="ssh://aur@@aur.archlinux.org/ps2_manager.git"
-        repo_dir="ps2_manager"
+        repo_url="ssh://aur@@aur.archlinux.org/oplnova.git"
+        repo_dir="oplnova"
 
         git clone "$repo_url"
 
@@ -121,7 +121,7 @@ jobs:
     branches: master
     paths: '** -README.md'
     userMatch: anyone
-    projects: ps2_manager
+    projects: oplnova
   - type: PullRequestUpdateTrigger
   retryCondition: never
   maxRetries: 3
@@ -148,7 +148,7 @@ jobs:
     interpreter:
       type: DefaultInterpreter
       commands: |
-        dotnet publish ./PS2_Manager/PS2_Manager.csproj \
+        dotnet publish ./OPLNova/OPLNova.csproj \
                     -c Release \
                     -r linux-x64 \
                     --self-contained true \
@@ -164,7 +164,7 @@ jobs:
     interpreter:
       type: DefaultInterpreter
       commands: |
-        dotnet publish ./PS2_Manager/PS2_Manager.csproj \
+        dotnet publish ./OPLNova/OPLNova.csproj \
                     -c Release \
                     -r win-x64 \
                     --self-contained true \
@@ -191,15 +191,15 @@ jobs:
     interpreter:
       type: DefaultInterpreter
       commands: |
-        mkdir -p PS2_Manager.AppDir/usr/bin
-        cp -r ./output_linux/* PS2_Manager.AppDir/usr/bin/
-        cp PS2_Manager/Assets/AppRun PS2_Manager.AppDir/
-        cp PS2_Manager/Assets/ps2manager.desktop PS2_Manager.AppDir/
-        cp PS2_Manager/Assets/ps2manager.png PS2_Manager.AppDir/
-        chmod +x PS2_Manager.AppDir/AppRun
-        ./appimagetool-x86_64.AppImage PS2_Manager.AppDir
+        mkdir -p OPLNova.AppDir/usr/bin
+        cp -r ./output_linux/* OPLNova.AppDir/usr/bin/
+        cp OPLNova/Assets/AppRun OPLNova.AppDir/
+        cp OPLNova/Assets/oplnova.desktop OPLNova.AppDir/
+        cp OPLNova/Assets/oplnova.png OPLNova.AppDir/
+        chmod +x OPLNova.AppDir/AppRun
+        ./appimagetool-x86_64.AppImage OPLNova.AppDir
         mkdir -p release
-        mv PS2_Manager-x86_64.AppImage release/PS2Manager_Linux_x64.AppImage
+        mv OPLNova-x86_64.AppImage release/OPLNova_Linux_x64.AppImage
     useTTY: true
     condition: ALWAYS
     optional: false
@@ -210,8 +210,8 @@ jobs:
       type: DefaultInterpreter
       commands: |
         mkdir -p ./release
-        zip -r ./release/PS2Manager_Linux_x64.zip ./output_linux
-        zip -r ./release/PS2Manager_Windows_x64.zip ./output_win
+        zip -r ./release/OPLNova_Linux_x64.zip ./output_linux
+        zip -r ./release/OPLNova_Windows_x64.zip ./output_win
         rm -rf ./output_linux ./output_win
     useTTY: true
     condition: ALWAYS
@@ -226,7 +226,7 @@ jobs:
   triggers:
   - type: TagCreateTrigger
     branches: master
-    projects: ps2_manager
+    projects: oplnova
   retryCondition: never
   maxRetries: 3
   retryDelay: 30

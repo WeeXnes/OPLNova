@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PS2_Manager", "PS2_Manager\PS2_Manager.csproj", "{05475C7F-17C8-4110-A381-3D21D6B3C85E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPLNova", "OPLNova\OPLNova.csproj", "{05475C7F-17C8-4110-A381-3D21D6B3C85E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,10 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PS2_Manager.Core"
+        xmlns:local="clr-namespace:OPLNova.Core"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="PS2_Manager.MainWindow"
-        Title="PS2 Games Manager"
+        x:Class="OPLNova.MainWindow"
+        Title="OPLNova"
         Background="#201c29"
         Width="990"
         Height="520"
@@ -88,7 +88,7 @@
                                    TextAlignment="Center"
                                    Margin="10"
                                    TextWrapping="Wrap"/>
-                        <Button Content="PS2 Manager Repository"
+                        <Button Content="OPLNova Repository"
                                 HorizontalAlignment="Center"
                                 Click="OnRepositoryLinkClicked"/>
                     </StackPanel>

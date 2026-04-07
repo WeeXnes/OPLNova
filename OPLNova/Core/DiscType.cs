@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 
-namespace PS2_Manager.Core;
+namespace OPLNova.Core;
 
 
 public class DiscIcon

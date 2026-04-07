@@ -6,7 +6,7 @@
         Height="389"
         Width="598"
         CanResize="False"
-        x:Class="PS2_Manager.AddGameWindow"
+        x:Class="OPLNova.AddGameWindow"
         Title="Install Game"
         WindowStartupLocation="CenterScreen"
         Loaded="Control_OnLoaded"

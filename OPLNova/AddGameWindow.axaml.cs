@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -11,9 +10,9 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
-using PS2_Manager.Core;
+using OPLNova.Core;
 
-namespace PS2_Manager;
+namespace OPLNova;
 
 public partial class AddGameWindow : Window
 {

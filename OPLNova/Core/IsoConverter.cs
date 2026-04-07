@@ -3,7 +3,7 @@ using System;
 using System.IO;
 
 #nullable disable
-namespace PS2_Manager.Core.IO.DiscImage.Type
+namespace OPLNova.Core.IO.DiscImage.Type
 {
     public class BinType : IDiscImage
     {
@@ -69,7 +69,7 @@ namespace PS2_Manager.Core.IO.DiscImage.Type
 }
 
 
-namespace PS2_Manager.Core.IO.DiscImage
+namespace OPLNova.Core.IO.DiscImage
 {
     public interface IDiscImage
     {
@@ -82,7 +82,7 @@ namespace PS2_Manager.Core.IO.DiscImage
 }
 
 
-namespace PS2_Manager.Core.IO.DiscImage
+namespace OPLNova.Core.IO.DiscImage
 {
     public struct SectorStructure(int length, int dataOffset)
     {
@@ -94,7 +94,7 @@ namespace PS2_Manager.Core.IO.DiscImage
 
 
 #nullable disable
-namespace PS2_Manager.Core.IO.DiscImage
+namespace OPLNova.Core.IO.DiscImage
 {
   public class Iso9660Conv
   {
@@ -253,7 +253,7 @@ namespace PS2_Manager.Core.IO.DiscImage
 
 
 #nullable disable
-namespace PS2_Manager.Core
+namespace OPLNova.Core
 {
   internal static class BytesHelper
   {
@@ -284,7 +284,7 @@ namespace PS2_Manager.Core
 
 
 #nullable disable
-namespace PS2_Manager.Core.IO.DiscImage
+namespace OPLNova.Core.IO.DiscImage
 {
   public class Iso9660CreatorEventArgs : EventArgs
   {

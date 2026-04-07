@@ -5,9 +5,9 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
-using PS2_Manager.Core;
+using OPLNova.Core;
 
-namespace PS2_Manager;
+namespace OPLNova;
 
 public partial class Setup : Window
 {
@@ -27,7 +27,7 @@ public partial class Setup : Window
 
     private void FinishSetup()
     {
-        Console.Success("Setup Complete");
+        Core.Console.Success("Setup Complete");
         InfoText1.Text = "Setup Finished";
         InfoText2.Text = "You can now exit to the Main Application";
         OpenLibraryButton.Content = "Exit";
@@ -41,7 +41,7 @@ public partial class Setup : Window
 
     private async void OpenLibraryButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        Console.Info("Open Library Button Clicked");
+        Core.Console.Info("Open Library Button Clicked");
         settings.library_path.SetValue("");
         var topLevel = TopLevel.GetTopLevel(this);
         var path = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions

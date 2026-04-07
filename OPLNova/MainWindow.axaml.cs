@@ -13,9 +13,9 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using DiscUtils;
-using PS2_Manager.Core;
+using OPLNova.Core;
 
-namespace PS2_Manager;
+namespace OPLNova;
 
 public partial class MainWindow : Window
 {
@@ -144,11 +144,11 @@ public partial class MainWindow : Window
             welcomeText = FileVersionInfo
                 .GetVersionInfo(Assembly.GetExecutingAssembly().Location)
                 .FileVersion ?? "Unknown";
-            welcomeText = "Welcome to the PS2 Games Manager v" + welcomeText;
+            welcomeText = "Welcome to OPLNova v" + welcomeText;
         }
         catch (Exception ex)
         {
-            welcomeText = "Welcome to the PS2 Games Manager";
+            welcomeText = "Welcome to OPLNova";
         }
 
         WelcomeTextTop.Text = welcomeText;
@@ -245,7 +245,7 @@ public partial class MainWindow : Window
         Console.Info("Repository Link Clicked");
         Process.Start(new ProcessStartInfo
         {
-            FileName = "https://code.weexnes.dev/ps2_manager",
+            FileName = "https://code.weexnes.dev/oplnova",
             UseShellExecute = true
         });
     }
