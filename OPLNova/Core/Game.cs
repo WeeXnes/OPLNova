@@ -150,13 +150,13 @@ public class Game
         switch (type)
         {
             case Artwork.Type.Front:
-                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}/{this.GameID}_COV.png";
+                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}_COV.png";
                 break;
             case Artwork.Type.Back:
-                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}/{this.GameID}_COV2.png";
+                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}_COV2.png";
                 break;
             case Artwork.Type.Disc:
-                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}/{this.GameID}_ICO.png";
+                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}_ICO.png";
                 break;
         }
 
