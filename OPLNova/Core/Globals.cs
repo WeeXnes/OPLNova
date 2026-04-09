@@ -16,7 +16,6 @@ public static class Globals
     public static string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".oplnova", "output.log");
     public static string UserPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".oplnova");
     
-    public static string ApiEndpointBase = "ps2api.weexnes.dev";
     
     public static List<Game> Games { get; set; }
     
@@ -44,7 +43,8 @@ public static class Globals
 public enum settings
 {
     library_path,
-    preferred_installation_method
+    preferred_installation_method,
+    api_url
 }
 
 public class UpdateVar<T>

@@ -95,7 +95,7 @@ public class Game
     public string GetGameTitle()
     {
         Console.Info("Getting info for " + this.GameID);
-        string url = $"https://{Globals.ApiEndpointBase}/search/{this.GameID}";
+        string url = $"{settings.api_url.GetValue<string>()}/search/{this.GameID}";
 
         try
         {
@@ -146,19 +146,20 @@ public class Game
     {
         Console.Info("Downloading " + type + " Artwork for " + this.GameID);
         Bitmap cover = null;
-        string url = "";
+        string url = settings.api_url.GetValue<string>();
         switch (type)
         {
             case Artwork.Type.Front:
-                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}_COV.png";
+                url += $"/art/{this.GameID}_COV.png";
                 break;
             case Artwork.Type.Back:
-                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}_COV2.png";
+                url += $"/art/{this.GameID}_COV2.png";
                 break;
             case Artwork.Type.Disc:
-                url = $"https://{Globals.ApiEndpointBase}/art/{this.GameID}_ICO.png";
+                url += $"/art/{this.GameID}_ICO.png";
                 break;
         }
+        
 
         try
         {
