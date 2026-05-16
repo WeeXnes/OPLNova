@@ -72,8 +72,16 @@
                             <DataTemplate x:DataType="local:Game">
                                 <Grid ColumnDefinitions="Auto, 12, *">
                                     <Panel Grid.Column="0" Width="32" Height="32">
-                                        <Image IsVisible="{Binding Icon.ShowDVD}" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/dvd.png"/>
-                                        <Image IsVisible="{Binding Icon.ShowCD}" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/cd.png"/>
+                                        <!-- Custom Disc Icon -->
+                                        <Image IsVisible="{Binding ArtworkDVD, Converter={x:Static ObjectConverters.IsNotNull}}" 
+                                               Source="{Binding ArtworkDVD}" 
+                                               RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                                        
+                                        <!-- Default Icons (Visible only if ArtworkDVD is null) -->
+                                        <Panel IsVisible="{Binding ArtworkDVD, Converter={x:Static ObjectConverters.IsNull}}">
+                                            <Image IsVisible="{Binding Icon.ShowDVD}" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/dvd.png"/>
+                                            <Image IsVisible="{Binding Icon.ShowCD}" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/cd.png"/>
+                                        </Panel>
                                     </Panel>
                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
