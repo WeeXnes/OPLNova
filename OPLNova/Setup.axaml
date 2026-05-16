@@ -6,18 +6,25 @@
         x:Class="OPLNova.Setup"
         WindowStartupLocation="CenterScreen"
         Title="Setup OPLNova"        
-        Height="349"
-        Width="598"
+        Height="400"
+        Width="600"
         CanResize="False"
-        Background="#201c29"
+        Background="{StaticResource ObsidianBackground}"
+        Foreground="{StaticResource ObsidianText}"
         Closing="Window_OnClosing">
-        <Grid Margin="20">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Name="InfoText1" Text="Welcome to OPLNova" HorizontalAlignment="Center"/>
-                        <Separator/>
-                        <TextBlock Name="InfoText2" Text="First of all please select the path to your PS2 Game Library" HorizontalAlignment="Center"/>
-                        <Button Name="OpenLibraryButton" Content="Select Folder" HorizontalAlignment="Center" Margin="0,10"
-                                Click="OpenLibraryButton_OnClick"/>
-                </StackPanel>
-        </Grid>
+    <Border Background="{StaticResource ObsidianSurface}" CornerRadius="12" Margin="40" Padding="30">
+        <StackPanel Spacing="24" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Spacing="8">
+                <TextBlock Name="InfoText1" Text="Welcome to OPLNova" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Name="InfoText2" Text="Let's get your library ready" Foreground="{StaticResource ObsidianTextDim}" HorizontalAlignment="Center"/>
+            </StackPanel>
+            
+            <Separator Background="{StaticResource ObsidianSurfaceLight}"/>
+            
+            <StackPanel Spacing="12">
+                <TextBlock Text="First, select the path to your PS2 Game Library" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300" HorizontalAlignment="Center"/>
+                <Button Name="OpenLibraryButton" Content="Select Library Folder" Classes="accent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,10,0,0" Click="OpenLibraryButton_OnClick"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
 </Window>
