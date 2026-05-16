@@ -281,21 +281,32 @@ public class Game
         Console.Success("Saved " + artworkType + " Artwork for " + this.GameID);
     }
 
-    public void ScrapeMissingArtwork()
+    public void ScrapeArtwork(bool force)
     {
-        if (this.ArtworkFront == null) {
-            this.ArtworkFront = DownloadCover(Artwork.Type.Front);
-            if (this.ArtworkFront != null) SaveCover(Artwork.Type.Front);
+        if (this.ArtworkFront == null || force) {
+            var art = DownloadCover(Artwork.Type.Front);
+            if (art != null) {
+                this.ArtworkFront = art;
+                SaveCover(Artwork.Type.Front);
+            }
         }
-        if (this.ArtworkBack == null) {
-            this.ArtworkBack = DownloadCover(Artwork.Type.Back);
-            if (this.ArtworkBack != null) SaveCover(Artwork.Type.Back);
+        if (this.ArtworkBack == null || force) {
+            var art = DownloadCover(Artwork.Type.Back);
+            if (art != null) {
+                this.ArtworkBack = art;
+                SaveCover(Artwork.Type.Back);
+            }
         }
-        if (this.ArtworkDVD == null) {
-            this.ArtworkDVD = DownloadCover(Artwork.Type.Disc);
-            if (this.ArtworkDVD != null) SaveCover(Artwork.Type.Disc);
+        if (this.ArtworkDVD == null || force) {
+            var art = DownloadCover(Artwork.Type.Disc);
+            if (art != null) {
+                this.ArtworkDVD = art;
+                SaveCover(Artwork.Type.Disc);
+            }
         }
     }
+
+    public void ScrapeMissingArtwork() => ScrapeArtwork(false);
 
     public override string ToString()
     {

@@ -30,6 +30,8 @@ public partial class BulkScraperWindow : Window
     private async void Start_Click(object? sender, RoutedEventArgs e)
     {
         StartButton.IsVisible = false;
+        OverwriteCheckbox.IsEnabled = false;
+        bool force = OverwriteCheckbox.IsChecked ?? false;
         
         int count = 0;
         foreach (var game in _games)
@@ -43,7 +45,7 @@ public partial class BulkScraperWindow : Window
 
             await Task.Run(() => {
                 try {
-                    game.ScrapeMissingArtwork();
+                    game.ScrapeArtwork(force);
                 } catch (Exception ex) {
                     Dispatcher.UIThread.Post(() => AddToLog($"Error for {game.Name}: {ex.Message}"));
                 }
@@ -53,6 +55,9 @@ public partial class BulkScraperWindow : Window
         AddToLog("--- Done! ---");
         StatusTextBlock.Text = "Bulk scraping completed.";
         CloseButton.IsVisible = true;
+        
+        // Refresh the main window to show new art
+        MainWindow.RefreshGamesListTrigger?.Invoke(this, EventArgs.Empty);
     }
 
     private void AddToLog(string message)
