@@ -7,16 +7,16 @@
         x:Class="OPLNova.MainWindow"
         Title="OPLNova"
         Background="{StaticResource ObsidianBackground}"
-        Width="1050"
-        Height="620"
+        Width="1000"
+        Height="650"
         MinHeight="550"
-        MinWidth="950"
+        MinWidth="800"
         WindowStartupLocation="CenterScreen"
         Loaded="Control_OnLoaded"
         KeyDown="MainWindow_OnKeyDown"
         Foreground="{StaticResource ObsidianText}">
     <Grid RowDefinitions="*, Auto">
-        <Grid Name="MainGrid" Grid.Row="0" ColumnDefinitions="300, 1, *, 350" Margin="12">
+        <Grid Name="MainGrid" Grid.Row="0" ColumnDefinitions="300, 1, *" Margin="12">
         <!-- Left Panel: Games List -->
         <Border Grid.Column="0" Background="{StaticResource ObsidianSurface}" CornerRadius="{StaticResource ControlCornerRadius}" Margin="0,0,6,0">
             <Grid RowDefinitions="Auto, Auto, *">
@@ -112,7 +112,7 @@
                                     <Button Classes="GridItem" Margin="4" Padding="0" Background="Transparent" Click="GameGridItem_Click" Tag="{Binding}">
                                         <StackPanel Width="80" Spacing="4">
                                             <Border CornerRadius="4" ClipToBounds="True" Height="110" BoxShadow="0 2 4 0 #40000000">
-                                                <Image Source="{Binding ArtworkFront, FallbackValue={StaticResource missing_image}}" Stretch="UniformToFill" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                                                <Image Source="{Binding ArtworkFront, FallbackValue={StaticResource missing_image}}" Stretch="UniformToFill"/>
                                             </Border>
                                             <TextBlock Text="{Binding Name}" FontSize="10" Height="30" VerticalAlignment="Top" TextAlignment="Center" TextWrapping="Wrap" MaxLines="2" FontWeight="SemiBold"/>
                                         </StackPanel>
@@ -141,7 +141,7 @@
         <!-- Vertical Separator -->
         <Rectangle Grid.Column="1" Fill="{StaticResource ObsidianSurfaceLight}" Width="1" Margin="6,20"/>
 
-        <!-- Center Panel: Content -->
+        <!-- Right Panel: Content -->
         <Border Grid.Column="2" Margin="6,0">
             <Grid>
                 <!-- Welcome Panel -->
@@ -195,112 +195,116 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Game Edit Panel -->
+                <!-- Unified Game Details & Edit Panel -->
                 <Border Name="GameEdit" IsVisible="False" Background="{StaticResource ObsidianSurface}" CornerRadius="{StaticResource ControlCornerRadius}" Padding="20">
                     <Grid RowDefinitions="*, Auto">
                         <ScrollViewer Grid.Row="0">
-                            <StackPanel Spacing="20">
-                                <StackPanel Spacing="8">
-                                    <TextBlock Text="Display Name" FontWeight="SemiBold" Foreground="{StaticResource ObsidianTextDim}"/>
-                                    <TextBox Name="NameTextBox_Edit"/>
-                                </StackPanel>
-
-                                <Grid ColumnDefinitions="*, 16, *">
-                                    <StackPanel Grid.Column="0" Spacing="8">
-                                        <TextBlock Text="Virtual Memory Card 1" FontWeight="SemiBold" Foreground="{StaticResource ObsidianTextDim}"/>
-                                        <Grid ColumnDefinitions="*, Auto">
-                                            <ComboBox Name="VMC_1" HorizontalAlignment="Stretch" SelectionChanged="VMC_1_OnSelectionChanged"/>
-                                            <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
+                            <StackPanel Spacing="24">
+                                <!-- Header: Cover and Basic Info -->
+                                <Grid ColumnDefinitions="Auto, 24, *">
+                                    <!-- Cover Navigation Area -->
+                                    <StackPanel Grid.Column="0" Spacing="12" VerticalAlignment="Top">
+                                        <Border Width="160" Height="220" CornerRadius="8" ClipToBounds="True" BoxShadow="0 4 12 0 #80000000" PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
+                                            <Grid>
+                                                <Image Name="CoverImage" Source="Assets/missing.png" Stretch="UniformToFill"/>
+                                                <TextBlock Name="CoverTextHint" Text="Click to Change" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False" Background="#A0000000" Padding="4"/>
+                                            </Grid>
+                                        </Border>
+                                        <Grid ColumnDefinitions="*, 8, *">
+                                            <Button Grid.Column="0" Content="←" Click="PrevButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                            <Button Grid.Column="2" Content="→" Click="NextButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
                                         </Grid>
                                     </StackPanel>
-                                    <StackPanel Grid.Column="2" Spacing="8">
-                                        <TextBlock Text="Virtual Memory Card 2" FontWeight="SemiBold" Foreground="{StaticResource ObsidianTextDim}"/>
-                                        <Grid ColumnDefinitions="*, Auto">
-                                            <ComboBox Name="VMC_2" HorizontalAlignment="Stretch" SelectionChanged="VMC_2_OnSelectionChanged"/>
-                                            <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
+
+                                    <!-- Basic Details & Name Edit -->
+                                    <StackPanel Grid.Column="2" Spacing="16">
+                                        <StackPanel Spacing="8">
+                                            <TextBlock Text="GAME TITLE" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
+                                            <TextBox Name="NameTextBox_Edit" FontSize="18" FontWeight="Bold"/>
+                                        </StackPanel>
+
+                                        <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto">
+                                            <TextBlock Text="Serial:" Grid.Row="0" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,6"/>
+                                            <TextBlock Name="GameIdTextBlock" Grid.Row="0" Grid.Column="1" FontWeight="SemiBold"/>
+                                            
+                                            <TextBlock Text="Size:" Grid.Row="1" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,6"/>
+                                            <TextBlock Name="IsoSizeTextBlock" Grid.Row="1" Grid.Column="1" FontWeight="SemiBold"/>
+                                            
+                                            <TextBlock Text="Added:" Grid.Row="2" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,6"/>
+                                            <TextBlock Name="GameDateTextBlock" Grid.Row="2" Grid.Column="1" FontWeight="SemiBold"/>
                                         </Grid>
+                                        
+                                        <Separator Background="{StaticResource ObsidianSurfaceLight}" Margin="0,4"/>
+
+                                        <!-- VMC Settings Integrated -->
+                                        <StackPanel Spacing="12">
+                                            <TextBlock Text="VIRTUAL MEMORY CARDS" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
+                                            <Grid ColumnDefinitions="*, 12, *">
+                                                <StackPanel Grid.Column="0" Spacing="4">
+                                                    <TextBlock Text="Slot 1" FontSize="11" Foreground="{StaticResource ObsidianTextDim}"/>
+                                                    <Grid ColumnDefinitions="*, Auto">
+                                                        <ComboBox Name="VMC_1" HorizontalAlignment="Stretch" SelectionChanged="VMC_1_OnSelectionChanged"/>
+                                                        <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="2" Spacing="4">
+                                                    <TextBlock Text="Slot 2" FontSize="11" Foreground="{StaticResource ObsidianTextDim}"/>
+                                                    <Grid ColumnDefinitions="*, Auto">
+                                                        <ComboBox Name="VMC_2" HorizontalAlignment="Stretch" SelectionChanged="VMC_2_OnSelectionChanged"/>
+                                                        <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Grid>
 
-                                <StackPanel Spacing="8">
-                                    <TextBlock Text="Compatibility Modes" FontWeight="SemiBold" Foreground="{StaticResource ObsidianTextDim}"/>
-                                    <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, *">
-                                        <ToggleSwitch Name="toggle_mode1" Content="Mode 1" Grid.Row="0" Grid.Column="0" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                        <ToggleSwitch Name="toggle_mode2" Content="Mode 2" Grid.Row="1" Grid.Column="0" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                        <ToggleSwitch Name="toggle_mode3" Content="Mode 3" Grid.Row="2" Grid.Column="0" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                        <ToggleSwitch Name="toggle_mode4" Content="Mode 4" Grid.Row="0" Grid.Column="1" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                        <ToggleSwitch Name="toggle_mode5" Content="Mode 5" Grid.Row="1" Grid.Column="1" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                        <ToggleSwitch Name="toggle_mode6" Content="Mode 6" Grid.Row="2" Grid.Column="1" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                    </Grid>
+                                <!-- Compatibility Modes -->
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="COMPATIBILITY MODES" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
+                                    <Border Background="{StaticResource ObsidianSurfaceLight}" CornerRadius="8" Padding="12">
+                                        <UniformGrid Columns="3">
+                                            <ToggleSwitch Name="toggle_mode1" Content="Mode 1" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                            <ToggleSwitch Name="toggle_mode2" Content="Mode 2" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                            <ToggleSwitch Name="toggle_mode3" Content="Mode 3" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                            <ToggleSwitch Name="toggle_mode4" Content="Mode 4" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                            <ToggleSwitch Name="toggle_mode5" Content="Mode 5" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                            <ToggleSwitch Name="toggle_mode6" Content="Mode 6" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                        </UniformGrid>
+                                    </Border>
                                 </StackPanel>
 
-                                <Button Content="Calculate Checksums" Click="ChecksumButtonOnClick" HorizontalAlignment="Stretch"/>
-                                
-                                <Border Background="{StaticResource ObsidianSurfaceLight}" CornerRadius="{StaticResource ControlCornerRadius}" Padding="12" IsVisible="False" Name="ChecksumArea">
-                                    <StackPanel Spacing="4">
-                                        <SelectableTextBlock Text="MD5" FontSize="10" Foreground="{StaticResource ObsidianTextDim}"/>
-                                        <SelectableTextBlock Name="MD5TextBlock" FontSize="12" FontFamily="Consolas,Monospace"/>
-                                        <SelectableTextBlock Text="SHA1" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" Margin="0,8,0,0"/>
-                                        <SelectableTextBlock Name="SHATextBlock" FontSize="12" FontFamily="Consolas,Monospace"/>
+                                <!-- Tools & Utilities -->
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="TOOLS" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
+                                    <StackPanel Spacing="8">
+                                        <Button Content="Calculate Checksums" Click="ChecksumButtonOnClick" HorizontalAlignment="Stretch"/>
+                                        
+                                        <Border Background="{StaticResource ObsidianSurfaceLight}" CornerRadius="{StaticResource ControlCornerRadius}" Padding="12" IsVisible="False" Name="ChecksumArea">
+                                            <StackPanel Spacing="4">
+                                                <SelectableTextBlock Text="MD5" FontSize="10" Foreground="{StaticResource ObsidianTextDim}"/>
+                                                <SelectableTextBlock Name="MD5TextBlock" FontSize="12" FontFamily="Consolas,Monospace"/>
+                                                <SelectableTextBlock Text="SHA1" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" Margin="0,8,0,0"/>
+                                                <SelectableTextBlock Name="SHATextBlock" FontSize="12" FontFamily="Consolas,Monospace"/>
+                                            </StackPanel>
+                                        </Border>
                                     </StackPanel>
-                                </Border>
+                                </StackPanel>
                             </StackPanel>
                         </ScrollViewer>
                         
+                        <!-- Footer Action Buttons -->
                         <Grid Grid.Row="1" ColumnDefinitions="*, 12, *" Margin="0,20,0,0">
-                            <Button Content="Undo" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="Undo_OnClick"/>
+                            <Button Content="Undo Changes" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="Undo_OnClick"/>
                             <Button Content="Save Changes" Classes="accent" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="Save_OnClick"/>
                         </Grid>
                     </Grid>
                 </Border>
             </Grid>
         </Border>
-
-        <!-- Right Panel: Info -->
-        <Border Name="RightPanel" Grid.Column="3" Background="{StaticResource ObsidianSurface}" CornerRadius="{StaticResource ControlCornerRadius}" Margin="6,0,0,0" Padding="20">
-            <Grid>
-                <StackPanel Name="GameInfoPlaceholder" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20">
-                    <Image Source="Assets/missing.png" Width="64" Height="64" Opacity="0.1"/>
-                    <TextBlock Text="No Game Selected" 
-                               FontSize="16"
-                               FontWeight="SemiBold"
-                               HorizontalAlignment="Center"
-                               Foreground="{StaticResource ObsidianTextDim}"/>
-                </StackPanel>
-
-                <Grid RowDefinitions="Auto, *, Auto" Name="GameInfo" IsVisible="False">
-                    <!-- Navigation & Cover -->
-                    <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" Margin="0,0,0,20">
-                        <Button Content="←" Click="PrevButton" Padding="8"/>
-                        <Border Grid.Column="1" Width="180" Height="250" Margin="10,0" CornerRadius="8" ClipToBounds="True" BoxShadow="0 4 12 0 #80000000" PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
-                            <Grid>
-                                <Image Name="CoverImage" Source="Assets/missing.png" Stretch="UniformToFill"/>
-                                <TextBlock Name="CoverTextHint" Text="Click to Change" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False" Background="#A0000000" Padding="4"/>
-                            </Grid>
-                        </Border>
-                        <Button Grid.Column="2" Content="→" Click="NextButton" Padding="8"/>
-                    </Grid>
-
-                    <!-- Details -->
-                    <StackPanel Grid.Row="1" Spacing="12">
-                        <TextBlock Name="GameNameTextBlock" FontSize="18" FontWeight="Bold" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"/>
-                        <Separator Background="{StaticResource ObsidianSurfaceLight}"/>
-                        <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto">
-                            <TextBlock Text="Serial:" Grid.Row="0" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,4"/>
-                            <TextBlock Name="GameIdTextBlock" Grid.Row="0" Grid.Column="1" FontWeight="SemiBold"/>
-                            
-                            <TextBlock Text="Size:" Grid.Row="1" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,4"/>
-                            <TextBlock Name="IsoSizeTextBlock" Grid.Row="1" Grid.Column="1" FontWeight="SemiBold"/>
-                            
-                            <TextBlock Text="Added:" Grid.Row="2" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,4"/>
-                            <TextBlock Name="GameDateTextBlock" Grid.Row="2" Grid.Column="1" FontWeight="SemiBold"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-        </Border>
     </Grid>
 
+    <!-- Status Bar -->
     <Border Grid.Row="1" Height="28" Background="{StaticResource ObsidianSurface}" BorderThickness="0,1,0,0" BorderBrush="{StaticResource ObsidianSurfaceLight}">
         <Grid ColumnDefinitions="*, Auto" Margin="12,0">
             <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">

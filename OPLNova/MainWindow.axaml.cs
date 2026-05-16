@@ -56,7 +56,6 @@ public partial class MainWindow : Window
         if (GamesList.SelectedItem is Game selectedGame)
         {
             Console.Info("Selected " + selectedGame + " from ListView");
-            SetEditArea();
             SetShowcaseArea();
             SwitchView(false);
         }
@@ -66,15 +65,6 @@ public partial class MainWindow : Window
     {
         GameEdit.IsVisible = !placeholder;
         WelcomePanel.IsVisible = placeholder;
-        
-        GameInfo.IsVisible = !placeholder;
-        GameInfoPlaceholder.IsVisible = placeholder;
-
-        if (MainGrid != null && RightPanel != null)
-        {
-            MainGrid.ColumnDefinitions[3].Width = new GridLength(placeholder ? 0 : 350);
-            RightPanel.IsVisible = !placeholder;
-        }
     }
 
     private void SetShowcaseArea()
@@ -83,22 +73,16 @@ public partial class MainWindow : Window
         {
             ArtworkType.Value = Artwork.Type.Front;
         
-            GameNameTextBlock.Text = selectedGame.Name;
+            NameTextBox_Edit.Text = selectedGame.Name;
             GameIdTextBlock.Text = selectedGame.GameID;
             FileInfo fileInfo = new FileInfo(selectedGame.GamePath);
             IsoSizeTextBlock.Text = Util.FormatFileSize(fileInfo.Length);
             DateTime lastModified = fileInfo.LastWriteTime;
             string formattedDate = lastModified.ToString("dd.MM.yyyy HH:mm");
             GameDateTextBlock.Text = formattedDate;
-        }
-    }
 
-    private void SetEditArea()
-    {
-        if (GamesList.SelectedItem is Game selectedGame)
-        {
+            // Update Edit components too
             ChecksumArea.IsVisible = false;
-            NameTextBox_Edit.Text = selectedGame.Name;
             VMC_1.SelectedItem = selectedGame.Config?.MemoryCard1;
             VMC_2.SelectedItem = selectedGame.Config?.MemoryCard2;
             toggle_mode1.IsChecked = selectedGame.Config?.Mode1;
@@ -108,6 +92,11 @@ public partial class MainWindow : Window
             toggle_mode5.IsChecked = selectedGame.Config?.Mode5;
             toggle_mode6.IsChecked = selectedGame.Config?.Mode6;
         }
+    }
+
+    private void SetEditArea()
+    {
+        // Now integrated into SetShowcaseArea
     }
 
     private async void OpenFileButton_Clicked(object sender, RoutedEventArgs args)
@@ -529,8 +518,11 @@ public partial class MainWindow : Window
             if (VMC_1.SelectedItem is string selectedVMC)
             {
                 Console.Warning("Setting " + selectedVMC + " as VMC1 for " + selectedGame.GameID);
-                selectedGame.Config.MemoryCard1 = selectedVMC;
-                selectedGame.Config.SaveConfig();
+                if (selectedGame.Config != null)
+                {
+                    selectedGame.Config.MemoryCard1 = selectedVMC;
+                    selectedGame.Config.SaveConfig();
+                }
             }
         }
     }
@@ -542,8 +534,11 @@ public partial class MainWindow : Window
             if (VMC_2.SelectedItem is string selectedVMC)
             {
                 Console.Warning("Setting " + selectedVMC + " as VMC2 for " + selectedGame.GameID);
-                selectedGame.Config.MemoryCard2 = selectedVMC;
-                selectedGame.Config.SaveConfig();
+                if (selectedGame.Config != null)
+                {
+                    selectedGame.Config.MemoryCard2 = selectedVMC;
+                    selectedGame.Config.SaveConfig();
+                }
             }
         }
     }
@@ -557,32 +552,32 @@ public partial class MainWindow : Window
                 switch (toggle.Name)
                 {
                     case "toggle_mode1":
-                        selectedGame.Config.Mode1 = toggle_mode1.IsChecked.Value;
-                        Console.Warning("Toggled Mode 1 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode1);
+                        if (selectedGame.Config != null) selectedGame.Config.Mode1 = toggle_mode1.IsChecked ?? false;
+                        Console.Warning("Toggled Mode 1 for " + selectedGame.GameID + " to " + (selectedGame.Config?.Mode1 ?? false));
                         break;
                     case "toggle_mode2":
-                        selectedGame.Config.Mode2 = toggle_mode2.IsChecked.Value;
-                        Console.Warning("Toggled Mode 2 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode2);
+                        if (selectedGame.Config != null) selectedGame.Config.Mode2 = toggle_mode2.IsChecked ?? false;
+                        Console.Warning("Toggled Mode 2 for " + selectedGame.GameID + " to " + (selectedGame.Config?.Mode2 ?? false));
                         break;
                     case "toggle_mode3":
-                        selectedGame.Config.Mode3 = toggle_mode3.IsChecked.Value;
-                        Console.Warning("Toggled Mode 3 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode3);
+                        if (selectedGame.Config != null) selectedGame.Config.Mode3 = toggle_mode3.IsChecked ?? false;
+                        Console.Warning("Toggled Mode 3 for " + selectedGame.GameID + " to " + (selectedGame.Config?.Mode3 ?? false));
                         break;
                     case "toggle_mode4":
-                        selectedGame.Config.Mode4 = toggle_mode4.IsChecked.Value;
-                        Console.Warning("Toggled Mode 4 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode4);
+                        if (selectedGame.Config != null) selectedGame.Config.Mode4 = toggle_mode4.IsChecked ?? false;
+                        Console.Warning("Toggled Mode 4 for " + selectedGame.GameID + " to " + (selectedGame.Config?.Mode4 ?? false));
                         break;
                     case "toggle_mode5":
-                        selectedGame.Config.Mode5 = toggle_mode5.IsChecked.Value;
-                        Console.Warning("Toggled Mode 5 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode5);
+                        if (selectedGame.Config != null) selectedGame.Config.Mode5 = toggle_mode5.IsChecked ?? false;
+                        Console.Warning("Toggled Mode 5 for " + selectedGame.GameID + " to " + (selectedGame.Config?.Mode5 ?? false));
                         break;
                     case "toggle_mode6":
-                        selectedGame.Config.Mode6 = toggle_mode6.IsChecked.Value;
-                        Console.Warning("Toggled Mode 6 for " + selectedGame.GameID + " to " + selectedGame.Config.Mode6);
+                        if (selectedGame.Config != null) selectedGame.Config.Mode6 = toggle_mode6.IsChecked ?? false;
+                        Console.Warning("Toggled Mode 6 for " + selectedGame.GameID + " to " + (selectedGame.Config?.Mode6 ?? false));
                         break;
                 }
             }
-            selectedGame.Config.SaveConfig();
+            selectedGame.Config?.SaveConfig();
         }
         
     }
