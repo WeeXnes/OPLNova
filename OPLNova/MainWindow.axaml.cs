@@ -225,6 +225,7 @@ public partial class MainWindow : Window
             : _allGames.Where(g => g.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) || 
                                    g.GameID.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
 
+        GamesList.SelectedItem = null;
         GamesList.ItemsSource = filteredGames;
         GamesGrid.ItemsSource = filteredGames;
 
