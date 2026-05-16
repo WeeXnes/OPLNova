@@ -179,7 +179,7 @@
                                         HorizontalContentAlignment="Center"
                                         Click="OpenFileButton_Clicked"
                                         Margin="0,0,0,8"/>
-                                <Button Content="GitHub Repository" 
+                                <Button Content="OneDev Repository" 
                                         HorizontalAlignment="Stretch" 
                                         HorizontalContentAlignment="Center"
                                         Click="OnRepositoryLinkClicked"/>
