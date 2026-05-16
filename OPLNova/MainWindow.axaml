@@ -141,7 +141,7 @@
         <!-- Vertical Separator -->
         <Rectangle Grid.Column="1" Fill="{StaticResource ObsidianSurfaceLight}" Width="1" Margin="6,20"/>
 
-        <!-- Right Panel: Content -->
+        <!-- Center Panel: Content -->
         <Border Grid.Column="2" Margin="6,0">
             <Grid>
                 <!-- Welcome Panel -->
@@ -196,15 +196,16 @@
                 </Border>
 
                 <!-- Unified Game Details & Edit Panel -->
-                <Border Name="GameEdit" IsVisible="False" Background="{StaticResource ObsidianSurface}" CornerRadius="{StaticResource ControlCornerRadius}" Padding="20">
-                    <Grid RowDefinitions="*, Auto">
-                        <ScrollViewer Grid.Row="0">
-                            <StackPanel Spacing="24">
-                                <!-- Header: Cover and Basic Info -->
+                <Grid Name="GameEdit" IsVisible="False" RowDefinitions="*, Auto">
+                    <ScrollViewer Grid.Row="0">
+                        <StackPanel Spacing="12">
+                            <!-- Section 1: Artwork & Header Info -->
+                            <Border Background="{StaticResource ObsidianSurface}" CornerRadius="{StaticResource ControlCornerRadius}" Padding="20">
                                 <Grid ColumnDefinitions="Auto, 24, *">
-                                    <!-- Cover Navigation Area -->
+                                    <!-- Cover Area -->
                                     <StackPanel Grid.Column="0" Spacing="12" VerticalAlignment="Top">
-                                        <Border Width="160" Height="220" CornerRadius="8" ClipToBounds="True" BoxShadow="0 4 12 0 #80000000" PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
+                                        <!-- Adjusted Aspect Ratio for PS2 Cover (approx 140:200) -->
+                                        <Border Width="154" Height="216" CornerRadius="8" ClipToBounds="True" BoxShadow="0 4 12 0 #80000000" PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
                                             <Grid>
                                                 <Image Name="CoverImage" Source="Assets/missing.png" Stretch="UniformToFill"/>
                                                 <TextBlock Name="CoverTextHint" Text="Click to Change" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False" Background="#A0000000" Padding="4"/>
@@ -216,7 +217,7 @@
                                         </Grid>
                                     </StackPanel>
 
-                                    <!-- Basic Details & Name Edit -->
+                                    <!-- Basic Info -->
                                     <StackPanel Grid.Column="2" Spacing="16">
                                         <StackPanel Spacing="8">
                                             <TextBlock Text="GAME TITLE" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
@@ -233,78 +234,81 @@
                                             <TextBlock Text="Added:" Grid.Row="2" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,6"/>
                                             <TextBlock Name="GameDateTextBlock" Grid.Row="2" Grid.Column="1" FontWeight="SemiBold"/>
                                         </Grid>
-                                        
-                                        <Separator Background="{StaticResource ObsidianSurfaceLight}" Margin="0,4"/>
-
-                                        <!-- VMC Settings Integrated -->
-                                        <StackPanel Spacing="12">
-                                            <TextBlock Text="VIRTUAL MEMORY CARDS" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
-                                            <Grid ColumnDefinitions="*, 12, *">
-                                                <StackPanel Grid.Column="0" Spacing="4">
-                                                    <TextBlock Text="Slot 1" FontSize="11" Foreground="{StaticResource ObsidianTextDim}"/>
-                                                    <Grid ColumnDefinitions="*, Auto">
-                                                        <ComboBox Name="VMC_1" HorizontalAlignment="Stretch" SelectionChanged="VMC_1_OnSelectionChanged"/>
-                                                        <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
-                                                    </Grid>
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="2" Spacing="4">
-                                                    <TextBlock Text="Slot 2" FontSize="11" Foreground="{StaticResource ObsidianTextDim}"/>
-                                                    <Grid ColumnDefinitions="*, Auto">
-                                                        <ComboBox Name="VMC_2" HorizontalAlignment="Stretch" SelectionChanged="VMC_2_OnSelectionChanged"/>
-                                                        <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
-                                                    </Grid>
-                                                </StackPanel>
-                                            </Grid>
-                                        </StackPanel>
                                     </StackPanel>
                                 </Grid>
+                            </Border>
 
-                                <!-- Compatibility Modes -->
-                                <StackPanel Spacing="12">
-                                    <TextBlock Text="COMPATIBILITY MODES" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
-                                    <Border Background="{StaticResource ObsidianSurfaceLight}" CornerRadius="8" Padding="12">
-                                        <UniformGrid Columns="3">
-                                            <ToggleSwitch Name="toggle_mode1" Content="Mode 1" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                            <ToggleSwitch Name="toggle_mode2" Content="Mode 2" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                            <ToggleSwitch Name="toggle_mode3" Content="Mode 3" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                            <ToggleSwitch Name="toggle_mode4" Content="Mode 4" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                            <ToggleSwitch Name="toggle_mode5" Content="Mode 5" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                            <ToggleSwitch Name="toggle_mode6" Content="Mode 6" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
-                                        </UniformGrid>
-                                    </Border>
-                                </StackPanel>
-
-                                <!-- Tools & Utilities -->
-                                <StackPanel Spacing="12">
-                                    <TextBlock Text="TOOLS" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
-                                    <StackPanel Spacing="8">
-                                        <Button Content="Calculate Checksums" Click="ChecksumButtonOnClick" HorizontalAlignment="Stretch"/>
-                                        
-                                        <Border Background="{StaticResource ObsidianSurfaceLight}" CornerRadius="{StaticResource ControlCornerRadius}" Padding="12" IsVisible="False" Name="ChecksumArea">
-                                            <StackPanel Spacing="4">
-                                                <SelectableTextBlock Text="MD5" FontSize="10" Foreground="{StaticResource ObsidianTextDim}"/>
-                                                <SelectableTextBlock Name="MD5TextBlock" FontSize="12" FontFamily="Consolas,Monospace"/>
-                                                <SelectableTextBlock Text="SHA1" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" Margin="0,8,0,0"/>
-                                                <SelectableTextBlock Name="SHATextBlock" FontSize="12" FontFamily="Consolas,Monospace"/>
+                            <!-- Section 2: Settings -->
+                            <Border Background="{StaticResource ObsidianSurface}" CornerRadius="{StaticResource ControlCornerRadius}" Padding="20">
+                                <StackPanel Spacing="24">
+                                    <!-- VMC Settings -->
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Text="VIRTUAL MEMORY CARDS" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
+                                        <Grid ColumnDefinitions="*, 12, *">
+                                            <StackPanel Grid.Column="0" Spacing="4">
+                                                <TextBlock Text="Slot 1" FontSize="11" Foreground="{StaticResource ObsidianTextDim}"/>
+                                                <Grid ColumnDefinitions="*, Auto">
+                                                    <ComboBox Name="VMC_1" HorizontalAlignment="Stretch" SelectionChanged="VMC_1_OnSelectionChanged"/>
+                                                    <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
+                                                </Grid>
                                             </StackPanel>
+                                            <StackPanel Grid.Column="2" Spacing="4">
+                                                <TextBlock Text="Slot 2" FontSize="11" Foreground="{StaticResource ObsidianTextDim}"/>
+                                                <Grid ColumnDefinitions="*, Auto">
+                                                    <ComboBox Name="VMC_2" HorizontalAlignment="Stretch" SelectionChanged="VMC_2_OnSelectionChanged"/>
+                                                    <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <!-- Compatibility Modes -->
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Text="COMPATIBILITY MODES" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
+                                        <Border Background="{StaticResource ObsidianSurfaceLight}" CornerRadius="8" Padding="12">
+                                            <UniformGrid Columns="3">
+                                                <ToggleSwitch Name="toggle_mode1" Content="Mode 1" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                                <ToggleSwitch Name="toggle_mode2" Content="Mode 2" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                                <ToggleSwitch Name="toggle_mode3" Content="Mode 3" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                                <ToggleSwitch Name="toggle_mode4" Content="Mode 4" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                                <ToggleSwitch Name="toggle_mode5" Content="Mode 5" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                                <ToggleSwitch Name="toggle_mode6" Content="Mode 6" IsCheckedChanged="Toggle_mode_OnIsCheckedChanged"/>
+                                            </UniformGrid>
                                         </Border>
                                     </StackPanel>
+
+                                    <!-- Tools -->
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Text="TOOLS" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
+                                        <StackPanel Spacing="8">
+                                            <Button Content="Calculate Checksums" Click="ChecksumButtonOnClick" HorizontalAlignment="Stretch"/>
+                                            <Border Background="{StaticResource ObsidianSurfaceLight}" CornerRadius="{StaticResource ControlCornerRadius}" Padding="12" IsVisible="False" Name="ChecksumArea">
+                                                <StackPanel Spacing="4">
+                                                    <SelectableTextBlock Text="MD5" FontSize="10" Foreground="{StaticResource ObsidianTextDim}"/>
+                                                    <SelectableTextBlock Name="MD5TextBlock" FontSize="12" FontFamily="Consolas,Monospace"/>
+                                                    <SelectableTextBlock Text="SHA1" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" Margin="0,8,0,0"/>
+                                                    <SelectableTextBlock Name="SHATextBlock" FontSize="12" FontFamily="Consolas,Monospace"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </ScrollViewer>
-                        
-                        <!-- Footer Action Buttons -->
-                        <Grid Grid.Row="1" ColumnDefinitions="*, 12, *" Margin="0,20,0,0">
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                    
+                    <!-- Sticky Footer -->
+                    <Border Grid.Row="1" Background="{StaticResource ObsidianSurface}" CornerRadius="{StaticResource ControlCornerRadius}" Padding="20" Margin="0,12,0,0">
+                        <Grid ColumnDefinitions="*, 12, *">
                             <Button Content="Undo Changes" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="Undo_OnClick"/>
                             <Button Content="Save Changes" Classes="accent" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="Save_OnClick"/>
                         </Grid>
-                    </Grid>
-                </Border>
+                    </Border>
+                </Grid>
             </Grid>
         </Border>
     </Grid>
 
-    <!-- Status Bar -->
     <Border Grid.Row="1" Height="28" Background="{StaticResource ObsidianSurface}" BorderThickness="0,1,0,0" BorderBrush="{StaticResource ObsidianSurfaceLight}">
         <Grid ColumnDefinitions="*, Auto" Margin="12,0">
             <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
