@@ -27,12 +27,12 @@
                                FontSize="10" 
                                Foreground="{StaticResource ObsidianTextDim}" 
                                LetterSpacing="2"/>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
-                        <Button Name="ListViewButton" Click="ViewToggle_Click" Background="Transparent" BorderThickness="0" Width="32" Height="32" Padding="0">
-                            <TextBlock Text="≡" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="0" VerticalAlignment="Center">
+                        <Button Name="ListViewButton" Click="ViewToggle_Click" Background="Transparent" BorderThickness="0" Width="36" Height="32" Padding="0">
+                            <TextBlock Text="≡" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransform="translateY(1px)"/>
                         </Button>
-                        <Button Name="GridViewButton" Click="ViewToggle_Click" Background="Transparent" BorderThickness="0" Opacity="0.5" Width="32" Height="32" Padding="0">
-                            <TextBlock Text="⊞" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button Name="GridViewButton" Click="ViewToggle_Click" Background="Transparent" BorderThickness="0" Opacity="0.5" Width="36" Height="32" Padding="0">
+                            <TextBlock Text="⊞" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -47,9 +47,10 @@
                 
                 <Panel Grid.Row="2">
                     <!-- List View -->
-                    <ListBox Name="GamesList" SelectionChanged="GamesList_OnSelectionChanged">
+                    <ListBox Name="GamesList" SelectionChanged="GamesList_OnSelectionChanged" Background="Transparent">
                         <ListBox.Styles>
                             <Style Selector="ListBoxItem">
+                                <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="ContextMenu">
                                     <Setter.Value>
                                         <ContextMenu>
@@ -58,6 +59,10 @@
                                                     <Image Source="Assets/bin.png" Width="16" Height="16"/>
                                                 </MenuItem.Icon>
                                             </MenuItem>
+                                            <Separator/>
+                                            <MenuItem Header="Add New Game" Click="OpenFileButton_Clicked"/>
+                                            <MenuItem Header="Refresh List" Click="Context_RefreshGames"/>
+                                            <MenuItem Header="Bulk Scrape Art" Click="BulkScrape_Click"/>
                                         </ContextMenu>
                                     </Setter.Value>
                                 </Setter>
@@ -88,6 +93,14 @@
 
                     <!-- Grid View -->
                     <ScrollViewer Name="GamesGridScroller" IsVisible="False">
+                        <ScrollViewer.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Add New Game" Click="OpenFileButton_Clicked"/>
+                                <MenuItem Header="Refresh List" Click="Context_RefreshGames"/>
+                                <Separator/>
+                                <MenuItem Header="Bulk Scrape Art" Click="BulkScrape_Click"/>
+                            </ContextMenu>
+                        </ScrollViewer.ContextMenu>
                         <ItemsControl Name="GamesGrid" Padding="8">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
