@@ -67,6 +67,12 @@ public partial class MainWindow : Window
         
         GameInfo.IsVisible = !placeholder;
         GameInfoPlaceholder.IsVisible = placeholder;
+
+        if (MainGrid != null && RightPanel != null)
+        {
+            MainGrid.ColumnDefinitions[3].Width = new GridLength(placeholder ? 0 : 350);
+            RightPanel.IsVisible = !placeholder;
+        }
     }
 
     private void SetShowcaseArea()
@@ -198,6 +204,19 @@ public partial class MainWindow : Window
         }
         Games = Games.OrderBy(game => game.Name).ToList();
         GamesList.ItemsSource = Games;
+
+        NoGamesMessage.IsVisible = Games.Count == 0;
+        if (Games.Count == 0)
+        {
+            LibraryStatusText.Text = "Your library is currently empty.";
+            LandingActionHeader.Text = "Get Started";
+        }
+        else
+        {
+            LibraryStatusText.Text = $"You have {Games.Count} games in your library.";
+            LandingActionHeader.Text = "Quick Actions";
+        }
+        
         FetchVMCs();
     }
 

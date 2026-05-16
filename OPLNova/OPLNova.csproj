@@ -25,7 +25,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Images\missing.png" />
+      <None Remove="Assets\oplnova.png" />
+      <AvaloniaResource Include="Assets\oplnova.png" />
+      <None Remove="Assets\missing.png" />
       <AvaloniaResource Include="Assets\missing.png" />
       <None Remove="Images\vmc.png" />
       <AvaloniaResource Include="Assets\vmc.png" />
