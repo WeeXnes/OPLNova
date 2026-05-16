@@ -212,10 +212,10 @@
                                 <Grid ColumnDefinitions="Auto, 24, *">
                                     <!-- Cover Area -->
                                     <StackPanel Grid.Column="0" Spacing="12" VerticalAlignment="Top">
-                                        <!-- Adjusted Aspect Ratio for PS2 Cover (approx 140:200) -->
-                                        <Border Width="154" Height="216" CornerRadius="8" ClipToBounds="True" BoxShadow="0 4 12 0 #80000000" PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
+                                        <!-- Fixed Aspect Ratio for PS2 Cover (180:250) and Stretch="Uniform" -->
+                                        <Border Width="180" Height="250" Background="#10000000" CornerRadius="8" ClipToBounds="True" BoxShadow="0 4 12 0 #80000000" PointerPressed="CoverImage_OnPointerPressed" Name="CoverContainer">
                                             <Grid>
-                                                <Image Name="CoverImage" Source="Assets/missing.png" Stretch="UniformToFill"/>
+                                                <Image Name="CoverImage" Source="Assets/missing.png" Stretch="Uniform"/>
                                                 <TextBlock Name="CoverTextHint" Text="Click to Change" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False" Background="#A0000000" Padding="4"/>
                                             </Grid>
                                         </Border>
@@ -229,18 +229,18 @@
                                     <StackPanel Grid.Column="2" Spacing="16">
                                         <StackPanel Spacing="8">
                                             <TextBlock Text="GAME TITLE" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
-                                            <TextBox Name="NameTextBox_Edit" FontSize="18" FontWeight="Bold"/>
+                                            <TextBox Name="NameTextBox_Edit" FontSize="20" FontWeight="Bold"/>
                                         </StackPanel>
 
                                         <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto">
-                                            <TextBlock Text="Serial:" Grid.Row="0" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,6"/>
-                                            <TextBlock Name="GameIdTextBlock" Grid.Row="0" Grid.Column="1" FontWeight="SemiBold"/>
+                                            <TextBlock Text="Serial:" Grid.Row="0" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,8"/>
+                                            <TextBlock Name="GameIdTextBlock" Grid.Row="0" Grid.Column="1" FontWeight="SemiBold" FontSize="14"/>
                                             
-                                            <TextBlock Text="Size:" Grid.Row="1" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,6"/>
-                                            <TextBlock Name="IsoSizeTextBlock" Grid.Row="1" Grid.Column="1" FontWeight="SemiBold"/>
+                                            <TextBlock Text="Size:" Grid.Row="1" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,8"/>
+                                            <TextBlock Name="IsoSizeTextBlock" Grid.Row="1" Grid.Column="1" FontWeight="SemiBold" FontSize="14"/>
                                             
-                                            <TextBlock Text="Added:" Grid.Row="2" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,6"/>
-                                            <TextBlock Name="GameDateTextBlock" Grid.Row="2" Grid.Column="1" FontWeight="SemiBold"/>
+                                            <TextBlock Text="Added:" Grid.Row="2" Grid.Column="0" Foreground="{StaticResource ObsidianTextDim}" Margin="0,0,12,8"/>
+                                            <TextBlock Name="GameDateTextBlock" Grid.Row="2" Grid.Column="1" FontWeight="SemiBold" FontSize="14"/>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -253,14 +253,14 @@
                                     <StackPanel Spacing="12">
                                         <TextBlock Text="VIRTUAL MEMORY CARDS" FontWeight="Black" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" LetterSpacing="1"/>
                                         <Grid ColumnDefinitions="*, 12, *">
-                                            <StackPanel Grid.Column="0" Spacing="4">
+                                            <StackPanel Grid.Column="0" Spacing="6">
                                                 <TextBlock Text="Slot 1" FontSize="11" Foreground="{StaticResource ObsidianTextDim}"/>
                                                 <Grid ColumnDefinitions="*, Auto">
                                                     <ComboBox Name="VMC_1" HorizontalAlignment="Stretch" SelectionChanged="VMC_1_OnSelectionChanged"/>
                                                     <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
                                                 </Grid>
                                             </StackPanel>
-                                            <StackPanel Grid.Column="2" Spacing="4">
+                                            <StackPanel Grid.Column="2" Spacing="6">
                                                 <TextBlock Text="Slot 2" FontSize="11" Foreground="{StaticResource ObsidianTextDim}"/>
                                                 <Grid ColumnDefinitions="*, Auto">
                                                     <ComboBox Name="VMC_2" HorizontalAlignment="Stretch" SelectionChanged="VMC_2_OnSelectionChanged"/>
