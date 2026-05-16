@@ -15,6 +15,11 @@ public partial class Setup : Window
     public Setup()
     {
         InitializeComponent();
+        string? existingApiUrl = settings.api_url.GetValue<string>();
+        if (!string.IsNullOrEmpty(existingApiUrl))
+        {
+            ApiUrlTextBox.Text = existingApiUrl;
+        }
     }
 
     private void WindowDrag(object? sender, PointerPressedEventArgs e)
@@ -30,6 +35,7 @@ public partial class Setup : Window
         Core.Console.Success("Setup Complete");
         InfoText1.Text = "Setup Finished";
         InfoText2.Text = "You can now exit to the Main Application";
+        ApiUrlTextBox.IsEnabled = false;
         OpenLibraryButton.Content = "Exit";
         OpenLibraryButton.Click -= OpenLibraryButton_OnClick;
         this.SetupFinished = true;
@@ -42,6 +48,10 @@ public partial class Setup : Window
     private async void OpenLibraryButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Core.Console.Info("Open Library Button Clicked");
+        
+        string apiUrl = ApiUrlTextBox.Text ?? "http://localhost:3000";
+        settings.api_url.SetValue(apiUrl);
+
         settings.library_path.SetValue("");
         var topLevel = TopLevel.GetTopLevel(this);
         var path = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
