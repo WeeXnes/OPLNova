@@ -30,6 +30,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        VersionTextBlock.Text = $"OPLNova v{Globals.Version}";
         RefreshGamesListTrigger += FetchGamesFromLibrary;
         ArtworkType.ValueChanged += UpdateArtworks;
         MD5Hash.ValueChanged += () =>

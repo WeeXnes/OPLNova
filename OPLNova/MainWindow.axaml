@@ -329,7 +329,7 @@
                     <TextBlock Name="TotalSizeStat" FontWeight="Bold" FontSize="10"/>
                 </StackPanel>
             </StackPanel>
-            <TextBlock Grid.Column="1" Text="OPLNova v1.7.2" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Name="VersionTextBlock" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" VerticalAlignment="Center"/>
         </Grid>
     </Border>
 </Grid>

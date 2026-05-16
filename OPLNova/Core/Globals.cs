@@ -12,6 +12,7 @@ namespace OPLNova.Core;
 
 public static class Globals
 {
+    public const string Version = "2.0.0";
     public static string SettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".oplnova", "settings.ini");
     public static string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".oplnova", "output.log");
     public static string UserPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".oplnova");
