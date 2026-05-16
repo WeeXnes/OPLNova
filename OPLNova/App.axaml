@@ -80,6 +80,8 @@
 
         <!-- Grid Item Style -->
         <Style Selector="Button.GridItem">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />
             <Setter Property="Transitions">
                 <Transitions>
                     <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />

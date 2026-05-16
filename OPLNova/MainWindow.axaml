@@ -112,9 +112,9 @@
                                     <Button Classes="GridItem" Margin="4" Padding="0" Background="Transparent" Click="GameGridItem_Click" Tag="{Binding}">
                                         <StackPanel Width="80" Spacing="4">
                                             <Border CornerRadius="4" ClipToBounds="True" Height="110" BoxShadow="0 2 4 0 #40000000">
-                                                <Image Source="{Binding ArtworkFront, FallbackValue={StaticResource missing_image}}" Stretch="UniformToFill"/>
+                                                <Image Source="{Binding ArtworkFront, FallbackValue={StaticResource missing_image}}" Stretch="UniformToFill" RenderOptions.BitmapInterpolationMode="HighQuality"/>
                                             </Border>
-                                            <TextBlock Text="{Binding Name}" FontSize="10" TextAlignment="Center" TextWrapping="Wrap" MaxLines="2" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding Name}" FontSize="10" Height="30" VerticalAlignment="Top" TextAlignment="Center" TextWrapping="Wrap" MaxLines="2" FontWeight="SemiBold"/>
                                         </StackPanel>
                                     </Button>
                                 </DataTemplate>
