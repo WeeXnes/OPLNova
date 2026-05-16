@@ -1,0 +1,31 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="OPLNova.VmcCreateDialog"
+        Title="Create Virtual Memory Card"
+        Width="350" Height="200"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource ObsidianBackground}"
+        Foreground="{StaticResource ObsidianText}"
+        CanResize="False">
+    <StackPanel Margin="20" Spacing="16">
+        <StackPanel Spacing="8">
+            <TextBlock Text="VMC Name" FontWeight="SemiBold" Foreground="{StaticResource ObsidianTextDim}"/>
+            <TextBox Name="VmcNameTextBox" Watermark="e.g. MyVMC"/>
+        </StackPanel>
+        
+        <StackPanel Spacing="8">
+            <TextBlock Text="Size" FontWeight="SemiBold" Foreground="{StaticResource ObsidianTextDim}"/>
+            <ComboBox Name="SizeComboBox" HorizontalAlignment="Stretch">
+                <ComboBoxItem Content="8 MB (Standard)"/>
+                <ComboBoxItem Content="16 MB"/>
+                <ComboBoxItem Content="32 MB"/>
+                <ComboBoxItem Content="64 MB"/>
+            </ComboBox>
+        </StackPanel>
+
+        <Grid ColumnDefinitions="*, 12, *">
+            <Button Content="Cancel" Click="Cancel_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <Button Content="Create" Grid.Column="2" Classes="accent" Click="Create_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+        </Grid>
+    </StackPanel>
+</Window>

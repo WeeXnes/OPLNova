@@ -62,6 +62,15 @@ public static class Util
     {
         return bitmap == null;
     }
+
+    public static void CreateVmcFile(string path, long sizeInMb)
+    {
+        long sizeInBytes = sizeInMb * 1024 * 1024;
+        using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+        {
+            fs.SetLength(sizeInBytes);
+        }
+    }
 }
 
 

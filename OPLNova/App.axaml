@@ -6,6 +6,7 @@
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Resources>
+        <Bitmap x:Key="missing_image">/Assets/missing.png</Bitmap>
         <SolidColorBrush x:Key="ObsidianBackground">#0F0F0F</SolidColorBrush>
         <SolidColorBrush x:Key="ObsidianSurface">#1A1A1A</SolidColorBrush>
         <SolidColorBrush x:Key="ObsidianSurfaceLight">#252525</SolidColorBrush>
@@ -75,6 +76,22 @@
             <Setter Property="Background" Value="{StaticResource ObsidianSurfaceLight}" />
             <Setter Property="BorderBrush" Value="{StaticResource ObsidianAccent}" />
             <Setter Property="BorderThickness" Value="2,0,0,0" />
+        </Style>
+
+        <!-- Grid Item Style -->
+        <Style Selector="Button.GridItem">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.GridItem:pointerover">
+            <Setter Property="RenderTransform" Value="scale(1.05)" />
+        </Style>
+        <Style Selector="Button.GridItem:pointerover Border">
+            <Setter Property="BorderBrush" Value="{StaticResource ObsidianAccent}" />
+            <Setter Property="BorderThickness" Value="1" />
         </Style>
         
         <!-- Global ToggleSwitch Style -->

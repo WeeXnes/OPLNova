@@ -13,47 +13,104 @@
         MinWidth="950"
         WindowStartupLocation="CenterScreen"
         Loaded="Control_OnLoaded"
+        KeyDown="MainWindow_OnKeyDown"
         Foreground="{StaticResource ObsidianText}">
-    <Grid Name="MainGrid" ColumnDefinitions="300, 1, *, 350" Margin="12">
+    <Grid RowDefinitions="*, Auto">
+        <Grid Name="MainGrid" Grid.Row="0" ColumnDefinitions="300, 1, *, 350" Margin="12">
         <!-- Left Panel: Games List -->
         <Border Grid.Column="0" Background="{StaticResource ObsidianSurface}" CornerRadius="{StaticResource ControlCornerRadius}" Margin="0,0,6,0">
-            <Grid>
-                <ListBox Name="GamesList" SelectionChanged="GamesList_OnSelectionChanged">
-                    <ListBox.Styles>
-                        <Style Selector="ListBoxItem">
-                            <Setter Property="ContextMenu">
-                                <Setter.Value>
-                                    <ContextMenu>
-                                        <MenuItem Header="Uninstall Game" Click="DeleteButton" Foreground="#FF5555">
-                                            <MenuItem.Icon>
-                                                <Image Source="Assets/bin.png" Width="16" Height="16"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                    </ContextMenu>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.Styles>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate x:DataType="local:Game">
-                            <Grid ColumnDefinitions="Auto, 12, *">
-                                <Panel Grid.Column="0" Width="24" Height="24">
-                                    <Image IsVisible="{Binding Icon.ShowDVD}" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/dvd.png"/>
-                                    <Image IsVisible="{Binding Icon.ShowCD}" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/cd.png"/>
-                                </Panel>
-                                <TextBlock Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" FontWeight="SemiBold"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ContextMenu>
-                        <ContextMenu x:Name="EmptyAreaContextMenu">
-                            <MenuItem Header="Add New Game" Click="OpenFileButton_Clicked"/>
-                            <MenuItem Header="Refresh List" Click="Context_RefreshGames"/>
-                        </ContextMenu>
-                    </ListBox.ContextMenu>
-                </ListBox>
+            <Grid RowDefinitions="Auto, Auto, *">
+                <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="12,8,8,4" Height="32">
+                    <TextBlock Text="LIBRARY" 
+                               VerticalAlignment="Center" 
+                               FontWeight="Black" 
+                               FontSize="11" 
+                               Foreground="{StaticResource ObsidianTextDim}" 
+                               LetterSpacing="2"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                        <Button Name="ListViewButton" Click="ViewToggle_Click" Padding="6,2" Background="Transparent" BorderThickness="0">
+                            <TextBlock Text="≡" FontSize="18" VerticalAlignment="Center"/>
+                        </Button>
+                        <Button Name="GridViewButton" Click="ViewToggle_Click" Padding="6,2" Background="Transparent" BorderThickness="0" Opacity="0.5">
+                            <TextBlock Text="⊞" FontSize="18" VerticalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <TextBox Grid.Row="1" 
+                         Name="SearchTextBox" 
+                         Watermark="Search games..." 
+                         Margin="8,0,8,8" 
+                         Height="32"
+                         VerticalContentAlignment="Center"
+                         TextChanged="SearchTextBox_OnTextChanged"/>
                 
-                <StackPanel Name="NoGamesMessage" VerticalAlignment="Center" HorizontalAlignment="Center" IsVisible="False" Spacing="16">
+                <Panel Grid.Row="2">
+                    <!-- List View -->
+                    <ListBox Name="GamesList" SelectionChanged="GamesList_OnSelectionChanged">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <ContextMenu>
+                                            <MenuItem Header="Uninstall Game" Click="DeleteButton" Foreground="#FF5555">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Assets/bin.png" Width="16" Height="16"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="local:Game">
+                                <Grid ColumnDefinitions="Auto, 12, *">
+                                    <Panel Grid.Column="0" Width="32" Height="32">
+                                        <Image IsVisible="{Binding Icon.ShowDVD}" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/dvd.png"/>
+                                        <Image IsVisible="{Binding Icon.ShowCD}" RenderOptions.BitmapInterpolationMode="HighQuality" Source="Assets/cd.png"/>
+                                    </Panel>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding GameID}" FontSize="10" Foreground="{StaticResource ObsidianTextDim}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ContextMenu>
+                            <ContextMenu x:Name="EmptyAreaContextMenu">
+                                <MenuItem Header="Add New Game" Click="OpenFileButton_Clicked"/>
+                                <MenuItem Header="Refresh List" Click="Context_RefreshGames"/>
+                                <Separator/>
+                                <MenuItem Header="Bulk Scrape Art" Click="BulkScrape_Click"/>
+                            </ContextMenu>                        </ListBox.ContextMenu>
+                    </ListBox>
+
+                    <!-- Grid View -->
+                    <ScrollViewer Name="GamesGridScroller" IsVisible="False">
+                        <ItemsControl Name="GamesGrid" Padding="8">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="local:Game">
+                                    <Button Classes="GridItem" Margin="4" Padding="0" Background="Transparent" Click="GameGridItem_Click" Tag="{Binding}">
+                                        <StackPanel Width="80" Spacing="4">
+                                            <Border CornerRadius="4" ClipToBounds="True" Height="110" BoxShadow="0 2 4 0 #40000000">
+                                                <Image Source="{Binding ArtworkFront, FallbackValue={StaticResource missing_image}}" Stretch="UniformToFill"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding Name}" FontSize="10" TextAlignment="Center" TextWrapping="Wrap" MaxLines="2" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Panel>
+                
+                <StackPanel Grid.Row="2" Name="NoGamesMessage" VerticalAlignment="Center" HorizontalAlignment="Center" IsVisible="False" Spacing="16">
                     <Image Source="Assets/missing.png" Width="48" Height="48" Opacity="0.2"/>
                     <TextBlock Text="No Games Found" 
                                HorizontalAlignment="Center" 
@@ -138,11 +195,17 @@
                                 <Grid ColumnDefinitions="*, 16, *">
                                     <StackPanel Grid.Column="0" Spacing="8">
                                         <TextBlock Text="Virtual Memory Card 1" FontWeight="SemiBold" Foreground="{StaticResource ObsidianTextDim}"/>
-                                        <ComboBox Name="VMC_1" HorizontalAlignment="Stretch" SelectionChanged="VMC_1_OnSelectionChanged"/>
+                                        <Grid ColumnDefinitions="*, Auto">
+                                            <ComboBox Name="VMC_1" HorizontalAlignment="Stretch" SelectionChanged="VMC_1_OnSelectionChanged"/>
+                                            <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
+                                        </Grid>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Spacing="8">
                                         <TextBlock Text="Virtual Memory Card 2" FontWeight="SemiBold" Foreground="{StaticResource ObsidianTextDim}"/>
-                                        <ComboBox Name="VMC_2" HorizontalAlignment="Stretch" SelectionChanged="VMC_2_OnSelectionChanged"/>
+                                        <Grid ColumnDefinitions="*, Auto">
+                                            <ComboBox Name="VMC_2" HorizontalAlignment="Stretch" SelectionChanged="VMC_2_OnSelectionChanged"/>
+                                            <Button Grid.Column="1" Content="+" Click="CreateVMC_Click" Margin="4,0,0,0" ToolTip.Tip="Create New VMC"/>
+                                        </Grid>
                                     </StackPanel>
                                 </Grid>
 
@@ -224,4 +287,21 @@
             </Grid>
         </Border>
     </Grid>
+
+    <Border Grid.Row="1" Height="28" Background="{StaticResource ObsidianSurface}" BorderThickness="0,1,0,0" BorderBrush="{StaticResource ObsidianSurfaceLight}">
+        <Grid ColumnDefinitions="*, Auto" Margin="12,0">
+            <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock Text="Total Games:" Foreground="{StaticResource ObsidianTextDim}" FontSize="10"/>
+                    <TextBlock Name="TotalGamesStat" FontWeight="Bold" FontSize="10"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock Text="Total Size:" Foreground="{StaticResource ObsidianTextDim}" FontSize="10"/>
+                    <TextBlock Name="TotalSizeStat" FontWeight="Bold" FontSize="10"/>
+                </StackPanel>
+            </StackPanel>
+            <TextBlock Grid.Column="1" Text="OPLNova v1.0" FontSize="10" Foreground="{StaticResource ObsidianTextDim}" VerticalAlignment="Center"/>
+        </Grid>
+    </Border>
+</Grid>
 </Window>

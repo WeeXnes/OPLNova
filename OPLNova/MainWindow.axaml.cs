@@ -21,6 +21,8 @@ public partial class MainWindow : Window
 {
     public static EventHandler? RefreshGamesListTrigger { get; set; }
     
+    private List<Game> _allGames = new();
+    
     public UpdateVar<Artwork.Type> ArtworkType { get; set; } = new UpdateVar<Artwork.Type>();
     public UpdateVar<string> MD5Hash { get; set; } = new UpdateVar<string>();
     public UpdateVar<string> SHA1Hash { get; set; } = new UpdateVar<string>();
@@ -169,9 +171,15 @@ public partial class MainWindow : Window
     
     public void FetchGamesFromLibrary(object? sender = null, EventArgs? e = null)
     {
+        if (!Dispatcher.UIThread.CheckAccess())
+        {
+            Dispatcher.UIThread.Post(() => FetchGamesFromLibrary(sender, e));
+            return;
+        }
+        
         SwitchView(true);
         Console.Info("Fetching games from library...");
-        List<Game> Games = new List<Game>();
+        _allGames.Clear();
         string[] filesDVDDir = Directory.GetFiles(Path.Combine(settings.library_path.GetValue<string>(), "DVD"));
         foreach (var file in filesDVDDir)
         {
@@ -179,7 +187,7 @@ public partial class MainWindow : Window
             {
                 Game newGame =
                     new Game(file, true);
-                Games.Add(newGame);
+                _allGames.Add(newGame);
                 Console.Success("Successfully fetched " + newGame);
             }
             else
@@ -194,7 +202,7 @@ public partial class MainWindow : Window
             {
                 Game newGame =
                     new Game(file, true);
-                Games.Add(newGame);
+                _allGames.Add(newGame);
                 Console.Success("Successfully fetched " + newGame);
             }
             else
@@ -202,22 +210,105 @@ public partial class MainWindow : Window
                 Console.WriteLine("Skipped non-ISO file: " + file);
             }
         }
-        Games = Games.OrderBy(game => game.Name).ToList();
-        GamesList.ItemsSource = Games;
+        _allGames = _allGames.OrderBy(game => game.Name).ToList();
+        
+        ApplyFiltering();
+        
+        FetchVMCs();
+    }
 
-        NoGamesMessage.IsVisible = Games.Count == 0;
-        if (Games.Count == 0)
+    private void ApplyFiltering()
+    {
+        string searchText = SearchTextBox?.Text ?? "";
+        var filteredGames = string.IsNullOrWhiteSpace(searchText) 
+            ? _allGames 
+            : _allGames.Where(g => g.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) || 
+                                   g.GameID.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        GamesList.ItemsSource = filteredGames;
+        GamesGrid.ItemsSource = filteredGames;
+
+        NoGamesMessage.IsVisible = filteredGames.Count == 0;
+        
+        long totalSize = 0;
+        foreach (var game in _allGames)
+        {
+            try { totalSize += new FileInfo(game.GamePath).Length; } catch { }
+        }
+        
+        TotalGamesStat.Text = _allGames.Count.ToString();
+        TotalSizeStat.Text = Util.FormatFileSize(totalSize);
+
+        if (_allGames.Count == 0)
         {
             LibraryStatusText.Text = "Your library is currently empty.";
             LandingActionHeader.Text = "Get Started";
         }
-        else
+        else if (filteredGames.Count == 0)
         {
-            LibraryStatusText.Text = $"You have {Games.Count} games in your library.";
+            LibraryStatusText.Text = $"No games matching \"{searchText}\" found.";
             LandingActionHeader.Text = "Quick Actions";
         }
+        else
+        {
+            LibraryStatusText.Text = $"You have {_allGames.Count} games in your library.";
+            LandingActionHeader.Text = "Quick Actions";
+        }
+    }
+
+    private void ViewToggle_Click(object? sender, RoutedEventArgs e)
+    {
+        bool isGridView = sender == GridViewButton;
+        GamesList.IsVisible = !isGridView;
+        GamesGridScroller.IsVisible = isGridView;
         
-        FetchVMCs();
+        ListViewButton.Opacity = isGridView ? 0.5 : 1.0;
+        GridViewButton.Opacity = isGridView ? 1.0 : 0.5;
+    }
+
+    private void GameGridItem_Click(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is Game game)
+        {
+            GamesList.SelectedItem = game;
+        }
+    }
+
+    private void SearchTextBox_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        ApplyFiltering();
+    }
+
+    private void MainWindow_OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control)
+        {
+            SearchTextBox.Focus();
+        }
+        else if (e.Key == Key.F5)
+        {
+            FetchGamesFromLibrary();
+        }
+        else if (e.Key == Key.Delete)
+        {
+            DeleteButton(null, new RoutedEventArgs());
+        }
+    }
+
+    private async void CreateVMC_Click(object? sender, RoutedEventArgs e)
+    {
+        var dialog = new VmcCreateDialog();
+        var result = await dialog.ShowDialog<bool>(this);
+        if (result)
+        {
+            FetchVMCs();
+        }
+    }
+
+    private void BulkScrape_Click(object? sender, RoutedEventArgs e)
+    {
+        var scraper = new BulkScraperWindow(_allGames);
+        scraper.ShowDialog(this);
     }
 
     private void FetchVMCs()

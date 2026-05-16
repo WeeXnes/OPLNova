@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="OPLNova.BulkScraperWindow"
+        Title="Bulk Artwork Scraper"
+        Width="500" Height="400"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource ObsidianBackground}"
+        Foreground="{StaticResource ObsidianText}"
+        CanResize="False">
+    <Grid RowDefinitions="Auto, *, Auto" Margin="20">
+        <StackPanel Grid.Row="0" Spacing="8" Margin="0,0,0,20">
+            <TextBlock Text="Scraping Artwork..." FontSize="18" FontWeight="Bold"/>
+            <ProgressBar Name="ScrapeProgressBar" Height="20" Foreground="{StaticResource ObsidianAccent}"/>
+            <TextBlock Name="StatusTextBlock" Text="Preparing..." FontSize="12" Foreground="{StaticResource ObsidianTextDim}"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Background="{StaticResource ObsidianSurface}" CornerRadius="8" Padding="10">
+            <ScrollViewer>
+                <SelectableTextBlock Name="LogTextBlock" FontSize="11" FontFamily="Consolas,Monospace"/>
+            </ScrollViewer>
+        </Border>
+
+        <Button Name="CloseButton" Grid.Row="2" Content="Close" Click="Close_Click" HorizontalAlignment="Right" Margin="0,20,0,0" IsVisible="False"/>
+        <Button Name="StartButton" Grid.Row="2" Content="Start Scraping" Click="Start_Click" Classes="accent" HorizontalAlignment="Stretch" Margin="0,20,0,0"/>
+    </Grid>
+</Window>
