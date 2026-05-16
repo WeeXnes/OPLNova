@@ -219,13 +219,19 @@ public partial class MainWindow : Window
 
     private void ApplyFiltering()
     {
-        string searchText = SearchTextBox?.Text ?? "";
+        if (SearchTextBox == null || GamesList == null) return;
+        
+        string searchText = SearchTextBox.Text ?? "";
         var filteredGames = string.IsNullOrWhiteSpace(searchText) 
-            ? _allGames 
+            ? _allGames.ToList() 
             : _allGames.Where(g => g.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) || 
                                    g.GameID.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
 
+        // Hard reset to prevent Avalonia index sync crashes
         GamesList.SelectedItem = null;
+        GamesList.ItemsSource = null;
+        GamesGrid.ItemsSource = null;
+        
         GamesList.ItemsSource = filteredGames;
         GamesGrid.ItemsSource = filteredGames;
 

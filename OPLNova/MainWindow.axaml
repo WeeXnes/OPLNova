@@ -20,19 +20,18 @@
         <!-- Left Panel: Games List -->
         <Border Grid.Column="0" Background="{StaticResource ObsidianSurface}" CornerRadius="{StaticResource ControlCornerRadius}" Margin="0,0,6,0">
             <Grid RowDefinitions="Auto, Auto, *">
-                <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="8,12,8,4" Height="32">
+                <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="12,12,12,4" Height="32">
                     <TextBlock Text="LIBRARY" 
                                VerticalAlignment="Center" 
                                FontWeight="Black" 
                                FontSize="10" 
                                Foreground="{StaticResource ObsidianTextDim}" 
-                               LetterSpacing="2"
-                               Margin="4,0,0,0"/>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="0" VerticalAlignment="Center">
-                        <Button Name="ListViewButton" Click="ViewToggle_Click" Padding="4" Background="Transparent" BorderThickness="0" Width="32" Height="32">
-                            <TextBlock Text="≡" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                               LetterSpacing="2"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
+                        <Button Name="ListViewButton" Click="ViewToggle_Click" Background="Transparent" BorderThickness="0" Width="32" Height="32" Padding="0">
+                            <TextBlock Text="≡" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
-                        <Button Name="GridViewButton" Click="ViewToggle_Click" Padding="4" Background="Transparent" BorderThickness="0" Opacity="0.5" Width="32" Height="32">
+                        <Button Name="GridViewButton" Click="ViewToggle_Click" Background="Transparent" BorderThickness="0" Opacity="0.5" Width="32" Height="32" Padding="0">
                             <TextBlock Text="⊞" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
                     </StackPanel>
@@ -41,7 +40,7 @@
                 <TextBox Grid.Row="1" 
                          Name="SearchTextBox" 
                          Watermark="Search games..." 
-                         Margin="8,0,8,8" 
+                         Margin="12,0,12,12" 
                          Height="32"
                          VerticalContentAlignment="Center"
                          TextChanged="SearchTextBox_OnTextChanged"/>
