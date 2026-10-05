@@ -67,7 +67,7 @@ chmod +x OPLNova_Linux_x64.AppImage
 Or extract the `.zip` and run the `OPLNova` binary directly.
 
 For macOS (Intel x64):
-Download `OPLNova_macOS_x64.zip`, extract it to your `Applications` folder, and launch `OPLNova.app`.
+Download `OPLNova_macOS_x64.dmg`, open it, and drag `OPLNova` to your `Applications` folder (or extract `OPLNova_macOS_x64.zip`).
 *Note: On first launch, if macOS Gatekeeper displays a security notice (unidentified developer), Control-click (right-click) `OPLNova.app` and choose **Open**, or run `xattr -cr /Applications/OPLNova.app` in Terminal.*
 
 These builds are self-contained and do not require the .NET runtime.

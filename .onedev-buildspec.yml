@@ -240,7 +240,32 @@ jobs:
         # Ad-hoc sign app bundle to prevent Gatekeeper damage error
         curl -sL https://github.com/indygreg/apple-platform-rs/releases/download/apple-codesign%2F0.29.0/apple-codesign-0.29.0-x86_64-unknown-linux-musl.tar.gz | tar -xz
         ./apple-codesign-0.29.0-x86_64-unknown-linux-musl/rcodesign sign OPLNova.app
+
+        # Build macOS DMG installer with drag-to-Applications symlink
+        mkdir -p dmg_root
+        cp -r OPLNova.app dmg_root/
+        ln -s /Applications dmg_root/Applications
+        mkdir -p release
+
+        ISO_TOOL=""
+        if command -v mkisofs >/dev/null 2>&1; then
+          ISO_TOOL="mkisofs"
+        elif command -v genisoimage >/dev/null 2>&1; then
+          ISO_TOOL="genisoimage"
+        fi
+
+        if [ -n "$ISO_TOOL" ]; then
+          $ISO_TOOL -D -V "OPLNova" -no-pad -r -apple -file-mode 0777 -o tmp_oplnova.img dmg_root
+          chmod +x ./tools/dmg
+          ./tools/dmg dmg tmp_oplnova.img release/OPLNova_macOS_x64.dmg
+          rm -f tmp_oplnova.img
+          ./apple-codesign-0.29.0-x86_64-unknown-linux-musl/rcodesign sign release/OPLNova_macOS_x64.dmg
+        else
+          echo "Warning: Neither mkisofs nor genisoimage found on runner; skipping DMG creation."
+        fi
+
         rm -rf apple-codesign-0.29.0-x86_64-unknown-linux-musl
+        rm -rf dmg_root
     useTTY: true
     condition: ALWAYS
     optional: false
