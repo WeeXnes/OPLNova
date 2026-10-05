@@ -55,7 +55,7 @@ You can install **OPLNova** using one of the following methods:
 
 ### Option 1: Download Prebuilt Binaries
 
-Prebuilt packages are available from the [CI builds](https://code.weexnes.dev/oplnova/~builds) (Linux x64 and Windows x64).
+Prebuilt packages are available from the [CI builds](https://code.weexnes.dev/oplnova/~builds) (Linux x64, Windows x64, and macOS x64).
 
 To use the AppImage (Linux Only!):
 
@@ -65,6 +65,9 @@ chmod +x OPLNova_Linux_x64.AppImage
 ```
 
 Or extract the `.zip` and run the `OPLNova` binary directly.
+
+For macOS (Intel x64):
+Download `OPLNova_macOS_x64.zip`, extract it, and launch `OPLNova.app`.
 
 These builds are self-contained and do not require the .NET runtime.
 

@@ -172,6 +172,22 @@ jobs:
     condition: ALWAYS
     optional: false
   - type: CommandStep
+    name: Dotnet Publish (macOS x64)
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        dotnet publish ./OPLNova/OPLNova.csproj \
+                    -c Release \
+                    -r osx-x64 \
+                    --self-contained true \
+                    -p:PublishSingleFile=true \
+                    -p:PublishTrimmed=true \
+                    -o ./output_osx
+    useTTY: true
+    condition: ALWAYS
+    optional: false
+  - type: CommandStep
     name: Download AppImageTool (Linux x64)
     runInContainer: false
     interpreter:
@@ -201,6 +217,25 @@ jobs:
     condition: ALWAYS
     optional: false
   - type: CommandStep
+    name: Build macOS App (macOS x64)
+    runInContainer: false
+    interpreter:
+      type: DefaultInterpreter
+      commands: |
+        mkdir -p OPLNova.app/Contents/MacOS
+        mkdir -p OPLNova.app/Contents/Resources
+        cp -r ./output_osx/* OPLNova.app/Contents/MacOS/
+        chmod +x OPLNova.app/Contents/MacOS/OPLNova
+        version=$(grep -oPm1 "(?<=<FileVersion>)[^<]+" OPLNova/OPLNova.csproj || echo "@tag@")
+        sed "s/@VERSION@/${version}/g" OPLNova/Assets/Info.plist > OPLNova.app/Contents/Info.plist
+        if [ -f OPLNova/Assets/oplnova.icns ]; then
+          cp OPLNova/Assets/oplnova.icns OPLNova.app/Contents/Resources/
+        fi
+        cp OPLNova/Assets/oplnova.png OPLNova.app/Contents/Resources/
+    useTTY: true
+    condition: ALWAYS
+    optional: false
+  - type: CommandStep
     name: Pack Releases into Zips
     runInContainer: false
     interpreter:
@@ -209,7 +244,8 @@ jobs:
         mkdir -p ./release
         zip -r ./release/OPLNova_Linux_x64.zip ./output_linux
         zip -r ./release/OPLNova_Windows_x64.zip ./output_win
-        rm -rf ./output_linux ./output_win
+        zip -r ./release/OPLNova_macOS_x64.zip OPLNova.app
+        rm -rf ./output_linux ./output_win ./output_osx OPLNova.app
     useTTY: true
     condition: ALWAYS
     optional: false
