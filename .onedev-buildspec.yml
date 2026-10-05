@@ -226,8 +226,8 @@ jobs:
         mkdir -p OPLNova.app/Contents/Resources
         cp -r ./output_osx/* OPLNova.app/Contents/MacOS/
         chmod +x OPLNova.app/Contents/MacOS/OPLNova
-        version=$(grep -oPm1 "(?<=<FileVersion>)[^<]+" OPLNova/OPLNova.csproj || echo "@tag@")
-        sed "s/@VERSION@/${version}/g" OPLNova/Assets/Info.plist > OPLNova.app/Contents/Info.plist
+        version=$(grep -oPm1 "(?<=<FileVersion>)[^<]+" OPLNova/OPLNova.csproj)
+        sed "s/__VERSION__/${version}/g" OPLNova/Assets/Info.plist > OPLNova.app/Contents/Info.plist
         if [ -f OPLNova/Assets/oplnova.icns ]; then
           cp OPLNova/Assets/oplnova.icns OPLNova.app/Contents/Resources/
         fi
