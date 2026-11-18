@@ -1,6 +1,8 @@
-version: 43
+version: 59
 jobs:
 - name: Get Version (private)
+  executeInSandbox: false
+  jobExecutor: Builder
   steps:
   - type: CheckoutStep
     name: checkout code
@@ -14,11 +16,13 @@ jobs:
     name: get version
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         echo "Extracting FileVersion from OPLNova.csproj..."
         grep -oPm1 "(?<=<FileVersion>)[^<]+" OPLNova/OPLNova.csproj > version.txt
         echo "FileVersion extracted: $(cat version.txt)"
+    runAs: 0:0
     useTTY: true
     condition: SUCCESSFUL
     optional: false
@@ -26,7 +30,8 @@ jobs:
     name: Update Cutting Edge AUR Package
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         repo_url="ssh://aur@@aur.archlinux.org/oplnova-git.git"
         repo_dir="oplnova-git"
@@ -52,6 +57,7 @@ jobs:
           git commit -m "Automatically updated version to @commit_hash@"
           git push
         )
+    runAs: 0:0
     useTTY: true
     condition: SUCCESSFUL
     optional: true
@@ -59,7 +65,8 @@ jobs:
     name: check if tag exists
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         version=$(cat version.txt)
         echo "Checking if tag '$version' exists on origin..."
@@ -76,6 +83,7 @@ jobs:
             echo "Tag '$version' does not exist. Proceeding with original version."
             exit 0
         fi
+    runAs: 0:0
     useTTY: true
     condition: SUCCESSFUL
     optional: false
@@ -94,7 +102,8 @@ jobs:
     name: Update Stable AUR Package
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         repo_url="ssh://aur@@aur.archlinux.org/oplnova.git"
         repo_dir="oplnova"
@@ -112,19 +121,23 @@ jobs:
           git commit -m "Automatically updated version to ${version}"
           git push
         )
+    runAs: 0:0
     useTTY: true
     condition: SUCCESSFUL
     optional: false
-  jobExecutor: Builder
   triggers:
   - type: BranchUpdateTrigger
     userMatch: anyone
   - type: PullRequestUpdateTrigger
   retryCondition: never
-  maxRetries: 3
+  maxAttempts: 4
   retryDelay: 30
+  includeUpstreamWhenRebuild: false
+  includeDownstreamWhenRebuild: false
   timeout: 14400
 - name: Build Release Tag
+  executeInSandbox: false
+  jobExecutor: Builder
   steps:
   - type: CheckoutStep
     name: checkout code
@@ -143,7 +156,8 @@ jobs:
     name: Dotnet Publish (Linux x64)
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         dotnet publish ./OPLNova/OPLNova.csproj \
                     -c Release \
@@ -152,6 +166,7 @@ jobs:
                     -p:PublishSingleFile=true \
                     -p:PublishTrimmed=true \
                     -o ./output_linux
+    runAs: 0:0
     useTTY: true
     condition: ALWAYS
     optional: false
@@ -159,7 +174,8 @@ jobs:
     name: Dotnet Publish (Windows x64)
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         dotnet publish ./OPLNova/OPLNova.csproj \
                     -c Release \
@@ -168,6 +184,7 @@ jobs:
                     -p:PublishSingleFile=true \
                     -p:PublishTrimmed=true \
                     -o ./output_win
+    runAs: 0:0
     useTTY: true
     condition: ALWAYS
     optional: false
@@ -175,7 +192,8 @@ jobs:
     name: Dotnet Publish (macOS x64)
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         dotnet publish ./OPLNova/OPLNova.csproj \
                     -c Release \
@@ -186,6 +204,7 @@ jobs:
                     -p:DebugType=None \
                     -p:DebugSymbols=false \
                     -o ./output_osx
+    runAs: 0:0
     useTTY: true
     condition: ALWAYS
     optional: false
@@ -193,10 +212,12 @@ jobs:
     name: Download AppImageTool (Linux x64)
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         curl -L -o appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
         chmod +x appimagetool-x86_64.AppImage
+    runAs: 0:0
     useTTY: true
     condition: ALWAYS
     optional: false
@@ -204,7 +225,8 @@ jobs:
     name: Build AppImage (Linux x64)
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         mkdir -p OPLNova.AppDir/usr/bin
         cp -r ./output_linux/* OPLNova.AppDir/usr/bin/
@@ -215,6 +237,7 @@ jobs:
         ./appimagetool-x86_64.AppImage OPLNova.AppDir
         mkdir -p release
         mv OPLNova-x86_64.AppImage release/OPLNova_Linux_x64.AppImage
+    runAs: 0:0
     useTTY: true
     condition: ALWAYS
     optional: false
@@ -222,7 +245,8 @@ jobs:
     name: Build macOS App (macOS x64)
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         mkdir -p OPLNova.app/Contents/MacOS
         mkdir -p OPLNova.app/Contents/Resources
@@ -266,6 +290,7 @@ jobs:
 
         rm -rf apple-codesign-0.29.0-x86_64-unknown-linux-musl
         rm -rf dmg_root
+    runAs: 0:0
     useTTY: true
     condition: ALWAYS
     optional: false
@@ -273,13 +298,15 @@ jobs:
     name: Pack Releases into Zips
     runInContainer: false
     interpreter:
-      type: DefaultInterpreter
+      type: PosixInterpreter
+      shell: sh
       commands: |
         mkdir -p ./release
         zip -r ./release/OPLNova_Linux_x64.zip ./output_linux
         zip -r ./release/OPLNova_Windows_x64.zip ./output_win
         zip -r -y ./release/OPLNova_macOS_x64.zip OPLNova.app
         rm -rf ./output_linux ./output_win ./output_osx OPLNova.app
+    runAs: 0:0
     useTTY: true
     condition: ALWAYS
     optional: false
@@ -289,12 +316,36 @@ jobs:
     artifacts: '**'
     condition: ALWAYS
     optional: false
-  jobExecutor: Builder
   triggers:
   - type: TagCreateTrigger
     branches: master
     projects: OPLNova
   retryCondition: never
-  maxRetries: 3
+  maxAttempts: 4
   retryDelay: 30
+  includeUpstreamWhenRebuild: false
+  includeDownstreamWhenRebuild: false
   timeout: 14400
+- name: Mirror to GitHub
+  executeInSandbox: false
+  jobExecutor: Builder
+  steps:
+  - type: PushRepository
+    name: push to github.com/WeeXnes/OPLNova
+    remoteUrl: https://github.com/WeeXnes/OPLNova.git
+    userName: WeeXnes
+    passwordSecret: github-mirror-token
+    force: false
+    condition: SUCCESSFUL
+    optional: false
+  triggers:
+  - type: BranchUpdateTrigger
+    userMatch: anyone
+  - type: TagCreateTrigger
+    projects: OPLNova
+  retryCondition: never
+  maxAttempts: 4
+  retryDelay: 30
+  includeUpstreamWhenRebuild: false
+  includeDownstreamWhenRebuild: false
+  timeout: 3600
