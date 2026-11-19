@@ -1,63 +1,59 @@
 # OPLNova
 
-[![AUR Stable](https://img.shields.io/aur/version/oplnova)](https://img.shields.io/aur/version/oplnova)
-[![AUR Git](https://img.shields.io/aur/version/oplnova-git)](https://img.shields.io/aur/version/oplnova-git)
+Modern, open-source alternative to OPL Manager for managing PS2 games with Open PS2 Loader (OPL).
 
-## Overview
+[![Download](https://img.shields.io/badge/download-latest-000000?style=flat-square&labelColor=1f1f1f)](https://code.weexnes.dev/oplnova/~builds)
+[![AUR Stable](https://img.shields.io/aur/version/oplnova?style=flat-square&label=aur&color=000000&labelColor=1f1f1f)](https://aur.archlinux.org/packages/oplnova)
+[![AUR Git](https://img.shields.io/aur/version/oplnova-git?style=flat-square&label=aur-git&color=000000&labelColor=1f1f1f)](https://aur.archlinux.org/packages/oplnova-git)
+[![License](https://img.shields.io/badge/license-GPL--3.0-000000?style=flat-square&labelColor=1f1f1f)](LICENSE)
 
-OPLNova is a modern, open-source alternative to OPL Manager designed to provide a more streamlined and user-friendly experience for managing your PS2 games with the Open PS2 Loader (OPL). This tool allows you to easily organize and manage your PS2 game collection, offering features such as cover art management, and more.
+OPLNova is designed to give a more streamlined and user-friendly experience for managing your PS2 games with OPL.
+It lets you organize and manage your PS2 game collection, with features such as cover art management, and more.
 
-### Key Features:
-- **Modern and Intuitive Interface**: A redesigned UI focused on ease of use, making managing PS2 games a smooth and enjoyable experience.
-- **Open-Source**: OPLNova is completely open-source and free to use. Contributions are welcome, and the community plays a key role in its development.
-- **CD/DVD Support**: OPLNova supports DVDs in ISO format and CDs in BIN/CUE format with its included BIN to ISO converter
-- **Virtual Memory Cards Support**: Configure and manage virtual memory cards to store your game saves. (VMC's need to be created via OPL right now tho)
-- **Mode Toggles**
+<img src="Images/screenshot_1.png" width="860" alt="OPLNova" />
 
-## Screenshots
+The main interface: an easy-to-navigate layout for managing and organizing your games.
 
-Here are a few screenshots showcasing the user interface and functionality of the program:
+## Features
 
-### General Overview of the Program
+- **Modern and intuitive interface:** a redesigned UI focused on ease of use, making managing PS2 games smooth and enjoyable.
+- **Open source:** OPLNova is completely open source and free to use. Contributions are welcome, and the community plays a key role in its development.
+- **CD/DVD support:** DVDs in ISO format, and CDs in BIN/CUE format with the included BIN to ISO converter.
+- **Virtual memory card support:** configure and manage virtual memory cards to store your game saves. (VMCs need to be created via OPL for now.)
+- **Mode toggles.**
 
-![General Overview](Images/screenshot_1.png)
+### Cover art
 
-This screenshot showcases the main interface of OPLNova. It highlights the easy-to-navigate layout, with the ability to manage and organize your games in a modern, visually appealing way.
+| | | |
+| :-- | :-- | :-- |
+| <img src="Images/preview_1.png" width="280" alt="Game preview 1" /> | <img src="Images/preview_2.png" width="280" alt="Game preview 2" /> | <img src="Images/preview_3.png" width="280" alt="Game preview 3" /> |
 
-### Game Preview: Cover Art Display
+The selected game's cover art. OPLNova can display multiple cover art variations for each game.
 
-<div style="display: flex; justify-content: space-between;">
+### Modern design and UX
 
-  <img src="Images/preview_1.png" alt="Game Preview 1" width="30%" />
-  <img src="Images/preview_2.png" alt="Game Preview 2" width="30%" />
-  <img src="Images/preview_3.png" alt="Game Preview 3" width="30%" />
+OPLNova was built with modern design principles in mind: an interface that feels familiar and intuitive, reducing the
+learning curve for new users while also providing advanced features for experienced users. The design prioritizes
+ease of use, clean aesthetics and an efficient workflow, so you can quickly find and manage your PS2 games.
 
-</div>
-
-This final screenshot provides another look at the selected game's cover art. It demonstrates the program’s ability to display multiple cover art variations for each game.
-
-## Modern Design and UX
-
-OPLNova was built with **modern design principles** in mind. We focused on creating an interface that feels familiar and intuitive, reducing the learning curve for new users while also providing advanced features for experienced users. The design prioritizes ease of use, clean aesthetics, and efficient workflow, allowing you to quickly find and manage your PS2 games.
-
-### Some improvements include:
-- **Simple and Clear Navigation**: The streamlined layout allows for quick access to all essential features.
-- **Responsive Design**: The program adapts well to different screen sizes and resolutions, providing an optimal experience regardless of your device.
-- **Optimized Performance**: With faster loading times and smooth transitions, the program ensures a seamless experience even with large game libraries.
+- **Simple and clear navigation:** the streamlined layout gives quick access to all essential features.
+- **Responsive design:** the program adapts to different screen sizes and resolutions.
+- **Optimized performance:** fast loading times and smooth transitions, even with large game libraries.
 
 ## Disclaimer
 
-This project does **NOT** support piracy in any form. Please ensure that all game images you use are legally obtained. We encourage users to only use game images that they have personally dumped from their own legally owned discs. The developers of this tool do not condone or support the use of illegally obtained game images.
+This project does **not** support piracy in any form. Please ensure that all game images you use are legally obtained.
+We encourage users to only use game images they have personally dumped from their own legally owned discs. The
+developers of this tool do not condone or support the use of illegally obtained game images.
 
-## Installation
+## Install
 
-You can install **OPLNova** using one of the following methods:
+### Prebuilt binaries
 
-### Option 1: Download Prebuilt Binaries
+Prebuilt packages are available from the [CI builds](https://code.weexnes.dev/oplnova/~builds) (Linux x64, Windows x64 and macOS x64).
+These builds are self-contained and do not require the .NET runtime.
 
-Prebuilt packages are available from the [CI builds](https://code.weexnes.dev/oplnova/~builds) (Linux x64, Windows x64, and macOS x64).
-
-To use the AppImage (Linux Only!):
+**Linux (AppImage):**
 
 ```bash
 chmod +x OPLNova_Linux_x64.AppImage
@@ -66,36 +62,32 @@ chmod +x OPLNova_Linux_x64.AppImage
 
 Or extract the `.zip` and run the `OPLNova` binary directly.
 
-For macOS (Intel x64):
-Download `OPLNova_macOS_x64.dmg`, open it, and drag `OPLNova` to your `Applications` folder (or extract `OPLNova_macOS_x64.zip`).
-*Note: On first launch, if macOS Gatekeeper displays a security notice (unidentified developer), Control-click (right-click) `OPLNova.app` and choose **Open**, or run `xattr -cr /Applications/OPLNova.app` in Terminal.*
+**macOS (Intel x64):** download `OPLNova_macOS_x64.dmg`, open it, and drag `OPLNova` to your `Applications` folder
+(or extract `OPLNova_macOS_x64.zip`).
 
-These builds are self-contained and do not require the .NET runtime.
+> [!NOTE]
+> On first launch, if macOS Gatekeeper shows a security notice (unidentified developer), Control-click (right-click)
+> `OPLNova.app` and choose **Open**, or run `xattr -cr /Applications/OPLNova.app` in Terminal.
 
----
+### AUR (Arch Linux)
 
-### Option 2: Install via AUR (Arch Linux)
+On Arch Linux or a compatible distribution, install from the AUR. This builds and installs OPLNova from source; the
+resulting binary is self-contained and does not require the .NET runtime.
 
-If you're using Arch Linux or a compatible distribution, you can install via the AUR:
-
-Stable:
 ```bash
+# Stable
 yay -S oplnova
-```
-Cutting Edge:
-```bash
+
+# Cutting edge
 yay -S oplnova-git
 ```
 
-This will build and install the latest version of OPLNova from source.
+## Contributing
 
-The resulting binary is self-contained and does not require the .NET runtime.
+This project is open source, and contributions are highly encouraged! If you're passionate about improving the PS2
+gaming experience, or have suggestions or improvements, feel free to contribute. **Issues**, **pull requests** and
+**feature suggestions** from the community are welcome. Help make this tool even better for PS2 gamers!
 
+## License
 
-
-## Open Source
-
-This project is **open-source**, and contributions are highly encouraged! If you're passionate about improving the PS2 gaming experience or if you have suggestions or improvements, feel free to contribute to the project.
-
-
-We welcome **issues**, **pull requests**, and **feature suggestions** from the community. Help us make this tool even better for PS2 gamers!
+GPL-3.0. See [LICENSE](LICENSE).
